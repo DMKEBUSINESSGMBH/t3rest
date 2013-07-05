@@ -1,0 +1,262 @@
+<html>
+
+<body>
+
+Template for modCompetitions. Not used right now. ###LOGS###
+
+<!-- Dieser Teil wird in allen Sub-Modulen integriert -->
+###COMMON_START### ###COMMON_START### ###COMMON_END###
+<div>Parsetime: ###MOD_PARSETIME###ms Memory used:
+###MOD_MEMUSED### Bytes</div>
+###COMMON_END###
+
+<!-- Handler Overview -->
+###OVERVIEW###
+<h1>Statistische Kennzahlen</h1>
+<style>
+.number {text-align:right;}
+</style>
+<p>
+<table>
+	<tr>
+		<td rowspan="10"><div id="installchart" style="margin-right:10px"></div></td>
+		<th>Installationen gesamt:</th>
+		<td class="number">###STATS_ALL_INSTALLS###</td>
+	</tr>
+	<tr>
+		<th>Installationen ANDROID:</th>
+		<td class="number">###STATS_ANDROID_INSTALLS###</td>
+	</tr>
+	<tr>
+		<th>Installationen IOS:</th>
+		<td class="number">###STATS_IOS_INSTALLS###</td>
+	</tr>
+	<tr>
+		<th>Installationen Windows:</th>
+		<td class="number">###STATS_WINDOWS_INSTALLS###</td>
+	</tr>
+</table>
+</p>
+
+<div style="margin:10px 0">
+	<label>Von: </label>
+	<input type="text" id="data[timespan][dfFrom]" name="data[timespan][dfFrom]" value="###DATE_FROM###">
+	<input type="button" id="openCalFrom" value="..." />
+	<label>Bis: </label>
+	<input type="text" id="data[timespan][dfTo]" name="data[timespan][dfTo]" value="###DATE_TO###">
+	<input type="button" id="openCalTo" value="..." />
+	###SELECT_PERIOD###
+	<input type="submit" name="change" value="Aktualisieren" />
+	<div id="calendar"></div>
+</div>
+
+<div id="container"></div>
+<div id="test"></div>
+
+<script><!--
+
+Ext.chart.Chart.CHART_URL = '../../../../typo3/contrib/extjs/resources/charts.swf';
+
+//Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
+
+function initCharts() {
+	var store = new Ext.data.JsonStore({
+        fields:['day', 'sum', 'IOS', 'ANDROID', 'WINDOWS'],
+        data: ###LOGS_REQUESTS###
+	});
+	new Ext.Panel({
+	    title: 'Zugriffe pro Tag und System',
+	    renderTo: 'container',
+	    width:600,
+	    height:300,
+	    layout:'fit',
+	
+	    items: {
+	        xtype: 'linechart',
+	        store: store,
+	        xField: 'day',
+	        series: [{
+	            type: 'line',
+	            displayName: 'IOS',
+	            yField: 'IOS',
+	            style: {
+	                color:0xB88A00
+	            }
+	        },{
+	            type: 'line',
+	            displayName: 'Android',
+	            yField: 'ANDROID',
+	            style: {
+	                color:0x66FF33
+	            }
+	        },{
+	            type: 'line',
+	            displayName: 'Windows',
+	            yField: 'WINDOWS',
+	            style: {
+	                color:0xFF8833
+	            }
+	        },{
+	            type:'line',
+	            displayName: 'Gesamt',
+	            yField: 'sum',
+	            style: {
+	                color: 0x003DF5
+	            }
+	        }]
+	//        yField: 'requests'
+	    }
+	});
+	
+	var store = new Ext.data.JsonStore({
+        fields:['day', 'sum', 'IOS', 'ANDROID', 'WINDOWS'],
+        data: ###LOGS_INSTALLS###
+	});
+	new Ext.Panel({
+	    title: 'Unterschiedliche Geräte pro Tag und System',
+	    renderTo: 'container',
+	    width:600,
+	    height:300,
+	    layout:'fit',
+	
+	    items: {
+	        xtype: 'linechart',
+	        store: store,
+	        xField: 'day',
+	        series: [{
+	            type: 'line',
+	            displayName: 'IOS',
+	            yField: 'IOS',
+	            style: {
+	                color:0xB88A00
+	            }
+	        },{
+	            type: 'line',
+	            displayName: 'Android',
+	            yField: 'ANDROID',
+	            style: {
+	                color:0x66FF33
+	            }
+	        },{
+	            type: 'line',
+	            displayName: 'Windows',
+	            yField: 'WINDOWS',
+	            style: {
+	                color:0xFF8833
+	            }
+	        },{
+	            type:'line',
+	            displayName: 'Gesamt',
+	            yField: 'sum',
+	            style: {
+	                color: 0x003DF5
+	            }
+	        }]
+	//        yField: 'requests'
+	    }
+	});
+
+	var store = new Ext.data.JsonStore({
+		fields: ['system', 'installs'],
+		data: [{
+			system: 'IOS',
+			installs: ###STATS_IOS_INSTALLS###
+		},{
+			system: 'Android',
+			installs: ###STATS_ANDROID_INSTALLS###
+		},{
+			system: 'Windows',
+			installs: ###STATS_WINDOWS_INSTALLS###
+		}]
+	});
+	new Ext.Panel({
+		width: 200,
+		height: 130,
+		title: 'Installationen gesamt: ###STATS_ALL_INSTALLS###',
+		renderTo: 'installchart',
+		items: {
+			store: store,
+			xtype: 'piechart',
+			dataField: 'installs',
+			categoryField: 'system',
+			series: [{
+				style: {
+					colors: ["0xB88A00", "0x66FF33", "0xFF8833"]
+				}
+			}],
+			//extra styles get applied to the chart defaults
+			extraStyle: {
+				legend: {
+					display: 'right',
+					padding: 5,
+					font: {
+						family: 'Tahoma', size: 13
+					}
+				}
+			}
+		}
+	});
+}
+
+
+
+//define function to be executed when page loaded
+Ext.namespace('T3rest');
+
+T3rest.DatePicker = function(options) {
+	var options = options;
+	var selectHandler = function(myDP, date) {
+		//get the text field
+//		Ext.get('loading').remove();
+		var field = document.getElementById(myDP.field);
+		//add the selected date to the field
+		field.value = date.format('d.m.Y');
+		//hide the date picker
+		myDP.hide();
+	};
+	var init = function() {
+		var myDP = new Ext.DatePicker({
+			field: options.field,
+			startDay: 1,
+			listeners: {
+				'select':selectHandler
+			}
+		});
+		//render the date picker
+		myDP.render('calendar');
+		//hide date picker straight away
+		myDP.hide();
+		//define click handler
+		var clickHandler = function() {
+			//show the date picker
+			myDP.show();
+		};
+		//add listener for button click
+		Ext.EventManager.on(options.button, 'click', clickHandler);
+	}
+	init();
+};
+
+
+Ext.onReady(function() {
+	Ext.QuickTips.init();
+	T3rest.DatePicker({field:'data[timespan][dfTo]', button:'openCalTo'});
+	T3rest.DatePicker({field:'data[timespan][dfFrom]', button:'openCalFrom'});
+
+	initCharts();
+
+});
+
+--></script>
+
+###OVERVIEW###
+
+<!-- Handler LogList -->
+###LOGLIST### ###PAGER### ###SEARCHFORM### ###LIST### Anzahl:
+###TOTALSIZE### ###LOGLIST### ###LOGS###
+
+
+
+
+</body>
+</html>

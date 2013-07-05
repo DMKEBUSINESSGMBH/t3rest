@@ -1,0 +1,14 @@
+#includeLibs.FuncCompetitions = EXT:cfc_league/mod1/tx_cfcleague_modCompetitions.php
+
+##############################
+# Achtung: im BE können keine Referenzen verwendet werden. Die Werte also immmer kopieren!!				
+##############################
+
+
+mod {
+	t3rest {
+		logs {
+			template = EXT:t3rest/mod/templates/module.html
+		}
+	}
+}
