@@ -34,11 +34,41 @@ abstract class tx_t3rest_decorator_Base {
 	public function prepareItem($item, $configurations, $confId) {
 		$this->handleItemBefore($item, $configurations, $confId);
 		$this->wrapRecord($item, $configurations, $confId.'record.');
+		$this->prepareLinks($item, $configurations, $confId.'record.');
 		$this->loadExternal($item, $configurations, $confId);
 		$this->handleItemAfter($item, $configurations, $confId);
 		$data = tx_t3rest_util_Objects::record2StdClass($item, $this->getIgnoreFields($configurations, $confId));
 		return $data;
 	}
+	protected function prepareLinks($item, $configurations, $confId) {
+		$linkIds = $configurations->getKeyNames($confId.'_links.');
+		for($i=0, $cnt=count($linkIds); $i < $cnt; $i++) {
+			$linkId = $linkIds[$i];
+			// Die Parameter erzeugen
+			$params = array();
+			$paramMap = (array) $configurations->get($confId.'_links.'.$linkId.'._cfg.params.');
+			foreach($paramMap As $paramName => $colName) {
+				if(is_scalar($colName) && array_key_exists($colName, $item->record))
+					$params[$paramName] = $item->record[$colName];
+				elseif(is_array($colName)) {
+					// Derzeit nicht unterstützt
+				}
+			}
+			$this->initLink($item, $configurations, $confId, $linkId, $params);
+		}
+	}
+	protected function initLink($item, $configurations, $confId, $linkId, $parameterArr) {
+		$linkObj = $configurations->createLink();
+		$links = $configurations->get($confId.'_links.');
+		if($links[$linkId] || $links[$linkId.'.']) {
+			$linkObj->initByTS($configurations, $confId.'_links.'.$linkId.'.', $parameterArr);
+			if(!$linkObj->isAbsUrl()) // Immer absolute URLs setzen
+				$linkObj->setAbsUrl(true);
+			$item->record['link_'.$linkId] = $linkObj->makeUrl(false);
+		}
+
+	}
+	
 	protected function wrapRecord($item, $configurations, $confId) {
 		$cObj = $configurations->getCObj();
 		$tmpArr = $cObj->data;
