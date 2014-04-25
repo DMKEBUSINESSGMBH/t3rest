@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Rene Nitzsche
+ *  (c) 2012-2014 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -35,7 +35,6 @@ tx_rnbase::load('tx_t3rest_provider_IProvider');
  * @author Rene Nitzsche
  */
 class tx_t3rest_provider_News extends tx_t3rest_provider_AbstractBase {
-//class tx_t3rest_provider_News implements tx_t3rest_provider_IProvider {
 
 	protected function handleRequest($configurations, $confId) {
 		if($itemUid = $configurations->getParameters()->get('get')) {

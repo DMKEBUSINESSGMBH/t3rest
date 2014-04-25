@@ -30,7 +30,7 @@ tx_rnbase::load('tx_t3rest_exception_DataNotFound');
 
 /**
  * Frontcontroller for REST-API calls
- * 
+ *
  * @author Rene Nitzsche
  */
 class tx_t3rest_controller_Base {
@@ -46,8 +46,8 @@ class tx_t3rest_controller_Base {
 		$initTime = microtime(true) - $start;
 		$initMem = memory_get_usage(true);
 
-//		tx_rnbase_util_Debug::debug($_COOKIE, 'class.tx_t3rest_controller_Base.php LINE: '.__LINE__); // TODO: remove me
 		if(!$this->isAllowed()) {
+//			tx_rnbase_util_Debug::debug($_COOKIE, 'class.tx_t3rest_controller_Base.php LINE: '.__LINE__); // TODO: remove me
 			return '';
 		}
 
@@ -55,7 +55,7 @@ class tx_t3rest_controller_Base {
 		try {
 			$providerData = $this->getProviderData();
 			// Für den Cache sind die TS-Config des Providers und die Parameter der URL relevant
-			 
+
 			$cacheHandler = $this->getCacheHandler($providerData->getConfigurations(), 'caching.');
 			$data = $cacheHandler ? $cacheHandler->getOutput($providerData) : '';
 			if(! (is_object($data) || is_array($data) )) {
@@ -74,7 +74,7 @@ class tx_t3rest_controller_Base {
 			$data = tx_rnbase::makeInstance('tx_t3rest_models_Error', $e->getMessage(), $e->getCode());
 			tx_rnbase_util_Logger::fatal('Error for rest call!', 't3rest', array('Exception'=> $e->getMessage));
 		}
-		
+
 		$response = $this->createResponse();
 		$response->setData($data);
 		$endMem = memory_get_usage(true);
@@ -153,7 +153,7 @@ class tx_t3rest_controller_Base {
 		return $os;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_t3rest_models_Provider $provData
 	 * @return tx_t3rest_provider_IProvider
 	 */
@@ -206,7 +206,7 @@ class tx_t3rest_controller_Base {
 		tslib_eidtools::connectDB(); //Connect to database
 		tslib_eidtools::initTCA();
 		tx_rnbase_util_Misc::prepareTSFE();
-		//		$feUserObj = tslib_eidtools::initFeUser(); // Initialize FE user object    
+		//		$feUserObj = tslib_eidtools::initFeUser(); // Initialize FE user object
 	}
 
 	/**
@@ -234,7 +234,7 @@ class tx_t3rest_controller_Base {
 
 	/**
 	 * Find a configured cache handler.
-	 * 
+	 *
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId
 	 * @return tx_t3rest_cache_CacheHandlerDefault

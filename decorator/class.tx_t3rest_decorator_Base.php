@@ -33,10 +33,36 @@ abstract class tx_t3rest_decorator_Base {
 
 	public function prepareItem($item, $configurations, $confId) {
 		$this->handleItemBefore($item, $configurations, $confId);
+		$this->wrapRecord($item, $configurations, $confId.'record.');
 		$this->loadExternal($item, $configurations, $confId);
 		$this->handleItemAfter($item, $configurations, $confId);
 		$data = tx_t3rest_util_Objects::record2StdClass($item, $this->getIgnoreFields($configurations, $confId));
 		return $data;
+	}
+	protected function wrapRecord($item, $configurations, $confId) {
+		$cObj = $configurations->getCObj();
+		$tmpArr = $cObj->data;
+		$conf = $configurations->get($confId);
+		if($conf) {
+			// Add dynamic columns
+			$keys = $configurations->getUniqueKeysNames($conf);
+			foreach($keys As $key) {
+				if(t3lib_div::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
+					$item->record[$key] = $conf[$key];
+			}
+		}
+		$cObj->data = $record;
+		foreach($item->record As $colname =>$value){
+			if($conf[$colname]) {
+				// Get value using cObjGetSingle
+				$cObj->setCurrentVal($value);
+				$item->record[$colname] = $cObj->cObjGetSingle($conf[$colname],$conf[$colname.'.']);
+				$cObj->setCurrentVal(false);
+			}
+			else {
+				$item->record[$colname] = $cObj->stdWrap($value, $conf[$colname.'.']);
+			}
+		}
 	}
 	/**
 	 * Daten aus anderen Tabellen nachladen
