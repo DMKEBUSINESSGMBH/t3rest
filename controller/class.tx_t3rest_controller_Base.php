@@ -93,7 +93,7 @@ class tx_t3rest_controller_Base {
 	}
 	private function logRequest($response, $time) {
 		// TODO: Log-Dir in Extension-Config!!
-		$dir = '/srv/www/vhosts/www.chemnitzerfc.de/logs/t3rest/';
+		$dir = '/var/www/vhosts/www.chemnitzerfc.de/logs/t3rest/';
 		$filename =  strftime('access_%Y%m%d.log');
 		$file = $dir.$filename;
 		$data = array();
