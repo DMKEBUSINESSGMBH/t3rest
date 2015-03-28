@@ -81,7 +81,7 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler {
 
 		if(!isset($this->data['timespan']))
 			$this->data['timespan'] = unserialize(tx_rnbase_mod_Util::getModuleValue('timespan', $mod, $options));
-		
+
 		$logSrv = tx_t3rest_util_ServiceRegistry::getLogsService();
 
 		$installs = $logSrv->getStatsApps('OS_ALL');
@@ -89,7 +89,7 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler {
 			$markerArr['###STATS_'.strtoupper($os).'_INSTALLS###'] = $install;
 		}
 
-		$period = isset($this->data['timespan']['period']) ? 
+		$period = isset($this->data['timespan']['period']) ?
 					$this->data['timespan']['period'] : 0;
 
 		$periods = array('day', 'week', 'month', 'year');
@@ -97,10 +97,10 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler {
 
 		$markerArr['###SELECT_PERIOD###'] = $formTool->createSelectSingleByArray('data[timespan][period]', $period, array('0'=>'Tag','1'=>'Woche', '2'=>'Monat', '3'=>'Year'));
 
-		$from = isset($this->data['timespan']['dfFrom']) ? 
+		$from = isset($this->data['timespan']['dfFrom']) ?
 					$this->data['timespan']['dfFrom'] : $this->getDefaultFrom();
-		$to = isset($this->data['timespan']['dfTo']) ? 
-					$this->data['timespan']['dfTo'] : 
+		$to = isset($this->data['timespan']['dfTo']) ?
+					$this->data['timespan']['dfTo'] :
 					tx_rnbase_util_Dates::getTodayDateString('d.m.Y');
 		$markerArr['###DATE_FROM###'] = $from;
 		$markerArr['###DATE_TO###'] = $to;
@@ -108,9 +108,9 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler {
 		$from = $this->str2Mysql($from);
 		$to = $this->str2Mysql($to);
 
-		$markerArr['###LOGS_REQUESTS###'] = json_encode($this->findRequestData($from, $to, $periods[$period]));
-		$markerArr['###LOGS_INSTALLS###'] = json_encode($this->findInstallsData($from, $to, $periods[$period]));
-		
+		$markerArr['###LOGS_REQUESTS###'] = json_encode(array_values( $this->findRequestData($from, $to, $periods[$period])));
+		$markerArr['###LOGS_INSTALLS###'] = json_encode(array_values( $this->findInstallsData($from, $to, $periods[$period])));
+
 		$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArr, $subpartArr, $wrappedSubpartArr);
 
 		return $out;
@@ -165,17 +165,43 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler {
 		}
 	}
 
+	/**
+	 * Zielformat für Flot:
+	 * 		{ label: "Android",  data: [[1427410800000,4],[1427497200000,3],[1427587200000,10]]},
+	 * @param array $reqLogs
+	 * @param array $logs
+	 */
 	private function addSeriesOS(&$reqLogs, $logs) {
 		$dayIdx = -1;
 		$lastDay = '';
 		$daySum = 0;
+//tx_rnbase_util_Debug::debug($logs,__FILE__.':'.__LINE__); // TODO: remove me
+		$reqLogs['SUM'] = array('label'=>'Gesamt','data'=>array());
 		for($i=0, $cnt = count($logs); $i<$cnt; $i++) {
 			$os = $logs[$i]['os'];
 			$day = $logs[$i]['day'];
-			$dayIdx = $day != $lastDay ? $dayIdx+1 : $dayIdx;
-			$reqLogs[$dayIdx]['day'] = $logs[$i]['day'];
-			$reqLogs[$dayIdx][$os] = intval($logs[$i]['value']);
-			$reqLogs[$dayIdx]['sum'] = intval($reqLogs[$dayIdx]['sum']) + intval($logs[$i]['value']);
+			if(!array_key_exists($os, $reqLogs))
+				$reqLogs[$os] = array('label'=>$os, 'data'=>array());
+			// Daten für das OS eintragen
+			$reqLogs[$os]['data'][] = array(
+				tx_rnbase_util_Dates::date_mysql2tstamp($day) * 1000,
+				intval($logs[$i]['value'])
+			);
+//tx_rnbase_util_Debug::debug(['day'=>$day, 'lastDay'=>$lastDay, 'Summe'=>$daySum, 'data'=>$reqLogs], 'Wechsel: ' . ($day != $lastDay ? 'Ja' : 'Nein') .' - ' . $i.' - ' . __FUNCTION__.':'.__LINE__); // TODO: remove me
+			// Tageswechsel für Summe prüfen
+			if(($day != $lastDay && $lastDay != '') || $i+1 == $cnt) {
+				// Ein neuer Tag beginnt
+				// Summe setzen
+				$reqLogs['SUM']['data'][] = array(
+						tx_rnbase_util_Dates::date_mysql2tstamp($lastDay) * 1000,
+						$daySum
+				);
+				$daySum = 0;
+			}
+			else {
+				// das ist noch der selbe Tag
+			}
+			$daySum += intval($logs[$i]['value']);
 			$lastDay = $day;
 		}
 	}

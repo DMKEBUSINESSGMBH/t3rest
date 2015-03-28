@@ -15,11 +15,40 @@ Template for modCompetitions. Not used right now. ###LOGS###
 <h1>Statistische Kennzahlen</h1>
 <style>
 .number {text-align:right;}
+.container {
+	box-sizing: border-box;
+	width: 850px;
+	height: 450px;
+	padding: 20px 15px 15px 15px;
+	margin: 15px 15px;
+	border: 1px solid #ddd;
+	background: #fff;
+	background: linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.placeholder { width: 100%;
+	height: 100%;
+	font-size: 14px;
+	line-height: 1.2em;
+}
+
 </style>
 <p>
 <table>
 	<tr>
-		<td rowspan="10"><div id="installchart" style="margin-right:10px"></div></td>
+		<td rowspan="10">
+		<div class="container" style="width:350px; height:200px; margin:0 10px 0 10px;" >
+			<div id="placeholder_installs" class="placeholder"></div>
+		</div>
+		</td>
 		<th>Installationen gesamt:</th>
 		<td class="number">###STATS_ALL_INSTALLS###</td>
 	</tr>
@@ -50,153 +79,95 @@ Template for modCompetitions. Not used right now. ###LOGS###
 	<div id="calendar"></div>
 </div>
 
-<div id="container"></div>
-<div id="test"></div>
+<h2>Unterschiedliche Geräte pro Tag und System</h2>
+<div class="container" style="width:600px; height:300px">
+	<div id="placeholder_devices" class="placeholder"></div>
+</div>
+
+<h2>Zugriffe pro Tag und System</h2>
+<div class="container" style="width:600px; height:300px">
+	<div id="placeholder_access" class="placeholder" ></div>
+</div>
+
+<script language="javascript" type="text/javascript" src="../../rn_base/Resources/Public/JavaScript/Flot/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="../../rn_base/Resources/Public/JavaScript/Flot/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="../../rn_base/Resources/Public/JavaScript/Flot/jquery.flot.time.js"></script>
+<script language="javascript" type="text/javascript" src="../../rn_base/Resources/Public/JavaScript/Flot/jquery.flot.pie.js"></script>
 
 <script><!--
 
-Ext.chart.Chart.CHART_URL = '../../../../typo3/contrib/extjs/resources/charts.swf';
 
-//Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
+jQuery(function() {
+	// Geräte pro Tag/System
+	var dataInstalls = ###LOGS_INSTALLS###;
+	var options = {
+			yaxis: {
+				minTickSize: 1,
+			},
+			xaxis: {
+				mode: "time",
+				minTickSize: [1, "day"],
+				timeformat: "%Y/%m/%d"
+			},
+			grid: {
+				hoverable: true
+			},
+			colors: ["#B88A00", "#66FF33", "#FF8833", "#003DF5"]
+		};
+	jQuery.plot("#placeholder_devices", dataInstalls, options);
 
-function initCharts() {
-	var store = new Ext.data.JsonStore({
-        fields:['day', 'sum', 'IOS', 'ANDROID', 'WINDOWS'],
-        data: ###LOGS_REQUESTS###
-	});
-	new Ext.Panel({
-	    title: 'Zugriffe pro Tag und System',
-	    renderTo: 'container',
-	    width:600,
-	    height:300,
-	    layout:'fit',
-	
-	    items: {
-	        xtype: 'linechart',
-	        store: store,
-	        xField: 'day',
-	        series: [{
-	            type: 'line',
-	            displayName: 'IOS',
-	            yField: 'IOS',
-	            style: {
-	                color:0xB88A00
-	            }
-	        },{
-	            type: 'line',
-	            displayName: 'Android',
-	            yField: 'ANDROID',
-	            style: {
-	                color:0x66FF33
-	            }
-	        },{
-	            type: 'line',
-	            displayName: 'Windows',
-	            yField: 'WINDOWS',
-	            style: {
-	                color:0xFF8833
-	            }
-	        },{
-	            type:'line',
-	            displayName: 'Gesamt',
-	            yField: 'sum',
-	            style: {
-	                color: 0x003DF5
-	            }
-	        }]
-	//        yField: 'requests'
-	    }
-	});
-	
-	var store = new Ext.data.JsonStore({
-        fields:['day', 'sum', 'IOS', 'ANDROID', 'WINDOWS'],
-        data: ###LOGS_INSTALLS###
-	});
-	new Ext.Panel({
-	    title: 'Unterschiedliche Geräte pro Tag und System',
-	    renderTo: 'container',
-	    width:600,
-	    height:300,
-	    layout:'fit',
-	
-	    items: {
-	        xtype: 'linechart',
-	        store: store,
-	        xField: 'day',
-	        series: [{
-	            type: 'line',
-	            displayName: 'IOS',
-	            yField: 'IOS',
-	            style: {
-	                color:0xB88A00
-	            }
-	        },{
-	            type: 'line',
-	            displayName: 'Android',
-	            yField: 'ANDROID',
-	            style: {
-	                color:0x66FF33
-	            }
-	        },{
-	            type: 'line',
-	            displayName: 'Windows',
-	            yField: 'WINDOWS',
-	            style: {
-	                color:0xFF8833
-	            }
-	        },{
-	            type:'line',
-	            displayName: 'Gesamt',
-	            yField: 'sum',
-	            style: {
-	                color: 0x003DF5
-	            }
-	        }]
-	//        yField: 'requests'
-	    }
-	});
+	var dataRequests = ###LOGS_REQUESTS###;
+	jQuery.plot("#placeholder_access", dataRequests, options);
 
-	var store = new Ext.data.JsonStore({
-		fields: ['system', 'installs'],
-		data: [{
-			system: 'IOS',
-			installs: ###STATS_IOS_INSTALLS###
-		},{
-			system: 'Android',
-			installs: ###STATS_ANDROID_INSTALLS###
-		},{
-			system: 'Windows',
-			installs: ###STATS_WINDOWS_INSTALLS###
-		}]
-	});
-	new Ext.Panel({
-		width: 200,
-		height: 130,
-		title: 'Installationen gesamt: ###STATS_ALL_INSTALLS###',
-		renderTo: 'installchart',
-		items: {
-			store: store,
-			xtype: 'piechart',
-			dataField: 'installs',
-			categoryField: 'system',
-			series: [{
-				style: {
-					colors: ["0xB88A00", "0x66FF33", "0xFF8833"]
-				}
-			}],
-			//extra styles get applied to the chart defaults
-			extraStyle: {
-				legend: {
-					display: 'right',
-					padding: 5,
-					font: {
-						family: 'Tahoma', size: 13
-					}
-				}
+	// Pie-Chart
+	var data = [
+	    		{ label: "IOS",  data: ###STATS_IOS_INSTALLS###},
+	    		{ label: "Windows",  data: ###STATS_WINDOWS_INSTALLS###},
+	    		{ label: "Android",  data: ###STATS_ANDROID_INSTALLS###}
+	    	];
+
+	jQuery.plot("#placeholder_installs", data, {
+		colors: ["#B88A00", "#66FF33", "#FF8833"],
+		series: {
+			pie: { 
+				innerRadius: 0.5,
+				show: true
 			}
+		},
+		legend: {
+	        show: false
+	  }
+	});
+
+	jQuery("<div id='tooltip'></div>").css({
+		position: "absolute",
+		display: "none",
+		border: "1px solid #fdd",
+		padding: "2px",
+		zIndex: 2000,
+		"background-color": "#fee",
+		opacity: 0.80
+	}).appendTo("body");
+
+	jQuery(".placeholder").bind("plothover", function (event, pos, item) {
+		console.info('Bin hier');
+		if (item) {
+			var x = item.datapoint[0],
+				y = item.datapoint[1];
+			var date = new Date(x);
+			var dateStr = date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
+
+			jQuery("#tooltip").html(item.series.label + ": <b>" + y + "</b> am " + dateStr)
+				.css({top: item.pageY+5, left: item.pageX+5})
+				.fadeIn(200);
+		} else {
+			jQuery("#tooltip").hide();
 		}
 	});
-}
+
+});
+
+
 
 
 
@@ -242,8 +213,6 @@ Ext.onReady(function() {
 	Ext.QuickTips.init();
 	T3rest.DatePicker({field:'data[timespan][dfTo]', button:'openCalTo'});
 	T3rest.DatePicker({field:'data[timespan][dfFrom]', button:'openCalFrom'});
-
-	initCharts();
 
 });
 
