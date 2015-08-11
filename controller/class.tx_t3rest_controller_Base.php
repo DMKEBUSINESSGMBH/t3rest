@@ -92,8 +92,9 @@ class tx_t3rest_controller_Base {
 		echo json_encode($response);
 	}
 	private function logRequest($response, $time) {
-		// TODO: Log-Dir in Extension-Config!!
-		$dir = '/var/www/vhosts/www.chemnitzerfc.de/logs/t3rest/';
+		$dir = tx_rnbase_configurations::getExtensionCfgValue('t3rest', 'accesslogDirectory');
+		if(!$dir) // Ohne Verzeichnis wird nichts geloggt
+			return;
 		$filename =  strftime('access_%Y%m%d.log');
 		$file = $dir.$filename;
 		$data = array();
@@ -159,7 +160,6 @@ class tx_t3rest_controller_Base {
 	 */
 	protected function getProvider($provData) {
 		if(!$provData) return null;
-		$classname = $provData->getClassname();
 		return tx_rnbase::makeInstance($provData->getClassname());
 	}
 	/**
@@ -167,12 +167,19 @@ class tx_t3rest_controller_Base {
 	 */
 	protected function getProviderData() {
 		$action = $this->getParameters()->get('action');
-		if(!$action) return null;
+		if(!$action) {
+			tx_rnbase::load('tx_t3rest_exception_ProviderNotFound');
+			throw new tx_t3rest_exception_ProviderNotFound('No provider given');
+		}
 
+		$options = array();
 		$options['wrapperclass'] = 'tx_t3rest_models_Provider';
 		$options['where'] = 'restkey = \'' . $GLOBALS['TYPO3_DB']->quoteStr($action,'tx_t3rest_providers') . '\'';
 		$ret = tx_rnbase_util_DB::doSelect('tx_t3rest_providers.*', 'tx_t3rest_providers', $options);
-		if(empty($ret)) return null;
+		if(empty($ret)) {
+			tx_rnbase::load('tx_t3rest_exception_ProviderNotFound');
+			throw new tx_t3rest_exception_ProviderNotFound('Provider ' . htmlspecialchars($action) . ' not found');
+		}
 		$providerData = $ret[0];
 		$this->initProviderData($providerData);
 		return $providerData;
