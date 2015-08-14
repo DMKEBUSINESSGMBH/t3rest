@@ -229,7 +229,8 @@ class tx_t3rest_controller_Base {
 
 
 	protected function isAllowed() {
-		if(isset($_GET['test']))
+		$disableCookie = tx_rnbase_configurations::getExtensionCfgValue('t3rest', 'disableCookie');
+		if($disableCookie || isset($_GET['test']))
 			return true;
 		if(!isset($_COOKIE['version']) || trim($_COOKIE['version']) == '')
 			return false;

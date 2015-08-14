@@ -1,2 +1,4 @@
   # cat=basic//10; type=string; label= Directory for access log
 accesslogDirectory =
+  # cat=basic//10; type=boolean; label= Disable cookie access. If checked the server will response to any requests without cookie
+disableCookie = 0
