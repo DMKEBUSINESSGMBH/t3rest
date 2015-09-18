@@ -18,3 +18,4 @@ $TYPO3_CONF_VARS['FE']['eID_include']['t3rest'] = 'EXT:t3rest/controller/class.t
 
 // Include services
 require_once(t3lib_extMgm::extPath('t3rest').'srv/ext_localconf.php');
+
