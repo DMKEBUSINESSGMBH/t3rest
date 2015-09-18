@@ -41,44 +41,35 @@ class Tx_T3rest_Hook_TsFe
 	 */
 	public function checkAndRunRestApi(&$params, $tsfe)
 	{
-		if (!$this->isApiCall()) {
+		// the hook is not enabled, skip!
+		if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
 			return NULL;
 		}
 
 		tx_rnbase::load('Tx_T3rest_Utility_Composer');
 		Tx_T3rest_Utility_Composer::autoload();
 
-		$router = new \Respect\Rest\Router();
-		$router->isAutoDispatched = false;
-
-		// @TODO: create routing config
-
-		exit('API not implementet yet');
-
-		$out = $router->run();
-
-		if ($out) {
-			echo $out;
-		}
-
-		// prevent typo3 rendering, the output should be done by the rest api.
-		die();
+		$this->getController()->execute();
 	}
 
 	/**
-	 * is there are a api call?
+	 * returns an instance of a controller.
 	 *
-	 * @return boolean
+	 * @return Tx_T3rest_Controller_InterfaceController
 	 */
-	protected function isApiCall()
+	public function getController()
 	{
-		// the hook is not enabled
-		if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
-			return FALSE;
+		// @TODO: make controller configurable
+		$instance = tx_rnbase::makeInstance('Tx_T3rest_Controller_Json');
+		if (!$instance instanceof Tx_T3rest_Controller_InterfaceController) {
+			throw new Exception(
+				sprintf(
+					'Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".',
+					get_class($instance)
+				)
+			);
 		}
-		// check the request uri for the api uri segment
-		$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-		$apiSegment = Tx_T3rest_Utility_Config::getRestApiUriPath();
-		return strpos($requestUri, $apiSegment) === 0;
+		return $instance;
 	}
+
 }

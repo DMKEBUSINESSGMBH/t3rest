@@ -21,37 +21,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
-tx_rnbase::load('tx_rnbase_model_base');
+tx_rnbase::load('Tx_T3rest_Model_Provider');
 
 /**
  * Frontcontroller for REST-API calls
- * 
+ *
  * @author Rene Nitzsche
  */
-class tx_t3rest_models_Provider extends tx_rnbase_model_base {
-	private $configurations;
-	/**
-	 * @return String Tabellenname
-	 */
-	function getTableName() {
-		return 'tx_t3rest_providers';
-	}
-	/**
-	 * @param tx_rnbase_configurations $config
-	 */
-	public function setConfigurations($config) {
-		$this->configurations = $config;
-	}
-	/**
-	 * @return tx_rnbase_configurations
-	 */
-	public function getConfigurations() {
-		return $this->configurations;
-	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php']);
+class tx_t3rest_models_Provider extends Tx_T3rest_Model_Provider {
 }
