@@ -1,0 +1,27 @@
+{
+	"name" : "dmk/t3rest",
+	"description" : "Provides a REST interface for TYPO3.",
+	"version" : "0.2.0",
+	"type" : "typo3-cms-extension",
+	"keywords" : ["TYPO3 CMS", "rest", "router"],
+	"homepage" : "http://www.dmk-ebusiness.de/",
+	"license" : "GPL-2.0+",
+	"authors" : [
+		{
+			"name" : "René Nitzsche",
+			"email" : "nitzsche@dmk-ebusiness.de",
+			"role" : "Developer"
+		},
+		{
+			"name" : "Michael Wagner",
+			"email" : "michael.wagner@dmk-ebusiness.de",
+			"role" : "Developer"
+		}
+	],
+	"support": {
+		"email": "dev@dmk-ebusiness.de"
+	},
+	"replace": {
+		"typo3-ter/t3rest": "*"
+	}
+}
