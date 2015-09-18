@@ -2,3 +2,9 @@
 accesslogDirectory =
   # cat=basic//10; type=boolean; label= Disable cookie access. If checked the server will response to any requests without cookie
 disableCookie = 0
+
+  # cat=respect rest api//10; type=boolean; label= Enable TSFE-Hook for new REST-API by URL segment
+restEnableHook = 0
+
+  # cat=respect rest api//10; type=string; label= API URL segment: The URL segment for the REST-API. This Segment should be the first part of the REQUEST_URI.
+restApiUriPath = api

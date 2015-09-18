@@ -1,7 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+defined ('TYPO3_MODE') || die ('Access denied.');
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 
 // Predefine cache
 // This section has to be included in typo3conf/localconf.php!!
@@ -19,3 +19,10 @@ $TYPO3_CONF_VARS['FE']['eID_include']['t3rest'] = 'EXT:t3rest/controller/class.t
 // Include services
 require_once(t3lib_extMgm::extPath('t3rest').'srv/ext_localconf.php');
 
+// was called after db initialisation, direktly after eID
+// and before ob_start compression handler
+$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB']
+	['t3rest'] = 'EXT:t3rest/Classes/Hook/TsFe.php:&Tx_T3rest_Hook_TsFe->checkAndRunRestApi';
+
+// preloading som classes
+tx_rnbase::load('Tx_T3rest_Utility_Config');
