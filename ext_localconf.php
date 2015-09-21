@@ -25,5 +25,5 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB']
 	['t3rest'] = 'EXT:t3rest/Classes/Hook/TsFe.php:&Tx_T3rest_Hook_TsFe->checkAndRunRestApi';
 
 // preloading som classes
-tx_rnbase::load('Tx_T3rest_Utility_Factory');
 tx_rnbase::load('Tx_T3rest_Utility_Config');
+tx_rnbase::load('Tx_T3rest_Utility_Factory');

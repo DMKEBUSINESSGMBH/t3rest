@@ -61,6 +61,7 @@ final class Tx_T3rest_Utility_Config
 	{
 		return (boolean) self::getExtConf('restEnableHook');
 	}
+
 	/**
 	 * returns the rest api path segment with leading and trailing slash.
 	 * default is /api/
@@ -73,6 +74,26 @@ final class Tx_T3rest_Utility_Config
 		$apiSegment = trim($apiSegment, '/');
 		$apiSegment = '/' . (empty($apiSegment) ? '' : $apiSegment . '/');
 		return $apiSegment;
+	}
+
+	/**
+	 * returns the controller class.
+	 *
+	 * @return string
+	 */
+	public static function getRestApiController()
+	{
+		return self::getExtConf('restApiController') ?: 'Tx_T3rest_Controller_Json';
+	}
+
+	/**
+	 * returns the router class.
+	 *
+	 * @return string
+	 */
+	public static function getRestApiRouter()
+	{
+		return self::getExtConf('restApiRouter') ?: 'Tx_T3rest_Router_Respect';
 	}
 
 }

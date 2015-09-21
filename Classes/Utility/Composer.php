@@ -32,6 +32,8 @@
  */
 final class Tx_T3rest_Utility_Composer
 {
+	static $loaded = FALSE;
+
 	/**
 	 * preloads the
 	 *
@@ -39,10 +41,14 @@ final class Tx_T3rest_Utility_Composer
 	 */
 	public static function autoload()
 	{
+		if (self::$loaded === TRUE) {
+			return;
+		}
 		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
 			't3rest',
 			'Resources/Private/PHP/Composer/autoload.php'
 		);
+		self::$loaded = TRUE;
 	}
 
 }

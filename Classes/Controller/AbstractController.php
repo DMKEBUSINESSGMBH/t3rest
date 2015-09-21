@@ -46,19 +46,8 @@ class Tx_T3rest_Controller_AbstractController
 			return FALSE;
 		}
 
-		tx_rnbase::load('Tx_T3rest_Utility_Composer');
-		Tx_T3rest_Utility_Composer::autoload();
-
 		$router = $this->getRouter();
-		$this->prepareRouterByProviders($router);
-
-
-		$router->always(
-			'Through',
-			function(){
-				return array($this, 'transformReturnValue');
-			}
-		);
+		$this->prepareRouter($router);
 
 		$out =$router->run();
 
@@ -72,27 +61,12 @@ class Tx_T3rest_Controller_AbstractController
 	}
 
 	/**
-	 * was called after provider returns his value.
-	 * this method can be extended by child classes
 	 *
-	 * @param mixed $data
-	 * @return string
-	 */
-	public function transformReturnValue($data)
-	{
-		return (string) $data;
-	}
-
-	/**
-	 *
-	 * @return Tx_T3rest_Router_Respect
+	 * @return Tx_T3rest_Router_InterfaceRouter
 	 */
 	protected function getRouter()
 	{
-		$router = Tx_T3rest_Utility_Factory::getRespectRestRouter();
-		$router->isAutoDispatched = false;
-
-		return $router;
+		return Tx_T3rest_Utility_Factory::getRespectRestRouter();
 	}
 
 	/**
@@ -107,10 +81,21 @@ class Tx_T3rest_Controller_AbstractController
 
 	/**
 	 *
-	 * @param Tx_T3rest_Router_Respect $router
+	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 */
+	private function prepareRouter(
+		Tx_T3rest_Router_InterfaceRouter $router
+	) {
+		$this->prepareRouterByProviders($router);
+		$this->prepareRoutines($router);
+	}
+
+	/**
+	 *
+	 * @param Tx_T3rest_Router_InterfaceRouter $router
 	 */
 	protected function prepareRouterByProviders(
-		Tx_T3rest_Router_Respect $router
+		Tx_T3rest_Router_InterfaceRouter $router
 	) {
 		/* @var $provider Tx_T3rest_Model_Provider */
 		foreach ($this->getProviders() as $provider) {
@@ -120,6 +105,19 @@ class Tx_T3rest_Controller_AbstractController
 			}
 			$providerInstance->prepareRouter($router);
 		}
+	}
+
+	/**
+	 * initializes the routines for the router.
+	 * for excample it can be used to register a throu routine
+	 * for data transformation to json.
+	 *
+	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 */
+	protected function prepareRoutines(
+		Tx_T3rest_Router_InterfaceRouter $router
+	) {
+
 	}
 
 	/**

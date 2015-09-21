@@ -46,9 +46,6 @@ class Tx_T3rest_Hook_TsFe
 			return NULL;
 		}
 
-		tx_rnbase::load('Tx_T3rest_Utility_Composer');
-		Tx_T3rest_Utility_Composer::autoload();
-
 		$this->getController()->execute();
 	}
 
@@ -59,17 +56,7 @@ class Tx_T3rest_Hook_TsFe
 	 */
 	public function getController()
 	{
-		// @TODO: make controller configurable
-		$instance = tx_rnbase::makeInstance('Tx_T3rest_Controller_Json');
-		if (!$instance instanceof Tx_T3rest_Controller_InterfaceController) {
-			throw new Exception(
-				sprintf(
-					'Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".',
-					get_class($instance)
-				)
-			);
-		}
-		return $instance;
+		return Tx_T3rest_Utility_Factory::getRestApiController();
 	}
 
 }

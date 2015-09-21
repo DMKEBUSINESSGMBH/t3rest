@@ -23,6 +23,8 @@
  */
 
 tx_rnbase::load('Tx_T3rest_Router_InterfaceRouter');
+tx_rnbase::load('Tx_T3rest_Utility_Composer');
+Tx_T3rest_Utility_Composer::autoload();
 
 /**
  *
@@ -34,6 +36,12 @@ class Tx_T3rest_Router_Respect
 	extends \Respect\Rest\Router
 	implements Tx_T3rest_Router_InterfaceRouter
 {
+    /**
+     * disable the auto dispatching!
+     *
+     * @var bool
+     */
+    public $isAutoDispatched = FALSE;
 
 	/**
 	 * register an route.
@@ -58,6 +66,10 @@ class Tx_T3rest_Router_Respect
 			$class,
 			$arguments
 		);
+	}
+
+	public function addGlobalPostProgressing() {
+
 	}
 
 }

@@ -33,13 +33,44 @@
 final class Tx_T3rest_Utility_Factory
 {
 	/**
+	 * returns the rest api controller.
+	 *
+	 * @return Tx_T3rest_Controller_InterfaceController
+	 */
+	public static function getRestApiController()
+	{
+		$class = Tx_T3rest_Utility_Config::getRestApiController();
+		$instance = tx_rnbase::makeInstance($class);
+		if (!$instance instanceof Tx_T3rest_Controller_InterfaceController) {
+			throw new Exception(
+				sprintf(
+					'Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".',
+					get_class($instance)
+				)
+			);
+		}
+		return $instance;
+	}
+
+	/**
 	 * a new respect rest router instance.
 	 *
 	 * @return Tx_T3rest_Router_Respect
 	 */
 	public static function getRespectRestRouter()
 	{
-		return tx_rnbase::makeInstance('Tx_T3rest_Router_Respect');
+		$class = Tx_T3rest_Utility_Config::getRestApiRouter();
+		$instance = tx_rnbase::makeInstance($class);
+		if (!$instance instanceof Tx_T3rest_Router_InterfaceRouter) {
+			throw new Exception(
+				sprintf(
+					'Router "%1$s" has to implement the interface "Tx_T3rest_Router_InterfaceRouter".',
+					get_class($instance)
+				)
+			);
+		}
+		return $instance;
+
 	}
 
 	/**

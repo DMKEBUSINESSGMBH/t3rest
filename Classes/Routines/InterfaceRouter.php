@@ -22,30 +22,21 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('Tx_T3rest_Controller_AbstractController');
-
 /**
- * tsfe hooks
+ * interface for rest routines.
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Controller_Json
-	extends Tx_T3rest_Controller_AbstractController
-{
+interface Tx_T3rest_Routines_InterfaceRouter {
 
 	/**
-	 * register the through routine, to transform the return value to json.
 	 *
-	 * @param Tx_T3rest_Router_Respect $router
+	 * @param Tx_T3rest_Router_InterfaceRouter $router
 	 */
-	protected function prepareRoutines(
-		Tx_T3rest_Router_Respect $router
-	) {
-		/* @var $throughJson Tx_T3rest_Routines_Through_Json */
-		$throughJson = tx_rnbase::makeInstance('Tx_T3rest_Routines_Through_Json');
-		$throughJson->prepareRouter($router);
-	}
+	public function prepareRouter(
+		Tx_T3rest_Router_InterfaceRouter $router
+	);
 
 }
