@@ -114,10 +114,11 @@ class Tx_T3rest_Controller_AbstractController
 	) {
 		/* @var $provider Tx_T3rest_Model_Provider */
 		foreach ($this->getProviders() as $provider) {
-			$route = $provider
-				->getProviderInstance()
-				->prepareRouter($router)
-			;
+			$providerInstance = $provider->getProviderInstance();
+			if (!$providerInstance instanceof Tx_T3rest_Provider_InterfaceProvider) {
+				continue;
+			}
+			$providerInstance->prepareRouter($router);
 		}
 	}
 
