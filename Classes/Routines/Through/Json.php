@@ -64,13 +64,9 @@ class Tx_T3rest_Routines_Through_Json
 	 */
 	public function throughRespect($data)
 	{
-		tx_rnbase::load('tx_rnbase_util_Json');
-		$converter = tx_rnbase_util_Json::getInstance();
-		$json = $converter->encode($data);
-
 		// find a better way to set the headers
 		header('Content-type: application/json');
 
-		return $json;
+		return json_encode($data);
 	}
 }

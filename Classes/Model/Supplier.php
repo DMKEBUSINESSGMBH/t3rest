@@ -69,10 +69,17 @@ class Tx_T3rest_Model_Supplier
 			}
 		}
 
-		// there is an array, iterate it and set the values
+		// there is an array
 		if (is_array($value)) {
-			foreach ($value as $subKey => $subValue) {
-				$node->add($subKey, $subValue);
+			// check for Array type
+			if (array_values($value) === $value) {
+				$node = $value;
+			}
+			// anassoziative Array, iterate it and set the values
+			else {
+				foreach ($value as $subKey => $subValue) {
+					$node->add($subKey, $subValue);
+				}
 			}
 		}
 		// there is a object, parse all object vars
