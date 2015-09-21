@@ -32,7 +32,7 @@ class Tx_T3rest_Model_Provider
 	extends tx_rnbase_model_base
 {
 
-	private $configurations;
+	private $configurations = NULL;
 
 	/**
 	 * @return String Tabellenname
@@ -52,6 +52,14 @@ class Tx_T3rest_Model_Provider
 	 * @return tx_rnbase_configurations
 	 */
 	public function getConfigurations() {
+		if ($this->configurations === NULL) {
+			tx_rnbase::load('tx_rnbase_util_TS');
+			$configArray = tx_rnbase_util_TS::parseTsConfig($this->getConfig());
+			/* @var $configurations tx_rnbase_configurations */
+			$this->configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+			$this->configurations->init($configArray, false, 't3rest', 't3rest');
+		}
+
 		return $this->configurations;
 	}
 
@@ -73,13 +81,8 @@ class Tx_T3rest_Model_Provider
 	public function getProviderInstance()
 	{
 		$instance = tx_rnbase::makeInstance($this->getProviderClassName());
-		if (!$instance instanceof Tx_T3rest_Provider_InterfaceProvider) {
-			throw new Exception(
-				sprintf(
-					'Provider "%1$s" has to implement the interface "Tx_T3rest_Provider_InterfaceProvider".',
-					get_class($instance)
-				)
-			);
+		if ($instance instanceof Tx_T3rest_Provider_InterfaceProvider) {
+			$instance->setProvider($this);
 		}
 		return $instance;
 	}

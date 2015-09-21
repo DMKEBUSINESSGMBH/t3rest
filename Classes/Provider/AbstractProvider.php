@@ -34,4 +34,43 @@ abstract class Tx_T3rest_Provider_AbstractProvider
 	implements Tx_T3rest_Provider_InterfaceProvider
 {
 
+	/**
+	 * @var Tx_T3rest_Model_Provider $model
+	 */
+	private $provider = NULL;
+
+	/**
+	 * injects the provider model.
+	 *
+	 * @param Tx_T3rest_Model_Provider $model
+	 * @return Tx_T3rest_Provider_AbstractProvider
+	 */
+	public function setProvider(
+		Tx_T3rest_Model_Provider $model
+	) {
+		$this->provider = $model;
+
+		return $this;
+	}
+
+	/**
+	 * returns the provider model with the config
+	 *
+	 * @return Tx_T3rest_Model_Provider
+	 */
+	public function getProvider()
+	{
+		return $this->provider;
+	}
+
+	/**
+	 * the config from the provider
+	 *
+	 * @return tx_rnbase_configurations
+	 */
+	protected function getConfigurations()
+	{
+		return $this->getProvider()->getConfigurations();
+	}
+
 }
