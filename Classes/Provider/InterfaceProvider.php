@@ -31,22 +31,11 @@
  */
 interface Tx_T3rest_Provider_InterfaceProvider
 {
-
 	/**
 	 * initializes the router.
 	 *
 	 * @param Tx_T3rest_Router_InterfaceRouter $router
 	 */
 	public function prepareRouter(Tx_T3rest_Router_InterfaceRouter $router);
-
-	/**
-	 * injects the provider model.
-	 *
-	 * @param Tx_T3rest_Model_Provider $model
-	 * @return Tx_T3rest_Provider_AbstractProvider
-	 */
-	public function setProvider(
-		Tx_T3rest_Model_Provider $model
-	);
 
 }
