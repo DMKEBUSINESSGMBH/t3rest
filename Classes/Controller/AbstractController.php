@@ -117,7 +117,13 @@ class Tx_T3rest_Controller_AbstractController
 	protected function prepareRoutines(
 		Tx_T3rest_Router_InterfaceRouter $router
 	) {
+		/* @var $timeTrack Tx_T3rest_Routines_Log_TimeTrack */
+		$timeTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
+		$timeTrack->prepareRouter($router);
 
+		/* @var $memTrack Tx_T3rest_Routines_Log_MemTrack */
+		$memTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
+		$memTrack->prepareRouter($router);
 	}
 
 	/**
