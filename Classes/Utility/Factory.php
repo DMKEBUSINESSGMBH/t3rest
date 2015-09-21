@@ -84,11 +84,31 @@ final class Tx_T3rest_Utility_Factory
 	}
 
 	/**
+	 * the transformer class.
+	 *
+	 * @return Tx_T3rest_Model_Supplier
+	 */
+	public static function getTransformer($class = NULL)
+	{
+		$class = empty($class) ? 'Tx_T3rest_Transformer_Simple' : $class;
+		$instance = tx_rnbase::makeInstance($class);
+		if (!$instance instanceof Tx_T3rest_Transformer_InterfaceTransformer) {
+			throw new Exception(
+				sprintf(
+					'Transformer "%1$s" has to implement the interface "Tx_T3rest_Transformer_InterfaceTransformer".',
+					get_class($instance)
+				)
+			);
+		}
+		return $instance;
+	}
+
+	/**
 	 * the suplier model. was used to transfer the model date to the rest api provider.
 	 *
 	 * @return Tx_T3rest_Model_Supplier
 	 */
-	public function getSupplier(array $ignoreKeys = array())
+	public static function getSupplier(array $ignoreKeys = array())
 	{
 		return tx_rnbase::makeInstance(
 			'Tx_T3rest_Model_Supplier',

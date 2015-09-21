@@ -47,13 +47,26 @@ abstract class Tx_T3rest_Provider_AbstractProvider
 	protected function getTransformer()
 	{
 		if ($this->transformer === NULL) {
-			$this->transformer = tx_rnbase::makeInstance('Tx_T3rest_Transformer_Simple');
+			$this->transformer = Tx_T3rest_Utility_Factory::getTransformer(
+				$this->getTransformerClass()
+			);
 			if ($this->transformer instanceof Tx_T3rest_Model_ProviderHolder) {
 				$this->transformer->setProvider($this->getProvider());
 			}
 		}
 
 		return $this->transformer;
+	}
+
+	/**
+	 * returns the transformer class for this provider.
+	 *
+	 * @return Tx_T3rest_Transformer_InterfaceTransformer
+	 */
+	protected function getTransformerClass()
+	{
+		$class = $this->getConfig('transformer.class');
+		return $class ?: 'Tx_T3rest_Transformer_Simple';
 	}
 
 }
