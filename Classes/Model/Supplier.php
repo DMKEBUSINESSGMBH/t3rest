@@ -32,7 +32,7 @@ class Tx_T3rest_Model_Supplier
 	extends stdClass
 {
 
-	private $ignoreKeys = array('hidden', 'deleted', 'pid', 'crdate', 'cruser_id', 'sorting');
+	private $_ignoreKeys = array('_ignoreKeys', 'hidden', 'deleted', 'pid', 'crdate', 'cruser_id', 'sorting');
 
 	/**
 	 *
@@ -41,7 +41,7 @@ class Tx_T3rest_Model_Supplier
 	public function __construct(
 		array $ignoreKeys = array()
 	) {
-		$this->ignoreKeys = array_flip(array_merge($ignoreKeys, $this->ignoreKeys));
+		$this->_ignoreKeys = array_flip(array_merge($ignoreKeys, $this->_ignoreKeys));
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Tx_T3rest_Model_Supplier
 			$value = $key;
 			$node = &$this;
 		} else {
-			if (isset($this->ignoreKeys[$key])) {
+			if (isset($this->_ignoreKeys[$key])) {
 				return $this;
 			}
 
@@ -65,7 +65,7 @@ class Tx_T3rest_Model_Supplier
 			}
 			$node = &$this->{$key};
 			if (!is_scalar($value) && !is_object($node)) {
-				$node = new self();
+				$node = new self(array_keys($this->_ignoreKeys));
 			}
 		}
 

@@ -43,6 +43,8 @@ class Tx_T3rest_Controller_Json
 	protected function prepareRoutines(
 		Tx_T3rest_Router_Respect $router
 	) {
+		parent::prepareRoutines($router);
+
 		/* @var $throughJson Tx_T3rest_Routines_Through_Json */
 		$throughJson = tx_rnbase::makeInstance('Tx_T3rest_Routines_Through_Json');
 		$throughJson->prepareRouter($router);
