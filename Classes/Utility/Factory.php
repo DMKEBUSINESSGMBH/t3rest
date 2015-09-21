@@ -104,7 +104,8 @@ final class Tx_T3rest_Utility_Factory
 	}
 
 	/**
-	 * the suplier model. was used to transfer the model date to the rest api provider.
+	 * the suplier model.
+	 * was used to transfer the model date to the rest api provider.
 	 *
 	 * @return Tx_T3rest_Model_Supplier
 	 */

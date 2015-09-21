@@ -23,6 +23,7 @@
  */
 
 /**
+ * controler interface
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -34,7 +35,7 @@ interface Tx_T3rest_Controller_InterfaceController
 	/**
 	 * Entry point for REST calls.
 	 *
-	 * @return boolean
+	 * @return void
 	 */
 	public function execute();
 

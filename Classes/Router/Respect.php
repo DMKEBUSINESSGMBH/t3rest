@@ -27,6 +27,7 @@ tx_rnbase::load('Tx_T3rest_Utility_Composer');
 Tx_T3rest_Utility_Composer::autoload();
 
 /**
+ * the Respect/Rest router
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -36,21 +37,20 @@ class Tx_T3rest_Router_Respect
 	extends \Respect\Rest\Router
 	implements Tx_T3rest_Router_InterfaceRouter
 {
-    /**
-     * disable the auto dispatching!
-     *
-     * @var bool
-     */
-    public $isAutoDispatched = FALSE;
+	/**
+	* disable the auto dispatching!
+	*
+	* @var bool
+	*/
+	public $isAutoDispatched = FALSE;
 
 	/**
 	 * register an route.
 	 *
-	 * @param unknown $method
-	 * @param unknown $path
-	 * @param unknown $class
+	 * @param string $method
+	 * @param string $path
+	 * @param string $class
 	 * @param array $arguments
-	 *
 	 * @return Respect\Rest\Routes\ClassName The route instance
 	 */
 	public function addRoute(
@@ -66,10 +66,6 @@ class Tx_T3rest_Router_Respect
 			$class,
 			$arguments
 		);
-	}
-
-	public function addGlobalPostProgressing() {
-
 	}
 
 }

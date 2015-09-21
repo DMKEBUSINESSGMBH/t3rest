@@ -43,7 +43,7 @@ class Tx_T3rest_Routines_Log_TimeTrack
 	 * add a time tracking
 	 *
 	 * @param string $key
-	 * @param int $mem
+	 * @param int $microtime
 	 * @return Tx_T3rest_Routines_Log_TimeTrack
 	 */
 	public function add($key, $microtime = NULL)
@@ -54,8 +54,10 @@ class Tx_T3rest_Routines_Log_TimeTrack
 	}
 
 	/**
+	 * add the before and after callbacks
 	 *
 	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 * @return void
 	 */
 	public function prepareRouter(
 		Tx_T3rest_Router_InterfaceRouter $router
@@ -83,7 +85,7 @@ class Tx_T3rest_Routines_Log_TimeTrack
 	 * this method can be extended by child classes
 	 *
 	 * @param mixed $data
-	 * @return string
+	 * @return void
 	 */
 	public function byRespect($data)
 	{

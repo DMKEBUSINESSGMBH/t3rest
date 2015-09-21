@@ -25,7 +25,7 @@
 /**
  * a provider holder trait.
  * actually a abstract class, for php 5.3 support.
- * 
+ *
  * @package TYPO3
  * @subpackage Tx_T3rest
  * @author Michael Wagner
@@ -74,6 +74,7 @@ abstract class Tx_T3rest_Model_ProviderHolder
 	/**
 	 * a configuration for the path from the providerconfiguration
 	 *
+	 * @param string $confId
 	 * @return mixed
 	 */
 	protected function getConfig($confId)

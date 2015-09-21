@@ -34,6 +34,8 @@ class Tx_T3rest_Model_Provider
 	private $configurations = NULL;
 
 	/**
+	 * Gets the name of the database table
+	 *
 	 * @return String Tabellenname
 	 */
 	function getTableName() {
@@ -41,13 +43,19 @@ class Tx_T3rest_Model_Provider
 	}
 
 	/**
+	 * set the provider config
+	 *
 	 * @param tx_rnbase_configurations $config
+	 * @deprecated only used for the old api
+	 * @return void
 	 */
 	public function setConfigurations($config) {
 		$this->configurations = $config;
 	}
 
 	/**
+	 * the ts config for from the provider
+	 *
 	 * @return tx_rnbase_configurations
 	 */
 	public function getConfigurations() {

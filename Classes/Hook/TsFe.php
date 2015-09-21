@@ -37,13 +37,13 @@ class Tx_T3rest_Hook_TsFe
 	 *
 	 * @param array &$params
 	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe
-	 * @return NULL;
+	 * @return void
 	 */
 	public function checkAndRunRestApi(&$params, $tsfe)
 	{
 		// the hook is not enabled, skip!
 		if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
-			return NULL;
+			return;
 		}
 
 		$this->getController()->execute();

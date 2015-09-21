@@ -26,6 +26,7 @@ tx_rnbase::load('Tx_T3rest_Model_ProviderHolder');
 tx_rnbase::load('Tx_T3rest_Provider_InterfaceProvider');
 
 /**
+ * abstract provider
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -41,6 +42,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider
 	private $transformer = NULL;
 
 	/**
+	 * a transformer instance
 	 *
 	 * @return Tx_T3rest_Transformer_InterfaceTransformer
 	 */

@@ -39,6 +39,7 @@ class Tx_T3rest_Controller_Json
 	 * register the through routine, to transform the return value to json.
 	 *
 	 * @param Tx_T3rest_Router_Respect $router
+	 * @return void
 	 */
 	protected function prepareRoutines(
 		Tx_T3rest_Router_Respect $router

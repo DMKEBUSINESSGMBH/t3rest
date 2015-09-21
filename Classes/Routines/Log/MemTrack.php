@@ -25,9 +25,7 @@
 tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
 
 /**
- * this json routine is for data transforming.
- * after the router did its job, this routine was called
- * and its the return value will be transformed to json.
+ * memory tracking routine
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -54,8 +52,10 @@ class Tx_T3rest_Routines_Log_MemTrack
 	}
 
 	/**
+	 * add the before and after callbacks
 	 *
 	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 * @return void
 	 */
 	public function prepareRouter(
 		Tx_T3rest_Router_InterfaceRouter $router
@@ -83,7 +83,7 @@ class Tx_T3rest_Routines_Log_MemTrack
 	 * this method can be extended by child classes
 	 *
 	 * @param mixed $data
-	 * @return string
+	 * @return void
 	 */
 	public function byRespect($data)
 	{

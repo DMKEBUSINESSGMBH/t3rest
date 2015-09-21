@@ -23,6 +23,7 @@
  */
 
 /**
+ * router interface
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -44,7 +45,6 @@ interface Tx_T3rest_Router_InterfaceRouter
 	 * @param string $path
 	 * @param string $provider
 	 * @param array $arguments
-	 *
 	 * @return object special route instance
 	 */
 	public function addRoute(

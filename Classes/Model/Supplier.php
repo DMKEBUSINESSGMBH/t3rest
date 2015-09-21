@@ -23,6 +23,7 @@
  */
 
 /**
+ * supplier model
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -32,19 +33,34 @@ class Tx_T3rest_Model_Supplier
 	extends stdClass
 {
 
-	private $_ignoreKeys = array('_ignoreKeys', 'hidden', 'deleted', 'pid', 'crdate', 'cruser_id', 'sorting');
-
 	/**
 	 *
+	 * @var unknown
+	 */
+	private $ignoreKeys = array(
+		'ignoreKeys',
+		'hidden',
+		'deleted',
+		'pid',
+		'crdate',
+		'cruser_id',
+		'sorting',
+	);
+
+	/**
+	 * constructor
+	 *
 	 * @param array $ignoreKeys
+	 * @return void
 	 */
 	public function __construct(
 		array $ignoreKeys = array()
 	) {
-		$this->_ignoreKeys = array_flip(array_merge($ignoreKeys, $this->_ignoreKeys));
+		$this->ignoreKeys = array_flip(array_merge($ignoreKeys, $this->ignoreKeys));
 	}
 
 	/**
+	 * add some values to supplier/stdClass
 	 *
 	 * @param mixed $key
 	 * @param mixed $value
@@ -56,7 +72,7 @@ class Tx_T3rest_Model_Supplier
 			$value = $key;
 			$node = &$this;
 		} else {
-			if (isset($this->_ignoreKeys[$key])) {
+			if (isset($this->ignoreKeys[$key])) {
 				return $this;
 			}
 
@@ -65,7 +81,7 @@ class Tx_T3rest_Model_Supplier
 			}
 			$node = &$this->{$key};
 			if (!is_scalar($value) && !is_object($node)) {
-				$node = new self(array_keys($this->_ignoreKeys));
+				$node = new self(array_keys($this->ignoreKeys));
 			}
 		}
 

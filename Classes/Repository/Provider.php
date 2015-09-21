@@ -25,6 +25,7 @@
 tx_rnbase::load('Tx_Rnbase_Repository_AbstractRepository');
 
 /**
+ * repository to handle provider data
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -73,6 +74,7 @@ class Tx_T3rest_Repository_Provider
 	}
 
 	/**
+	 * the search config, to work without a searcher class.
 	 *
 	 * @return array
 	 */

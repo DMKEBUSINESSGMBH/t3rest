@@ -23,6 +23,7 @@
  */
 
 /**
+ * transformer interface
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
@@ -31,6 +32,7 @@
 interface Tx_T3rest_Transformer_InterfaceTransformer
 {
 	/**
+	 * transforms the data into a supplier.
 	 *
 	 * @param tx_rnbase_model_data $item
 	 * @param string $confId

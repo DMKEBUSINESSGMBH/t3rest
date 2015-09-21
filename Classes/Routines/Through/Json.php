@@ -38,8 +38,10 @@ class Tx_T3rest_Routines_Through_Json
 {
 
 	/**
+	 * add the before and after callbacks
 	 *
 	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 * @return void
 	 */
 	public function prepareRouter(
 		Tx_T3rest_Router_InterfaceRouter $router

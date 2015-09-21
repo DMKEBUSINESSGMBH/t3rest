@@ -38,18 +38,18 @@ class Tx_T3rest_Controller_AbstractController
 	/**
 	 * execute the request
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function execute()
 	{
 		if (!$this->isApiCall()) {
-			return FALSE;
+			return;
 		}
 
 		$router = $this->getRouter();
 		$this->prepareRouter($router);
 
-		$out =$router->run();
+		$out = $router->run();
 
 		if ($out) {
 			echo $out;
@@ -61,6 +61,7 @@ class Tx_T3rest_Controller_AbstractController
 	}
 
 	/**
+	 * get the router.
 	 *
 	 * @return Tx_T3rest_Router_InterfaceRouter
 	 */
@@ -70,7 +71,9 @@ class Tx_T3rest_Controller_AbstractController
 	}
 
 	/**
+	 * find all providers
 	 *
+	 * @TODO: add caching!
 	 * @return array:Tx_T3rest_Model_Provider
 	 */
 	protected function getProviders()
@@ -80,8 +83,10 @@ class Tx_T3rest_Controller_AbstractController
 	}
 
 	/**
+	 * prepare the router.
 	 *
 	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 * @return void
 	 */
 	private function prepareRouter(
 		Tx_T3rest_Router_InterfaceRouter $router
@@ -91,8 +96,10 @@ class Tx_T3rest_Controller_AbstractController
 	}
 
 	/**
+	 * prepare the router by providers.
 	 *
 	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 * @return void
 	 */
 	protected function prepareRouterByProviders(
 		Tx_T3rest_Router_InterfaceRouter $router
@@ -113,6 +120,7 @@ class Tx_T3rest_Controller_AbstractController
 	 * for data transformation to json.
 	 *
 	 * @param Tx_T3rest_Router_InterfaceRouter $router
+	 * @return void
 	 */
 	protected function prepareRoutines(
 		Tx_T3rest_Router_InterfaceRouter $router
