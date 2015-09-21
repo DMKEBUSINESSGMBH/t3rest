@@ -22,38 +22,22 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('Tx_T3rest_Model_ProviderHolder');
-tx_rnbase::load('Tx_T3rest_Provider_InterfaceProvider');
-
 /**
  *
  * @package TYPO3
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-abstract class Tx_T3rest_Provider_AbstractProvider
-	extends Tx_T3rest_Model_ProviderHolder
-	implements Tx_T3rest_Provider_InterfaceProvider
+interface Tx_T3rest_Transformer_InterfaceTransformer
 {
 	/**
-	 * @var Tx_T3rest_Transformer_InterfaceTransformer
-	 */
-	private $transformer = NULL;
-
-	/**
 	 *
-	 * @return Tx_T3rest_Transformer_InterfaceTransformer
+	 * @param tx_rnbase_model_data $item
+	 * @param string $confId
+	 * @return Tx_T3rest_Model_Supplier
 	 */
-	protected function getTransformer()
-	{
-		if ($this->transformer === NULL) {
-			$this->transformer = tx_rnbase::makeInstance('Tx_T3rest_Transformer_Simple');
-			if ($this->transformer instanceof Tx_T3rest_Model_ProviderHolder) {
-				$this->transformer->setProvider($this->getProvider());
-			}
-		}
-
-		return $this->transformer;
-	}
-
+	public function transform(
+		tx_rnbase_model_data $item,
+		$confId = 'item.'
+	);
 }

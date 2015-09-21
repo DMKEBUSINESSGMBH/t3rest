@@ -31,7 +31,6 @@ tx_rnbase::load('tx_rnbase_model_base');
 class Tx_T3rest_Model_Provider
 	extends tx_rnbase_model_base
 {
-
 	private $configurations = NULL;
 
 	/**
@@ -81,7 +80,7 @@ class Tx_T3rest_Model_Provider
 	public function getProviderInstance()
 	{
 		$instance = tx_rnbase::makeInstance($this->getProviderClassName());
-		if ($instance instanceof Tx_T3rest_Provider_InterfaceProvider) {
+		if ($instance instanceof Tx_T3rest_Model_ProviderHolder) {
 			$instance->setProvider($this);
 		}
 		return $instance;

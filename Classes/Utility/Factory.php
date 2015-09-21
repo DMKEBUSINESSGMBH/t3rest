@@ -83,4 +83,17 @@ final class Tx_T3rest_Utility_Factory
 		return tx_rnbase::makeInstance('Tx_T3rest_Repository_Provider');
 	}
 
+	/**
+	 * the suplier model. was used to transfer the model date to the rest api provider.
+	 *
+	 * @return Tx_T3rest_Model_Supplier
+	 */
+	public function getSupplier(array $ignoreKeys = array())
+	{
+		return tx_rnbase::makeInstance(
+			'Tx_T3rest_Model_Supplier',
+			$ignoreKeys
+		);
+	}
+
 }
