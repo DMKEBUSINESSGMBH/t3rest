@@ -93,6 +93,7 @@ class Tx_T3rest_Transformer_Simple
 			}
 		}
 
+		// @TODO: thats a big performance hole! why?
 		$cObjTempData = $cObj->data;
 		$cObj->data = $item->getProperty();
 		foreach ($cObj->data As $colname => $value) {
