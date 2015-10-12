@@ -125,6 +125,14 @@ class Tx_T3rest_Controller_AbstractController
 	protected function prepareRoutines(
 		Tx_T3rest_Router_InterfaceRouter $router
 	) {
+		/* @var $exceptions Tx_T3rest_Routines_Exception */
+		$exceptions = tx_rnbase::makeInstance('Tx_T3rest_Routines_Exception');
+		$exceptions->prepareRouter($router);
+
+		/* @var $error Tx_T3rest_Routines_PhpError */
+		$error = tx_rnbase::makeInstance('Tx_T3rest_Routines_Exception');
+		$error->prepareRouter($router);
+
 		/* @var $timeTrack Tx_T3rest_Routines_Log_TimeTrack */
 		$timeTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
 		$timeTrack->prepareRouter($router);
