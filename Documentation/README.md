@@ -182,6 +182,25 @@ Die Authentifizierung ist aktuell über FE-user-Datensätze gelöst.
 Im Providerdatensatz kann eine Gruppe hinterlegt werden,
 welche zugriff auf die API erhalten soll.
 
+```php
+	/**
+	 * initializes the router.
+	 *
+	 * @return void
+	 */
+	public function prepareRouter(
+		Tx_T3rest_Router_InterfaceRouter $router
+	) {
+		$this->getAuthFeUserRoutine()->prepareRoute(
+			$router->addRoute(
+				$router::METHOD_GET,
+				'/news/edit/*',
+				array($this, 'getEdit')
+			)
+		);
+	}
+```
+
 Die Providerklasse muss jede zu schützende Route
 an die AuthFeUser Routine koppeln.  
 Diese Routine kümmert sich um den Login des Nutzers, 
