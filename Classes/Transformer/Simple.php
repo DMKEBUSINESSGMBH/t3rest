@@ -104,7 +104,7 @@ class Tx_T3rest_Transformer_Simple
 					$colname,
 					$cObj->cObjGetSingle($config[$colname], $config[$colname . '.'])
 				);
-				$cObj->setCurrentVal(false);
+				$cObj->setCurrentVal(FALSE);
 			}
 			else {
 				$item->setProperty(
@@ -128,6 +128,10 @@ class Tx_T3rest_Transformer_Simple
 		tx_rnbase_model_data $item,
 		$confId = 'item.links.'
 	) {
+		// prepare the tsfe for link creation (config,sys_page and tmpl are required)
+		tx_rnbase::load('tx_rnbase_util_Misc');
+		tx_rnbase_util_Misc::prepareTSFE();
+
 		$linkIds = $this->getConfigurations()->getKeyNames($confId);
 		foreach ($linkIds as $link) {
 			$linkId = $confId . $link . '.';
@@ -138,10 +142,13 @@ class Tx_T3rest_Transformer_Simple
 					$params[$paramName] = $item->getProperty($colName);
 				}
 			}
-			$linkObj = $this->createLink($item, $linkId, $params);
+			$linkObj = $this->getConfigurations()->createLink(FALSE);
+			$linkObj->initByTS($this->getConfigurations(), $linkId, $params);
+			// Immer absolute URLs setzen!
+			$linkObj->isAbsUrl() ?: $linkObj->setAbsUrl(TRUE);
 			$item->setProperty(
 				'link_' . $link,
-				$linkObj->makeUrl(false)
+				$linkObj->makeUrl(FALSE)
 			);
 		}
 	}
