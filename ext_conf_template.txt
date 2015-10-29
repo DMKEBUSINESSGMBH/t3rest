@@ -1,8 +1,15 @@
   # cat=restapi//10; type=boolean; label= Enable TSFE-Hook for new REST-API by URL segment
 restEnableHook = 0
 
-  # cat=restapi//10; type=string; label= API URL segment: The URL segment for the REST-API. This Segment should be the first part of the REQUEST_URI.
-restApiUriPath = api
+
+  # cat=restapi//10; type=string; label= API URL segment: The server name for the REST-API. The API request is only processed if the SERVER_NAME matches this Domain. Leave empty to skip this chek an use restApiUriPath only.
+#restApiServerName =
+
+  # cat=restapi//10; type=string; label= API URL segment: The URL segment for the REST-API. This Segment should be the first part of the REQUEST_URI. Leave empty to skip this chek an use restApiServerName only.
+restApiUriPath = t3rest
+
+# cat=restapi//10; type=string; label= User Storage: The pid of the storage where the users can be found.
+restAuthUserStoragePid = 0
 
   # cat=restapi//10; type=string; label= Controller: The Controller for the REST-API. Has to implement the Tx_T3rest_Controller_InterfaceController interface or simply extend the Tx_T3rest_Controller_AbstractController class.
 restApiController = Tx_T3rest_Controller_Json
@@ -12,5 +19,6 @@ restApiRouter = Tx_T3rest_Router_Respect
 
   # cat=basic//10; type=string; label= Directory for access log
 accesslogDirectory =
+
   # cat=basic//10; type=boolean; label= Disable cookie access. If checked the server will response to any requests without cookie
 disableCookie = 0

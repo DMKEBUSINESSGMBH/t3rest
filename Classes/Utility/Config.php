@@ -77,6 +77,16 @@ final class Tx_T3rest_Utility_Config
 	}
 
 	/**
+	 * returns the pid of the storage with the fe users.
+	 *
+	 * @return int
+	 */
+	public static function getAuthUserStoragePid()
+	{
+		return (int) self::getExtConf('restAuthUserStoragePid');
+	}
+
+	/**
 	 * returns the controller class.
 	 *
 	 * @return string

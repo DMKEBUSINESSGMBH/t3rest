@@ -15,6 +15,7 @@ CREATE TABLE tx_t3rest_providers (
 	name varchar(255) DEFAULT '' NOT NULL,
 	restkey varchar(55) DEFAULT '' NOT NULL,
 	classname varchar(255) DEFAULT '' NOT NULL,
+	fe_group varchar(100) DEFAULT '0' NOT NULL,
 	config text,
 
 	PRIMARY KEY (uid),

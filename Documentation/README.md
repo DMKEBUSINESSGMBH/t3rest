@@ -1,6 +1,6 @@
 #T3REST - REST for TYPO3
 
-Mit dieser Extension kann man ein 
+Mit dieser Extension kann man ein
 REST-Interface für TYPO3 bereitstellen.
 Die Extension sorgt dabei lediglich für die Infrastruktur,
 die Breitstellung und Verarbeitung der Anfragen
@@ -23,6 +23,11 @@ so wird T3REST aktiv und verarbeitet die Routen.
 Ist beispielsweise rest-api konfiguriert, so werden alle Aufrufe
 von domain.net/rest-api/* an den Router weiter gegeben.
 
+**restAuthUserStoragePid**
+
+Um die Authentifizierungs Routinen für den FE-Nutzer nutzen zu können,
+muss hier die PID des Storages angegeben werden, wo sich die fe_users Datensätze befinden.
+
 **restApiController**
 
 Der zu verwendende Controller. Dieser wird angesteuert,
@@ -44,6 +49,10 @@ das [Respect\Rest](http://respect.github.io/Rest/) Framework mitgeliefert.
 
 Ein Provider ist dafür zuständig eine oder mehrere Routen zu konfigurieren.
 Er kümmert sich weiter um die Verarbeitung und Auslieferung der Daten.
+
+Einem Provider-Datensatz kann eine Nutzergruppe zugewiesen werden.
+Damit lässt sich der Zugriff auf den Provider schützen.
+Mehr dazu unter [Authentifizierung](#authentifizierung)
 
 
 ### Datensatz konfiguration
@@ -76,12 +85,12 @@ Als Parameter wird in diesem Falle *dmk* mitgeliefert.
 	/**
 	 * initializes the router.
 	 *
-	 * @return Object - The route instance
+	 * @return void
 	 */
 	public function prepareRouter(
 		Tx_T3rest_Router_InterfaceRouter $router
 	) {
-		return $router->addRoute(
+		$router->addRoute(
 			$router::METHOD_GET,
 			'/news/search/*',
 			array($this, 'getSearch')
@@ -145,7 +154,7 @@ das erzeugen von Links auf Detailseiten etc., sein.
 
 Ein Transformer muss das Interface
 *Tx_T3rest_Transformer_InterfaceTransformer* implementieren oder
-erbt idealerweise vom Bereitgestellten *Tx_T3rest_Transformer_Simple*. 
+erbt idealerweise vom Bereitgestellten *Tx_T3rest_Transformer_Simple*.
 
 Der Transformer kann zum einen im Providerdatensatz
 über TypoScript oder über die Providerklasse angegeben werden.
@@ -165,3 +174,20 @@ Der Transformer kann zum einen im Providerdatensatz
 	}
 ```
 
+
+<a id="authentifizierung" />
+## Authentifizierung
+
+Die Authentifizierung ist aktuell über FE-user-Datensätze gelöst.
+Im Providerdatensatz kann eine Gruppe hinterlegt werden,
+welche zugriff auf die API erhalten soll.
+
+Die Providerklasse muss jede zu schützende Route
+an die AuthFeUser Routine koppeln.  
+Diese Routine kümmert sich um den Login des Nutzers, 
+prüft anschließend die Zugriffsberechtigung über die Nutzergruppen
+und liefert ggf. einen 401 zurück.
+
+Ein FE-Nutzer kann entweder über den fe_typo_user Cookie 
+oder über den Authorization Header mit Nutzer-Passwort-Daten angemeldet werden.  
+Die Daten müssen dann bei jedem Request erneut mitgesendet werden.

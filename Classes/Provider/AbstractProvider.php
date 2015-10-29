@@ -71,4 +71,21 @@ abstract class Tx_T3rest_Provider_AbstractProvider
 		return $class ?: 'Tx_T3rest_Transformer_Simple';
 	}
 
+	/**
+	 * a instance od the auth fe user routine
+	 *
+	 * @return Tx_T3rest_Routines_Auth_FeUser
+	 */
+	protected function getAuthFeUserRoutine()
+	{
+		if ($this->auth === NULL) {
+			$this->auth = tx_rnbase::makeInstance(
+				'Tx_T3rest_Routines_Auth_FeUser',
+				$this->getProvider()->getFeGroup()
+			);
+		}
+
+		return $this->auth;
+	}
+
 }
