@@ -171,9 +171,12 @@ class Tx_T3rest_Routines_Auth_FeUser
 		/* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
 		$tsFe = $GLOBALS['TSFE'];
 
-		$hasAccess = $tsFe->checkPageGroupAccess(
-			array('fe_group' => $this->feGroups)
-		);
+		$hasAccess = TRUE;
+		if ($this->feGroups) {
+			$hasAccess = $tsFe->checkPageGroupAccess(
+				array('fe_group' => $this->feGroups)
+			);
+		}
 
 		return $hasAccess;
 	}
