@@ -218,4 +218,3 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_Overview.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_Overview.php']);
 }
-?>

@@ -71,7 +71,7 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler {
 		$searcher = tx_rnbase::makeInstance('tx_t3rest_mod_lister_Logs', $mod, $options);
 		$markerArr['###SEARCHFORM###'] = $searcher->getSearchForm();
 		$list = $searcher->getResultList();
-		
+
 		$markerArr['###LIST###'] = $list['table'];
 		$markerArr['###PAGER###'] = $list['pager'];
 		$markerArr['###TOTALSIZE###'] = $list['totalsize'];
@@ -85,4 +85,3 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_LogList.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_LogList.php']);
 }
-?>
