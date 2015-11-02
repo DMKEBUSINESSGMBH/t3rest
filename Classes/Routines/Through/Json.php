@@ -46,12 +46,14 @@ class Tx_T3rest_Routines_Through_Json
 	public function prepareRouter(
 		Tx_T3rest_Router_InterfaceRouter $router
 	) {
+		$through = $this;
+
 		// register post routine for Respect/Rest
 		if ($router instanceof Tx_T3rest_Router_Respect) {
 			$router->always(
 				'Through',
-				function() {
-					return array($this, 'throughRespect');
+				function() use ($through) {
+					return array($through, 'throughRespect');
 				}
 			);
 		}
