@@ -60,6 +60,7 @@ class Tx_T3rest_Routines_Log_MemTrack
 	public function prepareRouter(
 		Tx_T3rest_Router_InterfaceRouter $router
 	) {
+		$through = $this;
 
 		$this->add('start', 0)->add('init');
 
@@ -71,8 +72,8 @@ class Tx_T3rest_Routines_Log_MemTrack
 			);
 			$router->always(
 				'Through',
-				function() {
-					return array($this, 'throughRespect');
+				function() use ($through) {
+					return array($through, 'throughRespect');
 				}
 			);
 		}
