@@ -78,12 +78,19 @@ class Tx_T3rest_Routines_Auth_FeUser
 	/**
 	 * add the before and after callbacks
 	 *
-	 * @param \Respect\Rest\Routes\AbstractRoute $route
+	 * @param array|\Respect\Rest\Routes\AbstractRoute $route
 	 * @return void
 	 */
-	public function prepareRoute($route) {
+	public function prepareRoute($route)
+	{
+		// iterate over multiple routes
+		if (is_array($route)) {
+			foreach ($route as $r) {
+				$this->prepareRoute($r);
+			}
+		}
 		// register post routine for Respect/Rest
-		if ($route instanceof \Respect\Rest\Routes\AbstractRoute) {
+		elseif ($route instanceof \Respect\Rest\Routes\AbstractRoute) {
 			$route->by(array($this, 'byLoginRespect'));
 		}
 	}
@@ -129,8 +136,11 @@ class Tx_T3rest_Routines_Auth_FeUser
 	 */
 	public function initUser()
 	{
+		/* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+		$tsFe = $GLOBALS['TSFE'];
+
 		// there is allready a user, skip multiple init calls.
-		if (is_array($this->fe_user->user) && $this->fe_user->user['uid']) {
+		if (is_object($tsFe->fe_user) && is_array($tsFe->fe_user->user) && $tsFe->fe_user->user['uid']) {
 			return;
 		}
 
@@ -148,13 +158,12 @@ class Tx_T3rest_Routines_Auth_FeUser
 			$_POST['pid'] = Tx_T3rest_Utility_Config::getAuthUserStoragePid();
 		}
 
-		/* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$tsFe = $GLOBALS['TSFE'];
 
 		// init fe user
 		if (!is_object($tsFe->fe_user)) {
 			$tsFe->initFEuser();
 		}
+
 		// init groups, if required
 		if ($this->feGroups && !$tsFe->gr_list) {
 			$tsFe->initUserGroups();
