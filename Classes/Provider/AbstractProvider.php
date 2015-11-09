@@ -42,6 +42,11 @@ abstract class Tx_T3rest_Provider_AbstractProvider
 	private $transformer = NULL;
 
 	/**
+	 * @var string
+	 */
+	private $rawRequestBody = NULL;
+
+	/**
 	 * a transformer instance
 	 *
 	 * @return Tx_T3rest_Transformer_InterfaceTransformer
@@ -86,6 +91,20 @@ abstract class Tx_T3rest_Provider_AbstractProvider
 		}
 
 		return $this->auth;
+	}
+
+	/**
+	 * returns the raw body of the request
+	 *
+	 * @return string
+	 */
+	protected function getRawRequestBody()
+	{
+		if ($this->rawRequestBody === NULL) {
+			$this->rawRequestBody = file_get_contents('php://input');
+		}
+
+		return $this->rawRequestBody;
 	}
 
 }
