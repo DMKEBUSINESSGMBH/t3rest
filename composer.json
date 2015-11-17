@@ -1,7 +1,7 @@
 {
 	"name" : "dmk/t3rest",
 	"description" : "Provides a REST interface for TYPO3.",
-	"version" : "0.3.2",
+	"version" : "0.3.3",
 	"type" : "typo3-cms-extension",
 	"keywords" : ["TYPO3 CMS", "rest", "router"],
 	"homepage" : "http://www.dmk-ebusiness.de/",
