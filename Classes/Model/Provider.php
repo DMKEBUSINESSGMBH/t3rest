@@ -87,6 +87,20 @@ class Tx_T3rest_Model_Provider
 	 */
 	public function getProviderInstance()
 	{
+		if (!tx_rnbase::load($this->getProviderClassName())) {
+			tx_rnbase::load('tx_rnbase_util_Logger');
+			tx_rnbase_util_Logger::warn(
+				sprintf(
+					'Providerclass "%3$s" for Provider "%2$s (%1$s)" could not be loaded',
+					$this->getUid(),
+					$this->getName(),
+					$this->getProviderClassName()
+				),
+				't3rest'
+			);
+			return NULL;
+		}
+
 		$instance = tx_rnbase::makeInstance($this->getProviderClassName());
 		if ($instance instanceof Tx_T3rest_Model_ProviderHolder) {
 			$instance->setProvider($this);
