@@ -22,7 +22,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('Tx_Rnbase_Repository_AbstractRepository');
+tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
 
 /**
  * repository to handle provider data
@@ -32,7 +32,7 @@ tx_rnbase::load('Tx_Rnbase_Repository_AbstractRepository');
  * @author Michael Wagner
  */
 class Tx_T3rest_Repository_Provider
-	extends Tx_Rnbase_Repository_AbstractRepository
+	extends Tx_Rnbase_Domain_Repository_AbstractRepository
 {
 	/**
 	 * Liefert den Namen der Suchklasse
