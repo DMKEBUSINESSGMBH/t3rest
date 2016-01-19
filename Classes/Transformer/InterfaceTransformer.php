@@ -34,12 +34,12 @@ interface Tx_T3rest_Transformer_InterfaceTransformer
 	/**
 	 * transforms the data into a supplier.
 	 *
-	 * @param tx_rnbase_model_data $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $confId
 	 * @return Tx_T3rest_Model_Supplier
 	 */
 	public function transform(
-		tx_rnbase_model_data $item,
+		Tx_Rnbase_Domain_Model_DataInterface $item,
 		$confId = 'item.'
 	);
 }

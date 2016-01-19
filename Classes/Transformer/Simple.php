@@ -37,12 +37,12 @@ class Tx_T3rest_Transformer_Simple
 	/**
 	 *  transforms the item.
 	 *
-	 * @param tx_rnbase_model_data $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $confId
 	 * @return Tx_T3rest_Model_Supplier
 	 */
 	public function transform(
-		tx_rnbase_model_data $item,
+		Tx_Rnbase_Domain_Model_DataInterface $item,
 		$confId = 'item.'
 	) {
 		$this->prepareItem($item, $confId);
@@ -55,12 +55,12 @@ class Tx_T3rest_Transformer_Simple
 	/**
 	 * prepares the item to transform
 	 *
-	 * @param tx_rnbase_model_data $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $confId
 	 * @return void
 	 */
 	protected function prepareItem(
-		tx_rnbase_model_data $item,
+		Tx_Rnbase_Domain_Model_DataInterface $item,
 		$confId = 'item.'
 	) {
 	}
@@ -68,12 +68,12 @@ class Tx_T3rest_Transformer_Simple
 	/**
 	 * wraps the record using stdwrap.
 	 *
-	 * @param tx_rnbase_model_data $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $confId
 	 * @return void
 	 */
 	protected function wrapRecord(
-		tx_rnbase_model_data $item,
+		Tx_Rnbase_Domain_Model_DataInterface $item,
 		$confId = 'item.record.'
 	) {
 		$cObj = $this->getConfigurations()->getCObj();
@@ -120,12 +120,12 @@ class Tx_T3rest_Transformer_Simple
 	/**
 	 * creates the links.
 	 *
-	 * @param tx_rnbase_model_data $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $confId
 	 * @return void
 	 */
 	protected function prepareLinks(
-		tx_rnbase_model_data $item,
+		Tx_Rnbase_Domain_Model_DataInterface $item,
 		$confId = 'item.links.'
 	) {
 		// prepare the tsfe for link creation (config,sys_page and tmpl are required)
@@ -156,13 +156,13 @@ class Tx_T3rest_Transformer_Simple
 	/**
 	 * creates an link object
 	 *
-	 * @param tx_rnbase_model_data $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $confId
 	 * @param array $parameters
 	 * @return tx_rnbase_util_Link
 	 */
 	protected function initLink(
-		tx_rnbase_model_data $item,
+		Tx_Rnbase_Domain_Model_DataInterface $item,
 		$confId = 'item.links.show.',
 		array $parameters = array()
 	) {
@@ -179,12 +179,12 @@ class Tx_T3rest_Transformer_Simple
 	/**
 	 * creates the supplier
 	 *
-	 * @param tx_rnbase_model_data $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $confId
 	 * @return Tx_T3rest_Model_Supplier
 	 */
 	protected function buildSupplier(
-		tx_rnbase_model_data $item,
+		Tx_Rnbase_Domain_Model_DataInterface $item,
 		$confId = 'item.'
 	) {
 		return Tx_T3rest_Utility_Factory::getSupplier(

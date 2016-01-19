@@ -102,7 +102,7 @@ class Tx_T3rest_Model_Supplier
 		elseif (is_object($value)) {
 			$vars = get_object_vars($value);
 			// there is a model too, parse the record data
-			if ($value instanceof tx_rnbase_model_data) {
+			if ($value instanceof Tx_Rnbase_Domain_Model_DataInterface) {
 				$node->add($value->getProperty());
 				unset($vars['record']);
 			}
