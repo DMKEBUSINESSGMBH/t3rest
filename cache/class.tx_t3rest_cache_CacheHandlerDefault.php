@@ -79,7 +79,7 @@ class tx_t3rest_cache_CacheHandlerDefault {
 	}
 
 	protected function getTimeout() {
-		$timeout = $this->getConfigValue('expire');
+		$timeout = (int) $this->getConfigValue('expire');
 		return $timeout ? $timeout : 60; // default timeout 1 minute
 	}
 	/**
