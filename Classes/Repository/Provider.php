@@ -70,6 +70,13 @@ class Tx_T3rest_Repository_Provider
 			// searcher config overrides
 			$options['searchdef']
 		);
+
+		// load the tca
+		if (empty($GLOBALS['TCA']) || empty($GLOBALS['TCA'][$options['basetable']])) {
+			tx_rnbase::load('tx_rnbase_util_TCA');
+			tx_rnbase_util_TCA::loadTCA($options['basetable']);
+		}
+
 		return parent::search($fields, $options);
 	}
 
