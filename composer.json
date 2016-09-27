@@ -21,6 +21,9 @@
 	"support": {
 		"email": "dev@dmk-ebusiness.de"
 	},
+	"require": {
+		"typo3-ter/rn-base" : ">=1.0.0"
+	}
 	"replace": {
 		"typo3-ter/t3rest": "*"
 	}
