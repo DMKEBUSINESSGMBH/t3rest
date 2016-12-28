@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Rene Nitzsche
+ *  (c) 2012-2016 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -21,11 +21,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
 tx_rnbase::load('tx_t3rest_decorator_Base');
 tx_rnbase::load('tx_t3rest_util_DAM');
-
+tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 /**
  * Sammelt zusätzliche Daten
@@ -45,7 +43,8 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base {
 				'tt_news_cat', 'NEWSCAT');
 //		$options['wrapperclass'] = 'tx_t3rest_models_Generic';
 		$options['where'] = 'NEWSCATMM.uid_local = '. $item->getUid();
-		$item->setProperty('categories', tx_rnbase_util_DB::doSelect('uid,title,image', $from, $options));
+		$item->setProperty('categories',
+				Tx_Rnbase_Database_Connection::getInstance()->doSelect('uid,title,image', $from, $options));
 	}
 
 	/**
@@ -61,8 +60,4 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base {
 	}
 	protected function handleItemAfter($item, $configurations, $confId) {
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/provider/class.tx_t3rest_decorator_News.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/provider/class.tx_t3rest_decorator_News.php']);
 }
