@@ -26,7 +26,7 @@ tx_rnbase::load('tx_t3rest_util_Objects');
 
 /**
  * Sammelt zusätzliche Daten
- * 
+ *
  * @author Rene Nitzsche
  */
 abstract class tx_t3rest_decorator_Base {
@@ -68,29 +68,36 @@ abstract class tx_t3rest_decorator_Base {
 		}
 
 	}
-	
+
+	/**
+	 *
+	 * @param Tx_Rnbase_Domain_Model_Base $item
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId
+	 */
 	protected function wrapRecord($item, $configurations, $confId) {
 		$cObj = $configurations->getCObj();
 		$tmpArr = $cObj->data;
 		$conf = $configurations->get($confId);
+		$record = $item->getProperty();
 		if($conf) {
 			// Add dynamic columns
 			$keys = $configurations->getUniqueKeysNames($conf);
 			foreach($keys As $key) {
 				if(t3lib_div::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
-					$item->record[$key] = $conf[$key];
+					$item->setProperty($key, $conf[$key]);
 			}
 		}
 		$cObj->data = $record;
-		foreach($item->record As $colname =>$value){
+		foreach($item->getProperty() As $colname =>$value){
 			if($conf[$colname]) {
 				// Get value using cObjGetSingle
 				$cObj->setCurrentVal($value);
-				$item->record[$colname] = $cObj->cObjGetSingle($conf[$colname],$conf[$colname.'.']);
+				$item->setProperty($colname, $cObj->cObjGetSingle($conf[$colname],$conf[$colname.'.']));
 				$cObj->setCurrentVal(false);
 			}
 			else {
-				$item->record[$colname] = $cObj->stdWrap($value, $conf[$colname.'.']);
+				$item->setProperty($colname, $cObj->stdWrap($value, $conf[$colname.'.']));
 			}
 		}
 	}
@@ -126,10 +133,10 @@ abstract class tx_t3rest_decorator_Base {
 	private static $warned = array();
 
 	protected function handleItemBefore($item, $configurations, $confId) {
-		
+
 	}
 	protected function handleItemAfter($items, $configurations, $confId) {
-		
+
 	}
 	protected function getIgnoreFields($configurations, $confId) {
 		$ignoreFields = $configurations->get($confId.'record.ignoreFields');

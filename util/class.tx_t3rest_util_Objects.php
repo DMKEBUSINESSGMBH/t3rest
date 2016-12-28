@@ -27,7 +27,7 @@ tx_rnbase::load('tx_rnbase_util_Logger');
 
 /**
  * Utilty methods for DAM
- * 
+ *
  * @author Rene Nitzsche
  */
 class tx_t3rest_util_Objects {
@@ -47,21 +47,22 @@ class tx_t3rest_util_Objects {
 			//tx_rnbase_util_Logger::info("Item ist null", "t3rest", array('Trail'=>t3lib_div::debug_trail()));
 			return $ret;
 		}
-		foreach($item->record As $field => $value) {
+		foreach($item->getProperty() As $field => $value) {
 			if(!$field || array_key_exists($field, $ignore))
 				continue;
 			$ret->$field = $value;
 		}
 		foreach($item As $fieldName => $value) {
+			if(!$fieldName || array_key_exists($fieldName, $ignore))
+				continue;
 			if($fieldName == 'record')
 				continue;
 			$ret->$fieldName = $value;
 		}
-
 		return $ret;
 	}
 	/**
-	 * Liefert TYPO3 Felder, die man eigentlich nicht benötigt 
+	 * Liefert TYPO3 Felder, die man eigentlich nicht benötigt
 	 * @return array
 	 */
 	public static function getIgnoreFields() {
@@ -69,6 +70,3 @@ class tx_t3rest_util_Objects {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_util_DAM.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_util_DAM.php']);
-}
