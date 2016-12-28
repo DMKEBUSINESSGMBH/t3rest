@@ -29,7 +29,7 @@ tx_rnbase::load('tx_t3rest_util_DAM');
 
 /**
  * Sammelt zusätzliche Daten
- * 
+ *
  * @author Rene Nitzsche
  */
 class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base {
@@ -37,7 +37,7 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base {
 
 	protected function addDampictures($item, $configurations, $confId) {
 		$pics = tx_t3rest_util_DAM::getDamPictures($item->getUid(), 'tt_news', 'tx_damnews_dam_images', $configurations, $confId);
-		$item->dampictures = $pics;
+		$item->setProperty('dampictures', $pics);
 	}
 
 	protected function addCategories($item) {
@@ -45,7 +45,7 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base {
 				'tt_news_cat', 'NEWSCAT');
 //		$options['wrapperclass'] = 'tx_t3rest_models_Generic';
 		$options['where'] = 'NEWSCATMM.uid_local = '. $item->getUid();
-		$item->categories = tx_rnbase_util_DB::doSelect('uid,title,image', $from, $options);
+		$item->setProperty('categories', tx_rnbase_util_DB::doSelect('uid,title,image', $from, $options));
 	}
 
 	/**
