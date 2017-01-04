@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Rene Nitzsche
+ *  (c) 2012-2017 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_t3rest_util_Objects');
 
 /**
@@ -32,6 +31,8 @@ tx_rnbase::load('tx_t3rest_util_Objects');
 abstract class tx_t3rest_decorator_Base {
 
 	public function prepareItem($item, $configurations, $confId) {
+		if(!$item)
+			return new stdClass();
 		$this->handleItemBefore($item, $configurations, $confId);
 		$this->wrapRecord($item, $configurations, $confId.'record.');
 		$this->prepareLinks($item, $configurations, $confId.'record.');
@@ -88,6 +89,7 @@ abstract class tx_t3rest_decorator_Base {
 					$item->setProperty($key, $conf[$key]);
 			}
 		}
+
 		$cObj->data = $record;
 		foreach($item->getProperty() As $colname =>$value){
 			if($conf[$colname]) {
@@ -155,6 +157,3 @@ abstract class tx_t3rest_decorator_Base {
 	abstract protected function getDecoratorId();
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Base.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Base.php']);
-}
