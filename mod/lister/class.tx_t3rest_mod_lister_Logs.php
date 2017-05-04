@@ -23,36 +23,31 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * benötigte Klassen einbinden
- */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_mod_base_Lister');
 tx_rnbase::load('tx_rnbase_mod_IModule');
-
 
 /**
  *
  * @author René Nitzsche
  */
 class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister {
-	
+
 	/**
 	 * Liefert die Funktions-Id
 	 */
 	public function getSearcherId() {
 		return 'logs';
 	}
-	
+
 	/**
 	 * Liefert den Service.
-	 * 
+	 *
 	 * @return tx_rnbase_sv1_Base
 	 */
 	protected function getService() {
 		return tx_t3rest_util_ServiceRegistry::getLogsService();
 	}
-	
+
 
 	/**
 	 * Liefert die Spalten für den Decorator.
@@ -61,40 +56,40 @@ class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister {
 	protected function getColumns($defaultDecorator){
 		return array(
 			'uid' => array(
-				'title' => '###LABEL_CLUBID###', 
-//				'decorator' => $defaultDecorator, 
+				'title' => '###LABEL_CLUBID###',
+//				'decorator' => $defaultDecorator,
 				'width' => 90
 			),
 			'tstamp' => array(
-				'title' => '###LABEL_TSTAMP###', 
+				'title' => '###LABEL_TSTAMP###',
 				'decorator' => $defaultDecorator
 			),
 			'runtime' => array(
-				'title' => '###LABEL_RUNTIME###', 
+				'title' => '###LABEL_RUNTIME###',
 				'decorator' => $defaultDecorator
 			),
 			'version' => array(
-				'title' => '###LABEL_VERSION###', 
+				'title' => '###LABEL_VERSION###',
 				'decorator' => $defaultDecorator
 			),
 			'system' => array(
-				'title' => '###LABEL_SYSTEM###', 
+				'title' => '###LABEL_SYSTEM###',
 				'decorator' => $defaultDecorator
 			),
 			'sysver' => array(
-				'title' => '###LABEL_SYSVER###', 
+				'title' => '###LABEL_SYSVER###',
 				'decorator' => $defaultDecorator
 			),
 			'app' => array(
-				'title' => '###LABEL_APP###', 
+				'title' => '###LABEL_APP###',
 				'decorator' => $defaultDecorator
 			),
 			'uri' => array(
-				'title' => '###LABEL_URI###', 
+				'title' => '###LABEL_URI###',
 				'decorator' => $defaultDecorator
 			),
 			'useragent' => array(
-				'title' => '###LABEL_USERAGENT###', 
+				'title' => '###LABEL_USERAGENT###',
 				'decorator' => $defaultDecorator
 			),
 			'linker' => array($this)
@@ -126,7 +121,7 @@ class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister {
 		$options['enablefieldsoff'] = 1;
 		$options['orderby']['LOGS.UID'] = 'desc';
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/searcher/class.tx_t3rest_mod_searcher_Logs.php'])	{

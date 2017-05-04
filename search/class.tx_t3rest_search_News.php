@@ -21,14 +21,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
 tx_rnbase::load('tx_t3rest_models_Provider');
 tx_rnbase::load('tx_t3rest_provider_IProvider');
 
 /**
  * REST provider for tt_news
- * 
+ *
  * @author Rene Nitzsche
  */
 class tx_t3rest_search_News extends tx_rnbase_util_SearchBase {

@@ -21,15 +21,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
 tx_rnbase::load('tx_t3rest_models_Provider');
 tx_rnbase::load('tx_t3rest_provider_IProvider');
 
 
 /**
  * This is a sample REST provider for tt_news
- * 
+ *
  * @author Rene Nitzsche
  */
 abstract class tx_t3rest_provider_AbstractBase implements tx_t3rest_provider_IProvider {
@@ -39,13 +37,13 @@ abstract class tx_t3rest_provider_AbstractBase implements tx_t3rest_provider_IPr
 		$configurations = $provData->getConfigurations();
 		$confId = $this->getConfId();
 		$data = $this->handleRequest($configurations, $confId);
-		if($data === false) 
+		if($data === false)
 			$data = array('unsupported'=>1);
 		return $data;
 	}
 
 	/**
-	 * Lädt einen einzelnen Datensatz. Erwartet wird entweder die UID oder ein 
+	 * Lädt einen einzelnen Datensatz. Erwartet wird entweder die UID oder ein
 	 * Identifier. Letzterer muss dann in der Config als Filter konfiguriert sein
 	 *
 	 * @param mixed $itemUid int oder string-Identifier

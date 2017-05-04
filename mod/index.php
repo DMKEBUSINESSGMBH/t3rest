@@ -32,7 +32,7 @@ require_once('conf.php');
 require_once($BACK_PATH.'init.php');
 require_once($BACK_PATH.'template.php');
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 
 $LANG->includeLLFile('EXT:t3rest/mod/locallang.xml');
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.

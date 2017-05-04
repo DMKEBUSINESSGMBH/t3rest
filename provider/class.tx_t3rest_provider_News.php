@@ -21,17 +21,14 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
 tx_rnbase::load('tx_t3rest_provider_AbstractBase');
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 tx_rnbase::load('tx_t3rest_models_Provider');
 tx_rnbase::load('tx_t3rest_provider_IProvider');
 
-
 /**
  * This is a sample REST provider for tt_news
- * 
+ *
  * @author Rene Nitzsche
  */
 class tx_t3rest_provider_News extends tx_t3rest_provider_AbstractBase {
@@ -61,16 +58,16 @@ class tx_t3rest_provider_News extends tx_t3rest_provider_AbstractBase {
 		$options['forcewrapper'] = 1;
 //		if($_GET['test'] == 1)
 //		$options['debug'] = 1;
-		
+
 		$prov = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
 		$searchCallback = array($searcher, 'search');
 		$prov->initBySearch($searchCallback, $fields, $options);
-		
+
 		$this->configurations = $configurations;
 		$this->confId = $confId;
 		$this->decorator = tx_rnbase::makeInstance('tx_t3rest_decorator_News');
 		$prov->iterateAll(array($this, 'loadItem'));
-		
+
 		return $this->items;
 
 	}
@@ -104,9 +101,9 @@ class tx_t3rest_provider_News extends tx_t3rest_provider_AbstractBase {
 // 		if($newsid = $configurations->getParameters()->getInt('newsid')) {
 // 			$fields['NEWS.UID'][OP_EQ_INT] = $newsid;
 // 		}
-		
+
 // 		// Soll ein PageBrowser verwendet werden?
-// 		$filter->handlePageBrowser($configurations, 
+// 		$filter->handlePageBrowser($configurations,
 // 			$confId.'pagebrowser', $viewData, $fields, $options, array(
 // 			'searchcallback'=> array($searcher, 'search'), 'pbid' => 'news' )
 // 		);
@@ -167,7 +164,7 @@ class tx_t3rest_provider_News extends tx_t3rest_provider_AbstractBase {
 // 		$item->dampictures = $ret;
 // 	}
 // 	protected function addCategories($item) {
-// 		$from = array('tt_news_cat As NEWSCAT JOIN tt_news_cat_mm AS NEWSCATMM ON NEWSCATMM.uid_foreign = NEWSCAT.UID', 
+// 		$from = array('tt_news_cat As NEWSCAT JOIN tt_news_cat_mm AS NEWSCATMM ON NEWSCATMM.uid_foreign = NEWSCAT.UID',
 // 			'tt_news_cat', 'NEWSCAT');
 // 		$options['wrapperclass'] = 'tx_t3rest_models_Generic';
 // 		$options['where'] = 'NEWSCATMM.uid_local = '. $item->getUid();

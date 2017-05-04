@@ -25,11 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * benötigte Klassen einbinden
- */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
 tx_rnbase::load('tx_rnbase_mod_ExtendedModFunc');
 
 /**
@@ -44,7 +39,7 @@ class tx_t3rest_mod_Logs extends tx_rnbase_mod_ExtendedModFunc {
 
 	/**
 	 * Method getFuncId
-	 * 
+	 *
 	 * @return	string
 	 */
 	function getFuncId() {
@@ -75,4 +70,4 @@ class tx_t3rest_mod_Logs extends tx_rnbase_mod_ExtendedModFunc {
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/class.tx_t3rest_mod_Logs.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/class.tx_t3rest_mod_Logs.php']);
-} 
+}

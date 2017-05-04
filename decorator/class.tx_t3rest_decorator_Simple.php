@@ -21,12 +21,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
 tx_rnbase::load('tx_t3rest_decorator_Base');
 
 /**
- * 
+ *
  * @author Rene Nitzsche
  */
 class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base {
@@ -52,7 +50,7 @@ class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base {
 		return self::$instance;
 	}
 }
-	
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php']);
 }
