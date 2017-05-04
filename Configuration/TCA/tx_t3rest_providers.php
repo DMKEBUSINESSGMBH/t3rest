@@ -1,15 +1,24 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
 
-
-$TCA['tx_t3rest_providers'] = array(
-    'ctrl' => $TCA['tx_t3rest_providers']['ctrl'],
+return array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:t3rest/locallang_db.xml:tx_t3rest_providers',
+        'label' => 'name',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'cruser_id' => 'cruser_id',
+        'delete' => 'deleted',
+        'enablecolumns' => array(
+            'disabled' => 'hidden',
+        ),
+        'iconfile' => tx_rnbase_util_Extensions::extRelPath('t3rest') . 'icon_table.gif',
+    ),
     'interface' => array(
         'showRecordFieldList' => 'hidden,starttime,fe_group,name'
     ),
-    'feInterface' => $TCA['tx_t3rest_providers']['feInterface'],
+    'feInterface' => array(
+        'fe_admin_fieldList' => 'hidden, name',
+    ),
     'columns' => array(
         'hidden' => array(
             'exclude' => 1,
