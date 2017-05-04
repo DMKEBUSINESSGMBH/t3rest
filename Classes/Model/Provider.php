@@ -89,9 +89,7 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
      */
     public function getProviderInstance()
     {
-        try {
-            tx_rnbase::getClassInfo($this->getProviderClassName());
-        } catch (Exception $e) {
+        if (!class_exists($this->getProviderClassName())) {
             tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::warn(
                 sprintf(
