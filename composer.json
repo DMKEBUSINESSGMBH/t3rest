@@ -30,5 +30,21 @@
     },
     "replace": {
         "typo3-ter/t3rest": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "cache/",
+            "Classes/",
+            "exception/",
+            "controller/",
+            "decorator/",
+            "exception/",
+            "mod/",
+            "models/",
+            "provider/",
+            "search/",
+            "srv/",
+            "util/"
+        ]
     }
 }
