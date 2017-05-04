@@ -29,43 +29,59 @@ tx_rnbase::load('tx_t3rest_provider_IProvider');
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_search_Logs extends tx_rnbase_util_SearchBase {
+class tx_t3rest_search_Logs extends tx_rnbase_util_SearchBase
+{
+    protected function getTableMappings()
+    {
+        $tableMapping['LOGS'] = 'tx_t3rest_accesslog';
 
-	protected function getTableMappings() {
-		$tableMapping['LOGS'] = 'tx_t3rest_accesslog';
+        // Hook to append other tables
+        tx_rnbase_util_Misc::callHook(
+            't3rest',
+            'search_logs_getTableMapping_hook',
+            array('tableMapping' => &$tableMapping),
+            $this
+        );
 
-		// Hook to append other tables
-		tx_rnbase_util_Misc::callHook('t3rest','search_logs_getTableMapping_hook',
-			array('tableMapping' => &$tableMapping), $this);
-		return $tableMapping;
-	}
+        return $tableMapping;
+    }
 
-	protected function useAlias() {
-		return true;
-	}
+    protected function useAlias()
+    {
+        return true;
+    }
 
-	protected function getBaseTableAlias() {
-		return 'LOGS';
-	}
+    protected function getBaseTableAlias()
+    {
+        return 'LOGS';
+    }
 
-	protected function getBaseTable() {
-		return 'tx_t3rest_accesslog';
-	}
+    protected function getBaseTable()
+    {
+        return 'tx_t3rest_accesslog';
+    }
 
-	function getWrapperClass() {
-		return 'tx_t3rest_models_Generic';
-	}
+    public function getWrapperClass()
+    {
+        return 'tx_t3rest_models_Generic';
+    }
 
-	protected function getJoins($tableAliases) {
-		$join = '';
+    protected function getJoins($tableAliases)
+    {
+        $join = '';
 
-		// Hook to append other tables
-		tx_rnbase_util_Misc::callHook('t3rest','search_logs_getJoins_hook',
-			array('join' => &$join, 'tableAliases' => $tableAliases), $this);
-		return $join;
-	}
+        // Hook to append other tables
+        tx_rnbase_util_Misc::callHook(
+            't3rest',
+            'search_logs_getJoins_hook',
+            array('join' => &$join, 'tableAliases' => $tableAliases),
+            $this
+        );
+
+        return $join;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_Logs.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_Logs.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_Logs.php']);
 }

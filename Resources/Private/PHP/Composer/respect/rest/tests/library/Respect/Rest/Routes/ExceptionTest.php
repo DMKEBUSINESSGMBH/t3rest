@@ -4,7 +4,7 @@ namespace Respect\Rest\Routes;
 use PHPUnit_Framework_TestCase;
 use Respect\Rest\Router;
 
-/** 
+/**
  * @covers Respect\Rest\Routes\Exception
  */
 class ExceptionTest extends PHPUnit_Framework_TestCase
@@ -41,5 +41,4 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
             'An exception should be caught by the router and forwarded'
         );
     }
-
 }

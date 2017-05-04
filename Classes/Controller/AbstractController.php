@@ -31,127 +31,128 @@ tx_rnbase::load('Tx_T3rest_Controller_InterfaceController');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Controller_AbstractController
-	implements Tx_T3rest_Controller_InterfaceController
+class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_InterfaceController
 {
 
-	/**
-	 * execute the request
-	 *
-	 * @return void
-	 */
-	public function execute()
-	{
-		if (!$this->isApiCall()) {
-			return;
-		}
+    /**
+     * execute the request
+     *
+     * @return void
+     */
+    public function execute()
+    {
+        if (!$this->isApiCall()) {
+            return;
+        }
 
-		$router = $this->getRouter();
-		$this->prepareRouter($router);
+        $router = $this->getRouter();
+        $this->prepareRouter($router);
 
-		$out = $router->run();
+        $out = $router->run();
 
-		if ($out) {
-			echo $out;
-		}
-		// else ?
+        if ($out) {
+            echo $out;
+        }
+        // else ?
 
-		// prevent typo3 rendering
-		die();
-	}
+        // prevent typo3 rendering
+        die();
+    }
 
-	/**
-	 * get the router.
-	 *
-	 * @return Tx_T3rest_Router_InterfaceRouter
-	 */
-	protected function getRouter()
-	{
-		return Tx_T3rest_Utility_Factory::getRespectRestRouter();
-	}
+    /**
+     * get the router.
+     *
+     * @return Tx_T3rest_Router_InterfaceRouter
+     */
+    protected function getRouter()
+    {
+        return Tx_T3rest_Utility_Factory::getRespectRestRouter();
+    }
 
-	/**
-	 * find all providers
-	 *
-	 * @TODO: add caching!
-	 * @return array:Tx_T3rest_Model_Provider
-	 */
-	protected function getProviders()
-	{
-		$providerRepo = Tx_T3rest_Utility_Factory::getProviderRepository();
-		return $providerRepo->findAll();
-	}
+    /**
+     * find all providers
+     *
+     * @TODO: add caching!
+     * @return array:Tx_T3rest_Model_Provider
+     */
+    protected function getProviders()
+    {
+        $providerRepo = Tx_T3rest_Utility_Factory::getProviderRepository();
 
-	/**
-	 * prepare the router.
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	private function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		$this->prepareRouterByProviders($router);
-		$this->prepareRoutines($router);
-	}
+        return $providerRepo->findAll();
+    }
 
-	/**
-	 * prepare the router by providers.
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	protected function prepareRouterByProviders(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		/* @var $provider Tx_T3rest_Model_Provider */
-		foreach ($this->getProviders() as $provider) {
-			$providerInstance = $provider->getProviderInstance();
-			if (!$providerInstance instanceof Tx_T3rest_Provider_InterfaceProvider) {
-				continue;
-			}
-			$providerInstance->prepareRouter($router);
-		}
-	}
+    /**
+     * prepare the router.
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    private function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        $this->prepareRouterByProviders($router);
+        $this->prepareRoutines($router);
+    }
 
-	/**
-	 * initializes the routines for the router.
-	 * for excample it can be used to register a throu routine
-	 * for data transformation to json.
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	protected function prepareRoutines(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		/* @var $exceptions Tx_T3rest_Routines_Exception */
-		$exceptions = tx_rnbase::makeInstance('Tx_T3rest_Routines_Exception');
-		$exceptions->prepareRouter($router);
+    /**
+     * prepare the router by providers.
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    protected function prepareRouterByProviders(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        /* @var $provider Tx_T3rest_Model_Provider */
+        foreach ($this->getProviders() as $provider) {
+            $providerInstance = $provider->getProviderInstance();
+            if (!$providerInstance instanceof Tx_T3rest_Provider_InterfaceProvider) {
+                continue;
+            }
+            $providerInstance->prepareRouter($router);
+        }
+    }
 
-		/* @var $error Tx_T3rest_Routines_PhpError */
-		$error = tx_rnbase::makeInstance('Tx_T3rest_Routines_Exception');
-		$error->prepareRouter($router);
+    /**
+     * initializes the routines for the router.
+     * for excample it can be used to register a throu routine
+     * for data transformation to json.
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    protected function prepareRoutines(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        /* @var $exceptions Tx_T3rest_Routines_Exception */
+        $exceptions = tx_rnbase::makeInstance('Tx_T3rest_Routines_Exception');
+        $exceptions->prepareRouter($router);
 
-		/* @var $timeTrack Tx_T3rest_Routines_Log_TimeTrack */
-		$timeTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
-		$timeTrack->prepareRouter($router);
+        /* @var $error Tx_T3rest_Routines_PhpError */
+        $error = tx_rnbase::makeInstance('Tx_T3rest_Routines_Exception');
+        $error->prepareRouter($router);
 
-		/* @var $memTrack Tx_T3rest_Routines_Log_MemTrack */
-		$memTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
-		$memTrack->prepareRouter($router);
-	}
+        /* @var $timeTrack Tx_T3rest_Routines_Log_TimeTrack */
+        $timeTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
+        $timeTrack->prepareRouter($router);
 
-	/**
-	 * is there are a api call?
-	 *
-	 * @return boolean
-	 */
-	protected function isApiCall()
-	{
-		// check the request uri for the api uri segment
-		$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-		$apiSegment = Tx_T3rest_Utility_Config::getRestApiUriPath();
-		return strpos($requestUri, $apiSegment) === 0;
-	}
+        /* @var $memTrack Tx_T3rest_Routines_Log_MemTrack */
+        $memTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
+        $memTrack->prepareRouter($router);
+    }
+
+    /**
+     * is there are a api call?
+     *
+     * @return bool
+     */
+    protected function isApiCall()
+    {
+        // check the request uri for the api uri segment
+        $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $apiSegment = Tx_T3rest_Utility_Config::getRestApiUriPath();
+
+        return strpos($requestUri, $apiSegment) === 0;
+    }
 }

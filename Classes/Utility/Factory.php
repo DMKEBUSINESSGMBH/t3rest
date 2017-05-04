@@ -32,89 +32,90 @@
  */
 final class Tx_T3rest_Utility_Factory
 {
-	/**
-	 * returns the rest api controller.
-	 *
-	 * @return Tx_T3rest_Controller_InterfaceController
-	 */
-	public static function getRestApiController()
-	{
-		$class = Tx_T3rest_Utility_Config::getRestApiController();
-		$instance = tx_rnbase::makeInstance($class);
-		if (!$instance instanceof Tx_T3rest_Controller_InterfaceController) {
-			throw new Exception(
-				sprintf(
-					'Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".',
-					get_class($instance)
-				)
-			);
-		}
-		return $instance;
-	}
+    /**
+     * returns the rest api controller.
+     *
+     * @return Tx_T3rest_Controller_InterfaceController
+     */
+    public static function getRestApiController()
+    {
+        $class = Tx_T3rest_Utility_Config::getRestApiController();
+        $instance = tx_rnbase::makeInstance($class);
+        if (!$instance instanceof Tx_T3rest_Controller_InterfaceController) {
+            throw new Exception(
+                sprintf(
+                    'Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".',
+                    get_class($instance)
+                )
+            );
+        }
 
-	/**
-	 * a new respect rest router instance.
-	 *
-	 * @return Tx_T3rest_Router_Respect
-	 */
-	public static function getRespectRestRouter()
-	{
-		$class = Tx_T3rest_Utility_Config::getRestApiRouter();
-		$instance = tx_rnbase::makeInstance($class);
-		if (!$instance instanceof Tx_T3rest_Router_InterfaceRouter) {
-			throw new Exception(
-				sprintf(
-					'Router "%1$s" has to implement the interface "Tx_T3rest_Router_InterfaceRouter".',
-					get_class($instance)
-				)
-			);
-		}
-		return $instance;
+        return $instance;
+    }
 
-	}
+    /**
+     * a new respect rest router instance.
+     *
+     * @return Tx_T3rest_Router_Respect
+     */
+    public static function getRespectRestRouter()
+    {
+        $class = Tx_T3rest_Utility_Config::getRestApiRouter();
+        $instance = tx_rnbase::makeInstance($class);
+        if (!$instance instanceof Tx_T3rest_Router_InterfaceRouter) {
+            throw new Exception(
+                sprintf(
+                    'Router "%1$s" has to implement the interface "Tx_T3rest_Router_InterfaceRouter".',
+                    get_class($instance)
+                )
+            );
+        }
 
-	/**
-	 * returns an provider repo instance
-	 *
-	 * @return Tx_T3rest_Repository_Provider
-	 */
-	public static function getProviderRepository()
-	{
-		return tx_rnbase::makeInstance('Tx_T3rest_Repository_Provider');
-	}
+        return $instance;
+    }
 
-	/**
-	 * the transformer class.
-	 *
-	 * @return Tx_T3rest_Model_Supplier
-	 */
-	public static function getTransformer($class = NULL)
-	{
-		$class = empty($class) ? 'Tx_T3rest_Transformer_Simple' : $class;
-		$instance = tx_rnbase::makeInstance($class);
-		if (!$instance instanceof Tx_T3rest_Transformer_InterfaceTransformer) {
-			throw new Exception(
-				sprintf(
-					'Transformer "%1$s" has to implement the interface "Tx_T3rest_Transformer_InterfaceTransformer".',
-					get_class($instance)
-				)
-			);
-		}
-		return $instance;
-	}
+    /**
+     * returns an provider repo instance
+     *
+     * @return Tx_T3rest_Repository_Provider
+     */
+    public static function getProviderRepository()
+    {
+        return tx_rnbase::makeInstance('Tx_T3rest_Repository_Provider');
+    }
 
-	/**
-	 * the suplier model.
-	 * was used to transfer the model date to the rest api provider.
-	 *
-	 * @return Tx_T3rest_Model_Supplier
-	 */
-	public static function getSupplier(array $ignoreKeys = array())
-	{
-		return tx_rnbase::makeInstance(
-			'Tx_T3rest_Model_Supplier',
-			$ignoreKeys
-		);
-	}
+    /**
+     * the transformer class.
+     *
+     * @return Tx_T3rest_Model_Supplier
+     */
+    public static function getTransformer($class = null)
+    {
+        $class = empty($class) ? 'Tx_T3rest_Transformer_Simple' : $class;
+        $instance = tx_rnbase::makeInstance($class);
+        if (!$instance instanceof Tx_T3rest_Transformer_InterfaceTransformer) {
+            throw new Exception(
+                sprintf(
+                    'Transformer "%1$s" has to implement the interface "Tx_T3rest_Transformer_InterfaceTransformer".',
+                    get_class($instance)
+                )
+            );
+        }
 
+        return $instance;
+    }
+
+    /**
+     * the suplier model.
+     * was used to transfer the model date to the rest api provider.
+     *
+     * @return Tx_T3rest_Model_Supplier
+     */
+    public static function getSupplier(array $ignoreKeys = array())
+    {
+        return tx_rnbase::makeInstance(
+            'Tx_T3rest_Model_Supplier',
+            $ignoreKeys
+        );
+    }
 }

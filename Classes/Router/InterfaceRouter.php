@@ -31,27 +31,26 @@
  */
 interface Tx_T3rest_Router_InterfaceRouter
 {
-	const METHOD_GET = 'get';
-	const METHOD_PUT = 'put';
-	const METHOD_DELETE = 'delete';
-	const METHOD_HEAD = 'head';
-	const METHOD_OPTIONS = 'options';
-	const METHOD_ANY = 'any';
+    const METHOD_GET = 'get';
+    const METHOD_PUT = 'put';
+    const METHOD_DELETE = 'delete';
+    const METHOD_HEAD = 'head';
+    const METHOD_OPTIONS = 'options';
+    const METHOD_ANY = 'any';
 
-	/**
-	 * register an route.
-	 *
-	 * @param string $method
-	 * @param string $path
-	 * @param string $provider
-	 * @param array $arguments
-	 * @return object special route instance
-	 */
-	public function addRoute(
-		$method,
-		$path,
-		$provider,
-		array $arguments = array()
-	);
-
+    /**
+     * register an route.
+     *
+     * @param string $method
+     * @param string $path
+     * @param string $provider
+     * @param array $arguments
+     * @return object special route instance
+     */
+    public function addRoute(
+        $method,
+        $path,
+        $provider,
+        array $arguments = array()
+    );
 }

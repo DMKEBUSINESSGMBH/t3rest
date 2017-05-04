@@ -31,98 +31,96 @@ tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Routines_Log_MemTrack
-	implements Tx_T3rest_Routines_InterfaceRouter
+class Tx_T3rest_Routines_Log_MemTrack implements Tx_T3rest_Routines_InterfaceRouter
 {
+    protected $mem = array();
 
-	protected $mem = array();
+    /**
+     * add a memory tracking
+     *
+     * @param string $key
+     * @param int $mem
+     * @return Tx_T3rest_Routines_Log_MemTrack
+     */
+    public function add($key, $mem = null)
+    {
+        $this->mem[$key] = $mem !== null ? $mem : memory_get_usage(true);
 
-	/**
-	 * add a memory tracking
-	 *
-	 * @param string $key
-	 * @param int $mem
-	 * @return Tx_T3rest_Routines_Log_MemTrack
-	 */
-	public function add($key, $mem = NULL)
-	{
-		$this->mem[$key] = $mem !== NULL ? $mem : memory_get_usage(TRUE);
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * add the before and after callbacks
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        $through = $this;
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		$through = $this;
+        $this->add('start', 0)->add('init');
 
-		$this->add('start', 0)->add('init');
+        // register post routine for Respect/Rest
+        if ($router instanceof Tx_T3rest_Router_Respect) {
+            $router->always(
+                'By',
+                array($this, 'byRespect')
+            );
+            $router->always(
+                'Through',
+                function () use ($through) {
+                    return array($through, 'throughRespect');
+                }
+            );
+        }
+    }
 
-		// register post routine for Respect/Rest
-		if ($router instanceof Tx_T3rest_Router_Respect) {
-			$router->always(
-				'By',
-				array($this, 'byRespect')
-			);
-			$router->always(
-				'Through',
-				function() use ($through) {
-					return array($through, 'throughRespect');
-				}
-			);
-		}
-	}
+    /**
+     * was called after provider returns his value.
+     * this method can be extended by child classes
+     *
+     * @param mixed $data
+     * @return void
+     */
+    public function byRespect($data)
+    {
+        $this->add('by');
+    }
 
-	/**
-	 * was called after provider returns his value.
-	 * this method can be extended by child classes
-	 *
-	 * @param mixed $data
-	 * @return void
-	 */
-	public function byRespect($data)
-	{
-		$this->add('by');
-	}
+    /**
+     * was called after provider returns his value.
+     * this method can be extended by child classes
+     *
+     * @param mixed $data
+     * @return string
+     */
+    public function throughRespect($data)
+    {
+        $this->add('through');
 
-	/**
-	 * was called after provider returns his value.
-	 * this method can be extended by child classes
-	 *
-	 * @param mixed $data
-	 * @return string
-	 */
-	public function throughRespect($data)
-	{
-		$this->add('through');
+        if (!$data instanceof Tx_T3rest_Model_Supplier) {
+            return $data;
+        }
 
-		if (!$data instanceof Tx_T3rest_Model_Supplier) {
-			return $data;
-		}
+        $mem = Tx_T3rest_Utility_Factory::getSupplier();
 
-		$mem = Tx_T3rest_Utility_Factory::getSupplier();
+        $last = 0;
+        foreach ($this->mem as $key => $value) {
+            $mem->add(
+                $key,
+                array(
+                    'start' => $last,
+                    'end' => $value,
+                    'used' => $value - $last,
+                )
+            );
+            $last = $value;
+        }
 
-		$last = 0;
-		foreach ($this->mem as $key => $value) {
-			$mem->add(
-				$key,
-				array(
-					'start' => $last,
-					'end' => $value,
-					'used' => $value - $last,
-				)
-			);
-			$last = $value;
-		}
+        $data->add('mem', $mem);
 
-		$data->add('mem', $mem);
-
-		return $data;
-	}
+        return $data;
+    }
 }

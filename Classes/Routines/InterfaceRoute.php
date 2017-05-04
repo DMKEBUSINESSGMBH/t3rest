@@ -29,24 +29,24 @@
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-interface Tx_T3rest_Routines_InterfaceRoute {
+interface Tx_T3rest_Routines_InterfaceRoute
+{
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	);
+    /**
+     * add the before and after callbacks
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    );
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param mixed|\Respect\Rest\Routes\AbstractRoute $route
-	 * @return void
-	 */
-	public function prepareRoute($route);
-
+    /**
+     * add the before and after callbacks
+     *
+     * @param mixed|\Respect\Rest\Routes\AbstractRoute $route
+     * @return void
+     */
+    public function prepareRoute($route);
 }

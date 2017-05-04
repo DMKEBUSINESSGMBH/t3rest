@@ -31,73 +31,76 @@ tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Repository_Provider
-	extends Tx_Rnbase_Domain_Repository_AbstractRepository
+class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_AbstractRepository
 {
-	/**
-	 * Liefert den Namen der Suchklasse
-	 *
-	 * @return 	string
-	 */
-	protected function getSearchClass() {
-		return 'tx_rnbase_util_SearchGeneric';
-	}
+    /**
+     * Liefert den Namen der Suchklasse
+     *
+     * @return  string
+     */
+    protected function getSearchClass()
+    {
+        return 'tx_rnbase_util_SearchGeneric';
+    }
 
-	/**
-	 * Liefert die Model Klasse.
-	 *
-	 * @return 	string
-	 */
-	protected function getWrapperClass() {
-		return 'Tx_T3rest_Model_Provider';
-	}
+    /**
+     * Liefert die Model Klasse.
+     *
+     * @return  string
+     */
+    protected function getWrapperClass()
+    {
+        return 'Tx_T3rest_Model_Provider';
+    }
 
-	/**
-	 * Search database
-	 *
-	 * @param array $fields
-	 * @param array $options
-	 * @return array[tx_rnbase_model_base]
-	 */
-	public function search(array $fields, array $options) {
-		if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
-			$options['searchdef'] = array();
-		}
-		tx_rnbase::load('tx_rnbase_util_Arrays');
-		$options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-			// default sercher config
-			$this->getSearchdef(),
-			// searcher config overrides
-			$options['searchdef']
-		);
+    /**
+     * Search database
+     *
+     * @param array $fields
+     * @param array $options
+     * @return array[tx_rnbase_model_base]
+     */
+    public function search(array $fields, array $options)
+    {
+        if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
+            $options['searchdef'] = array();
+        }
+        tx_rnbase::load('tx_rnbase_util_Arrays');
+        $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            // default sercher config
+            $this->getSearchdef(),
+            // searcher config overrides
+            $options['searchdef']
+        );
 
-		// load the tca
-		if (empty($GLOBALS['TCA']) || empty($GLOBALS['TCA'][$options['basetable']])) {
-			tx_rnbase::load('tx_rnbase_util_TCA');
-			tx_rnbase_util_TCA::loadTCA($options['basetable']);
-		}
+        // load the tca
+        if (empty($GLOBALS['TCA']) || empty($GLOBALS['TCA'][$options['basetable']])) {
+            tx_rnbase::load('tx_rnbase_util_TCA');
+            tx_rnbase_util_TCA::loadTCA($options['basetable']);
+        }
 
-		return parent::search($fields, $options);
-	}
+        return parent::search($fields, $options);
+    }
 
-	/**
-	 * the search config, to work without a searcher class.
-	 *
-	 * @return array
-	 */
-	protected function getSearchdef() {
-		$table = $this->getEmptyModel()->getTableName();
-		return array(
-			'usealias' => '1',
-			'basetable' => $table,
-			'basetablealias' => 'PROVIDER',
-			'wrapperclass' => $this->getWrapperClass(),
-			'alias' => array(
-				'PROVIDER' => array(
-					'table' => $table
-				),
-			)
-		);
-	}
+    /**
+     * the search config, to work without a searcher class.
+     *
+     * @return array
+     */
+    protected function getSearchdef()
+    {
+        $table = $this->getEmptyModel()->getTableName();
 
+        return array(
+            'usealias' => '1',
+            'basetable' => $table,
+            'basetablealias' => 'PROVIDER',
+            'wrapperclass' => $this->getWrapperClass(),
+            'alias' => array(
+                'PROVIDER' => array(
+                    'table' => $table
+                ),
+            )
+        );
+    }
 }

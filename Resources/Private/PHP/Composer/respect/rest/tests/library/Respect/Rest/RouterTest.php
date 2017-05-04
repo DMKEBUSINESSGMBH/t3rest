@@ -2,6 +2,7 @@
 namespace Respect\Rest;
 
 use PHPUnit_Framework_TestCase;
+
 /**
  * @covers Respect\Rest\Router
  */
@@ -41,7 +42,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testMagicConstructorCanCreateCallbackRoutes()
     {
         $router = new Router;
-        $callbackRoute = $router->get('/', $target = function() {});
+        $callbackRoute = $router->get('/', $target = function () {
+        });
         $concreteCallbackRoute = $router->callbackRoute('GET', '/', $target);
 
         $this->assertInstanceOf(
@@ -70,7 +72,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testMagicConstructorCanCreateCallbackRoutesWithExtraParams()
     {
         $router = new Router;
-        $callbackRoute = $router->get('/', $target = function() {}, array('extra'));
+        $callbackRoute = $router->get('/', $target = function () {
+        }, array('extra'));
         $concreteCallbackRoute = $router->callbackRoute('GET', '/', $target, array('extra'));
 
         $this->assertInstanceOf(
@@ -126,7 +129,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $router = new Router;
         $router->isAutoDispatched = false; // prevent static content from being echoed on dispatch
         $staticRoute = $router->get('/', $staticValue);
-        $concreteStaticRoute = $router->staticRoute('GET','/', $staticValue);
+        $concreteStaticRoute = $router->staticRoute('GET', '/', $staticValue);
 
         $this->assertInstanceOf(
             'Respect\\Rest\\Routes\\StaticValue',
@@ -436,14 +439,16 @@ class RouterTest extends PHPUnit_Framework_TestCase
             'Virtual host should be prepended to the path on createUri()'
         );
     }
-
 }
 
 if (!function_exists(__NAMESPACE__.'\\header')) {
-    function header($h) {
+    function header($h)
+    {
         $s = debug_backtrace(true);
-        $rt = function($a) {return isset($a['object'])
-            && $a['object'] instanceof RouterTest;};
+        $rt = function ($a) {
+            return isset($a['object'])
+            && $a['object'] instanceof RouterTest;
+        };
         if (array_filter($s, $rt) && 0 === strpos($h, 'HTTP/1.1 ')) {
             RouterTest::$status = substr($h, 9);
         }

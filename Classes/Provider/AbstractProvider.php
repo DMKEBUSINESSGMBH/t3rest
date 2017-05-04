@@ -32,79 +32,77 @@ tx_rnbase::load('Tx_T3rest_Provider_InterfaceProvider');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-abstract class Tx_T3rest_Provider_AbstractProvider
-	extends Tx_T3rest_Model_ProviderHolder
-	implements Tx_T3rest_Provider_InterfaceProvider
+abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_ProviderHolder implements Tx_T3rest_Provider_InterfaceProvider
 {
-	/**
-	 * @var Tx_T3rest_Transformer_InterfaceTransformer
-	 */
-	private $transformer = NULL;
+    /**
+     * @var Tx_T3rest_Transformer_InterfaceTransformer
+     */
+    private $transformer = null;
 
-	/**
-	 * @var string
-	 */
-	private $rawRequestBody = NULL;
+    /**
+     * @var string
+     */
+    private $rawRequestBody = null;
 
-	/**
-	 * a transformer instance
-	 *
-	 * @return Tx_T3rest_Transformer_InterfaceTransformer
-	 */
-	protected function getTransformer()
-	{
-		if ($this->transformer === NULL) {
-			$this->transformer = Tx_T3rest_Utility_Factory::getTransformer(
-				$this->getTransformerClass()
-			);
-			if ($this->transformer instanceof Tx_T3rest_Model_ProviderHolder) {
-				$this->transformer->setProvider($this->getProvider());
-			}
-		}
+    /**
+     * a transformer instance
+     *
+     * @return Tx_T3rest_Transformer_InterfaceTransformer
+     */
+    protected function getTransformer()
+    {
+        if ($this->transformer === null) {
+            $this->transformer = Tx_T3rest_Utility_Factory::getTransformer(
+                $this->getTransformerClass()
+            );
+            if ($this->transformer instanceof Tx_T3rest_Model_ProviderHolder) {
+                $this->transformer->setProvider($this->getProvider());
+            }
+        }
 
-		return $this->transformer;
-	}
+        return $this->transformer;
+    }
 
-	/**
-	 * returns the transformer class for this provider.
-	 *
-	 * @return Tx_T3rest_Transformer_InterfaceTransformer
-	 */
-	protected function getTransformerClass()
-	{
-		$class = $this->getConfig('transformer.class');
-		return $class ?: 'Tx_T3rest_Transformer_Simple';
-	}
+    /**
+     * returns the transformer class for this provider.
+     *
+     * @return Tx_T3rest_Transformer_InterfaceTransformer
+     */
+    protected function getTransformerClass()
+    {
+        $class = $this->getConfig('transformer.class');
 
-	/**
-	 * a instance od the auth fe user routine
-	 *
-	 * @return Tx_T3rest_Routines_Auth_FeUser
-	 */
-	protected function getAuthFeUserRoutine()
-	{
-		if ($this->auth === NULL) {
-			$this->auth = tx_rnbase::makeInstance(
-				'Tx_T3rest_Routines_Auth_FeUser',
-				$this->getProvider()->getFeGroup()
-			);
-		}
+        return $class ?: 'Tx_T3rest_Transformer_Simple';
+    }
 
-		return $this->auth;
-	}
+    /**
+     * a instance od the auth fe user routine
+     *
+     * @return Tx_T3rest_Routines_Auth_FeUser
+     */
+    protected function getAuthFeUserRoutine()
+    {
+        if ($this->auth === null) {
+            $this->auth = tx_rnbase::makeInstance(
+                'Tx_T3rest_Routines_Auth_FeUser',
+                $this->getProvider()->getFeGroup()
+            );
+        }
 
-	/**
-	 * returns the raw body of the request
-	 *
-	 * @return string
-	 */
-	protected function getRawRequestBody()
-	{
-		if ($this->rawRequestBody === NULL) {
-			$this->rawRequestBody = file_get_contents('php://input');
-		}
+        return $this->auth;
+    }
 
-		return $this->rawRequestBody;
-	}
+    /**
+     * returns the raw body of the request
+     *
+     * @return string
+     */
+    protected function getRawRequestBody()
+    {
+        if ($this->rawRequestBody === null) {
+            $this->rawRequestBody = file_get_contents('php://input');
+        }
 
+        return $this->rawRequestBody;
+    }
 }

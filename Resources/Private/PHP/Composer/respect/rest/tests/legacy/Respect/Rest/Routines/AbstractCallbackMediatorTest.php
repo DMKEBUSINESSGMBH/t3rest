@@ -67,7 +67,7 @@ class AbstractCallbackMediatorTest extends \PHPUnit_Framework_TestCase
         $asrt = 'a';
         $r = $this->neg->pubIdentifyRequested(new Request('GET', '/'));
         $p = $this->neg->pubConsiderProvisions($r[0]);
-        $this->neg->pubNotifyApproved($r[0],$p[0]);
+        $this->neg->pubNotifyApproved($r[0], $p[0]);
         $this->assertContains($asrt, $this->neg->outcome);
         $this->assertEquals($asrt, $this->neg->outcome['requested']);
         $this->assertEquals($asrt, $this->neg->outcome['provided']);
@@ -82,7 +82,7 @@ class AbstractCallbackMediatorTest extends \PHPUnit_Framework_TestCase
         $asrt = 'a';
         $r = $this->neg->pubIdentifyRequested(new Request('GET', '/'));
         $p = $this->neg->pubConsiderProvisions($r[0]);
-        $this->neg->pubNotifyDeclined($r[0],$p[0]);
+        $this->neg->pubNotifyDeclined($r[0], $p[0]);
         $this->assertContains($asrt, $this->neg->outcome);
         $this->assertEquals($asrt, $this->neg->outcome['requested']);
         $this->assertEquals($asrt, $this->neg->outcome['provided']);
@@ -152,14 +152,15 @@ class AbstractCallbackMediatorTest extends \PHPUnit_Framework_TestCase
     {
         $r = $this->neg->pubIdentifyRequested(new Request('GET', '/'));
         $p = $this->neg->pubConsiderProvisions($r[0]);
-        $this->assertTrue($this->neg->pubAuthorize($r[0],$p[0]));
-        $this->assertFalse($this->neg->pubAuthorize($r[0],$p[0].'a'));
+        $this->assertTrue($this->neg->pubAuthorize($r[0], $p[0]));
+        $this->assertFalse($this->neg->pubAuthorize($r[0], $p[0].'a'));
     }
 
     /**
      * @covers Respect\Rest\Routines\AbstractCallbackMediator::mediate
      */
-    public function test_requested_exception(){
+    public function test_requested_exception()
+    {
         $neg = new Negotiator();
         $this->setExpectedException(
             'UnexpectedValueException',
@@ -171,7 +172,8 @@ class AbstractCallbackMediatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Respect\Rest\Routines\AbstractCallbackMediator::mediate
      */
-    public function test_provisions_exception(){
+    public function test_provisions_exception()
+    {
         $neg = new Negotiator();
         $this->setExpectedException(
             'UnexpectedValueException',
@@ -184,11 +186,12 @@ class AbstractCallbackMediatorTest extends \PHPUnit_Framework_TestCase
 /**
  * Mock Test instance
  */
-class Negotiator extends AbstractCallbackMediator {
-    public $decisionmap = array(),
-        $outcome = array();
+class Negotiator extends AbstractCallbackMediator
+{
+    public $decisionmap = array();
+    public $outcome = array();
 
-    public function __construct ()
+    public function __construct()
     {
         parent::__construct(array('a' => 'is_numeric'));
     }
@@ -196,10 +199,11 @@ class Negotiator extends AbstractCallbackMediator {
 
     protected function identifyRequested(Request $request, $params)
     {
-        if (is_array($this->decisionmap))
+        if (is_array($this->decisionmap)) {
             return array_keys($this->decisionmap);
-        else
+        } else {
             $this->decisionmap;
+        }
     }
     protected function considerProvisions($requested)
     {
@@ -221,7 +225,7 @@ class Negotiator extends AbstractCallbackMediator {
             'provided' => $provided,
         );
     }
-    public function pubIdentifyRequested( $request =null, $params=null)
+    public function pubIdentifyRequested($request =null, $params=null)
     {
         return $this->identifyRequested(new Request('GET', '/'), $params=null);
     }
@@ -229,11 +233,11 @@ class Negotiator extends AbstractCallbackMediator {
     {
         return $this->considerProvisions($requested);
     }
-    public function pubNotifyApproved($requested, $provided,  $request = null, $params = null)
+    public function pubNotifyApproved($requested, $provided, $request = null, $params = null)
     {
         $this->notifyApproved($requested, $provided, new Request('GET', '/'), $params=null);
     }
-    public function pubNotifyDeclined($requested, $provided,  $request =null, $params=null)
+    public function pubNotifyDeclined($requested, $provided, $request =null, $params=null)
     {
         $this->notifyDeclined($requested, $provided, new Request('GET', '/'), $params=null);
     }
@@ -241,12 +245,10 @@ class Negotiator extends AbstractCallbackMediator {
     {
         return $this->authorize($requested, $provided);
     }
-    public function getMediated ($decisionmap)
+    public function getMediated($decisionmap)
     {
         $this->decisionmap = $decisionmap;
         $this->outcome = array();
         return $this->when(new Request('GET', '/'), array());
     }
-
 }
-

@@ -22,7 +22,7 @@ class ThroughTest extends \PHPUnit_Framework_TestCase
     {
         $this->object = new Through(function () {
             return 'from through callback';
-            });
+        });
     }
 
     /**

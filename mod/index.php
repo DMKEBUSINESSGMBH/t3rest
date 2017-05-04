@@ -35,8 +35,8 @@ require_once($BACK_PATH.'template.php');
 require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 
 $LANG->includeLLFile('EXT:t3rest/mod/locallang.xml');
-$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
-	// DEFAULT initialization of a module [END]
+$BE_USER->modAccess($MCONF, 1);    // This checks permissions and exits if the users has no permission for entry.
+    // DEFAULT initialization of a module [END]
 
 tx_rnbase::load('tx_rnbase_configurations');
 tx_rnbase::load('tx_rnbase_mod_BaseModule');
@@ -48,33 +48,32 @@ tx_rnbase::load('tx_rnbase_mod_BaseModule');
  * @package tx_t3rest
  * @subpackage tx_t3rest_mod1
  */
-class  tx_t3rest_mod_Module extends tx_rnbase_mod_BaseModule {
+class tx_t3rest_mod_Module extends tx_rnbase_mod_BaseModule
+{
 
-	/**
-	 * Method to get the extension key
-	 *
-	 * @return	string Extension key
-	 */
-	public function getExtensionKey() {
-		return 't3rest';
-	}
+    /**
+     * Method to get the extension key
+     *
+     * @return string Extension key
+     */
+    public function getExtensionKey()
+    {
+        return 't3rest';
+    }
 
-//	public function getBasePid() {
-//		return tx_rnbase_configurations::getExtensionCfgValue('t3rest', 'memberPID');
-//	}
-
-	/**
-	 * Method to set the tabs for the mainmenu
-	 * Umstellung von SelectBox auf Menu
-	 */
-	protected function getFuncMenu() {
-		$mainmenu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
-		return $mainmenu['menu'];
-	}
+    /**
+     * Method to set the tabs for the mainmenu
+     * Umstellung von SelectBox auf Menu
+     */
+    protected function getFuncMenu()
+    {
+        $mainmenu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
+        return $mainmenu['menu'];
+    }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/index.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/index.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/index.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/index.php']);
 }
 
 // Make instance:
@@ -82,8 +81,9 @@ $SOBE = t3lib_div::makeInstance('tx_t3rest_mod_Module');
 $SOBE->init();
 
 // Include files?
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+foreach ($SOBE->include_once as $INC_FILE) {
+    include_once($INC_FILE);
+}
 
 $SOBE->main();
 $SOBE->printContent();
-

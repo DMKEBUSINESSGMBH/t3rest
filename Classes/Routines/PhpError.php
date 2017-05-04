@@ -31,35 +31,34 @@ tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Routines_PhpError
-	implements Tx_T3rest_Routines_InterfaceRouter
+class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
 {
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		// register post routine for Respect/Rest
-		if ($router instanceof Tx_T3rest_Router_Respect) {
-			$router->errorRoute(
-				array($this, 'handle')
-			);
-		}
-	}
+    /**
+     * add the before and after callbacks
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        // register post routine for Respect/Rest
+        if ($router instanceof Tx_T3rest_Router_Respect) {
+            $router->errorRoute(
+                array($this, 'handle')
+            );
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @param array $err
-	 * @return string
-	 */
-	public function handle(array $err)
-	{
-		return 'Sorry, an error happened: ' . var_export($err, TRUE);
-	}
+    /**
+     *
+     *
+     * @param array $err
+     * @return string
+     */
+    public function handle(array $err)
+    {
+        return 'Sorry, an error happened: ' . var_export($err, true);
+    }
 }

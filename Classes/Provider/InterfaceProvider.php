@@ -32,12 +32,11 @@
  */
 interface Tx_T3rest_Provider_InterfaceProvider
 {
-	/**
-	 * initializes the router.
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(Tx_T3rest_Router_InterfaceRouter $router);
-
+    /**
+     * initializes the router.
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(Tx_T3rest_Router_InterfaceRouter $router);
 }

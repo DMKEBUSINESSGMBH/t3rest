@@ -32,11 +32,10 @@
 interface Tx_T3rest_Controller_InterfaceController
 {
 
-	/**
-	 * Entry point for REST calls.
-	 *
-	 * @return void
-	 */
-	public function execute();
-
+    /**
+     * Entry point for REST calls.
+     *
+     * @return void
+     */
+    public function execute();
 }

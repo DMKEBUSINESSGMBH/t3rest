@@ -31,40 +31,39 @@ tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Routines_Exception
-	implements Tx_T3rest_Routines_InterfaceRouter
+class Tx_T3rest_Routines_Exception implements Tx_T3rest_Routines_InterfaceRouter
 {
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		// register post routine for Respect/Rest
-		if ($router instanceof Tx_T3rest_Router_Respect) {
-			$router->exceptionRoute(
-				'Exception',
-				array($this, 'handle')
-			);
-		}
-	}
+    /**
+     * add the before and after callbacks
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        // register post routine for Respect/Rest
+        if ($router instanceof Tx_T3rest_Router_Respect) {
+            $router->exceptionRoute(
+                'Exception',
+                array($this, 'handle')
+            );
+        }
+    }
 
-	/**
-	 *
-	 *
-	 * @param Exception $e
-	 * @return string
-	 */
-	public function handle(Exception $e)
-	{
-		return sprintf(
-			'Sorry, error "%1$s" happened: "%2$s"',
-			$e->getCode(),
-			$e->getMessage()
-		);
-	}
+    /**
+     *
+     *
+     * @param Exception $e
+     * @return string
+     */
+    public function handle(Exception $e)
+    {
+        return sprintf(
+            'Sorry, error "%1$s" happened: "%2$s"',
+            $e->getCode(),
+            $e->getMessage()
+        );
+    }
 }

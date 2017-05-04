@@ -2,6 +2,7 @@
 namespace Respect\Rest\Routes {
 
 use Respect\Rest\Router;
+
 /**
  * @covers Respect\Rest\Routes\AbstractRoute
  * @author Nick Lombard <github@jigsoft.co.za>
@@ -28,7 +29,7 @@ class AbstractRouteTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    function extensions_provider()
+    public function extensions_provider()
     {
         return array(
             array('test.json',             'test'),
@@ -51,13 +52,19 @@ class AbstractRouteTest extends \PHPUnit_Framework_TestCase
         $_SERVER['HTTP_ACCEPT'] = '*';
         $_SERVER['REQUEST_URI'] = '/';
         $r = new Router();
-        $r->get('/route1/*', function ($match) {return $match;});
-        $r->get('/route2/*', function ($match) {return $match;})
+        $r->get('/route1/*', function ($match) {
+            return $match;
+        });
+        $r->get('/route2/*', function ($match) {
+            return $match;
+        })
             ->accept(array(
             '.json-home' => function ($data) {
                 return factory::respond(E2M::mediaType('.json-home'), $data);
             },
-            "*" => function($data){ return "$data.accepted";},
+            "*" => function ($data) {
+                return "$data.accepted";
+            },
 
         ));
 
@@ -66,7 +73,6 @@ class AbstractRouteTest extends \PHPUnit_Framework_TestCase
         $response = $r->dispatch('get', "/route2/$with")->response();
         $this->assertEquals("$without.accepted", $response);
     }
-
 }
 
 /** Environment shims to prevent header errors */
@@ -74,8 +80,9 @@ class AbstractRouteTest extends \PHPUnit_Framework_TestCase
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header))
+            if (!$replace && isset($header)) {
                 return;
+            }
 
             $header[$string] = $string;
         }
@@ -87,8 +94,9 @@ namespace Respect\Rest\Routines {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header))
+            if (!$replace && isset($header)) {
                 return;
+            }
 
             $header[$string] = $string;
         }
@@ -99,8 +107,9 @@ namespace Respect\Rest {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header))
+            if (!$replace && isset($header)) {
                 return;
+            }
 
             $header[$string] = $string;
         }

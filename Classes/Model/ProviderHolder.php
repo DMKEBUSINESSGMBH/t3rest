@@ -32,54 +32,53 @@
  */
 abstract class Tx_T3rest_Model_ProviderHolder
 {
-	/**
-	 * @var Tx_T3rest_Model_Provider $model
-	 */
-	private $provider = NULL;
+    /**
+     * @var Tx_T3rest_Model_Provider $model
+     */
+    private $provider = null;
 
-	/**
-	 * injects the provider model.
-	 *
-	 * @param Tx_T3rest_Model_Provider $model
-	 * @return Tx_T3rest_Provider_AbstractProvider
-	 */
-	public function setProvider(
-		Tx_T3rest_Model_Provider $model
-	) {
-		$this->provider = $model;
+    /**
+     * injects the provider model.
+     *
+     * @param Tx_T3rest_Model_Provider $model
+     * @return Tx_T3rest_Provider_AbstractProvider
+     */
+    public function setProvider(
+        Tx_T3rest_Model_Provider $model
+    ) {
+        $this->provider = $model;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * returns the provider model with the config
-	 *
-	 * @return Tx_T3rest_Model_Provider
-	 */
-	public function getProvider()
-	{
-		return $this->provider;
-	}
+    /**
+     * returns the provider model with the config
+     *
+     * @return Tx_T3rest_Model_Provider
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
 
-	/**
-	 * the config from the provider
-	 *
-	 * @return tx_rnbase_configurations
-	 */
-	protected function getConfigurations()
-	{
-		return $this->getProvider()->getConfigurations();
-	}
+    /**
+     * the config from the provider
+     *
+     * @return tx_rnbase_configurations
+     */
+    protected function getConfigurations()
+    {
+        return $this->getProvider()->getConfigurations();
+    }
 
-	/**
-	 * a configuration for the path from the providerconfiguration
-	 *
-	 * @param string $confId
-	 * @return mixed
-	 */
-	protected function getConfig($confId)
-	{
-		return $this->getConfigurations()->get($confId);
-	}
-
+    /**
+     * a configuration for the path from the providerconfiguration
+     *
+     * @param string $confId
+     * @return mixed
+     */
+    protected function getConfig($confId)
+    {
+        return $this->getConfigurations()->get($confId);
+    }
 }

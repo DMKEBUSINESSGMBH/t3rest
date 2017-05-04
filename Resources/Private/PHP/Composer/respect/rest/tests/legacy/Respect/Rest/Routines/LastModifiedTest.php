@@ -2,6 +2,7 @@
 namespace Respect\Rest\Routines {
 
 use Respect\Rest\Request;
+
 /**
  * @covers Respect\Rest\Routines\LastModified
  * @author Nick Lombard <github@jigsoft.co.za>
@@ -23,9 +24,8 @@ class LastModifiedTest extends \PHPUnit_Framework_TestCase
         $header = array();
         unset($_SERVER['IF_MODIFIED_SINCE']);
         $this->object = new LastModified(function () {
-                return new \DateTime('2011-11-11 11:11:12');
-
-            });
+            return new \DateTime('2011-11-11 11:11:12');
+        });
     }
 
     /**
@@ -68,8 +68,9 @@ class LastModifiedTest extends \PHPUnit_Framework_TestCase
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header))
+            if (!$replace && isset($header)) {
                 return;
+            }
 
             $header[$string] = $string;
         }
@@ -81,8 +82,9 @@ namespace Respect\Rest {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header))
+            if (!$replace && isset($header)) {
                 return;
+            }
 
             $header[$string] = $string;
         }

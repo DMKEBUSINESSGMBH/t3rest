@@ -31,24 +31,22 @@ tx_rnbase::load('Tx_T3rest_Controller_AbstractController');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Controller_Json
-	extends Tx_T3rest_Controller_AbstractController
+class Tx_T3rest_Controller_Json extends Tx_T3rest_Controller_AbstractController
 {
 
-	/**
-	 * register the through routine, to transform the return value to json.
-	 *
-	 * @param Tx_T3rest_Router_Respect $router
-	 * @return void
-	 */
-	protected function prepareRoutines(
-		Tx_T3rest_Router_Respect $router
-	) {
-		parent::prepareRoutines($router);
+    /**
+     * register the through routine, to transform the return value to json.
+     *
+     * @param Tx_T3rest_Router_Respect $router
+     * @return void
+     */
+    protected function prepareRoutines(
+        Tx_T3rest_Router_Respect $router
+    ) {
+        parent::prepareRoutines($router);
 
-		/* @var $throughJson Tx_T3rest_Routines_Through_Json */
-		$throughJson = tx_rnbase::makeInstance('Tx_T3rest_Routines_Through_Json');
-		$throughJson->prepareRouter($router);
-	}
-
+        /* @var $throughJson Tx_T3rest_Routines_Through_Json */
+        $throughJson = tx_rnbase::makeInstance('Tx_T3rest_Routines_Through_Json');
+        $throughJson->prepareRouter($router);
+    }
 }

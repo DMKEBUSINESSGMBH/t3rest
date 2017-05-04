@@ -33,97 +33,95 @@ tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Routines_Log_TimeTrack
-	implements Tx_T3rest_Routines_InterfaceRouter
+class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRouter
 {
+    protected $times = array();
 
-	protected $times = array();
+    /**
+     * add a time tracking
+     *
+     * @param string $key
+     * @param int $microtime
+     * @return Tx_T3rest_Routines_Log_TimeTrack
+     */
+    public function add($key, $microtime = null)
+    {
+        $this->times[$key] = $microtime !== null ? $microtime : microtime(true);
 
-	/**
-	 * add a time tracking
-	 *
-	 * @param string $key
-	 * @param int $microtime
-	 * @return Tx_T3rest_Routines_Log_TimeTrack
-	 */
-	public function add($key, $microtime = NULL)
-	{
-		$this->times[$key] = $microtime !== NULL ? $microtime : microtime(true);
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * add the before and after callbacks
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        $through = $this;
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		$through = $this;
+        $this->add('start', $GLOBALS['TYPO3_MISC']['microtime_start'])->add('init');
 
-		$this->add('start', $GLOBALS['TYPO3_MISC']['microtime_start'])->add('init');
+        // register post routine for Respect/Rest
+        if ($router instanceof Tx_T3rest_Router_Respect) {
+            $router->always(
+                'By',
+                array($this, 'byRespect')
+            );
+            $router->always(
+                'Through',
+                function () use ($through) {
+                    return array($through, 'throughRespect');
+                }
+            );
+        }
+    }
 
-		// register post routine for Respect/Rest
-		if ($router instanceof Tx_T3rest_Router_Respect) {
-			$router->always(
-				'By',
-				array($this, 'byRespect')
-			);
-			$router->always(
-				'Through',
-				function() use ($through) {
-					return array($through, 'throughRespect');
-				}
-			);
-		}
-	}
+    /**
+     * was called after provider returns his value.
+     * this method can be extended by child classes
+     *
+     * @param mixed $data
+     * @return void
+     */
+    public function byRespect($data)
+    {
+        $this->add('by');
+    }
 
-	/**
-	 * was called after provider returns his value.
-	 * this method can be extended by child classes
-	 *
-	 * @param mixed $data
-	 * @return void
-	 */
-	public function byRespect($data)
-	{
-		$this->add('by');
-	}
+    /**
+     * was called after provider returns his value.
+     * this method can be extended by child classes
+     *
+     * @param mixed $data
+     * @return string
+     */
+    public function throughRespect($data)
+    {
+        $this->add('through');
 
-	/**
-	 * was called after provider returns his value.
-	 * this method can be extended by child classes
-	 *
-	 * @param mixed $data
-	 * @return string
-	 */
-	public function throughRespect($data)
-	{
-		$this->add('through');
+        if (!$data instanceof Tx_T3rest_Model_Supplier) {
+            return $data;
+        }
 
-		if (!$data instanceof Tx_T3rest_Model_Supplier) {
-			return $data;
-		}
+        $times = Tx_T3rest_Utility_Factory::getSupplier();
 
-		$times = Tx_T3rest_Utility_Factory::getSupplier();
+        $last = $GLOBALS['TYPO3_MISC']['microtime_start'];
+        foreach ($this->times as $key => $value) {
+            $times->add(
+                $key,
+                array(
+                    'stamp' => $value,
+                    'time' => $value === $last ? 0 : $value - $last,
+                )
+            );
+            $last = $value;
+        }
 
-		$last = $GLOBALS['TYPO3_MISC']['microtime_start'];
-		foreach ($this->times as $key => $value) {
-			$times->add(
-				$key,
-				array(
-					'stamp' => $value,
-					'time' => $value === $last ? 0 : $value - $last,
-				)
-			);
-			$last = $value;
-		}
+        $data->add('times', $times);
 
-		$data->add('times', $times);
-
-		return $data;
-	}
+        return $data;
+    }
 }

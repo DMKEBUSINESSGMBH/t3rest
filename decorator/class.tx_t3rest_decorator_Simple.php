@@ -27,30 +27,35 @@ tx_rnbase::load('tx_t3rest_decorator_Base');
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base {
-	protected static $externals = array();
-	private static $instance = null;
-	/**
-	 * @overwrite
-	 */
-	protected function getExternals() {
-		return self::$externals;
-	}
-	protected function getDecoratorId() {
-		return 'simple';
-	}
+class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base
+{
+    protected static $externals = array();
+    private static $instance = null;
+    /**
+     * @overwrite
+     */
+    protected function getExternals()
+    {
+        return self::$externals;
+    }
+    protected function getDecoratorId()
+    {
+        return 'simple';
+    }
 
-	/**
-	 * @return tx_t3rest_decorator_Simple
-	 */
-	public static function getInstance() {
-		if(is_object(self::$instance)) {
-			self::$instance == tx_rnbase::makeInstance('tx_t3rest_decorator_Simple');
-		}
-		return self::$instance;
-	}
+    /**
+     * @return tx_t3rest_decorator_Simple
+     */
+    public static function getInstance()
+    {
+        if (is_object(self::$instance)) {
+            self::$instance == tx_rnbase::makeInstance('tx_t3rest_decorator_Simple');
+        }
+
+        return self::$instance;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php']);
 }

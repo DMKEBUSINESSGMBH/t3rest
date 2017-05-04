@@ -1,6 +1,7 @@
 <?php
-if (! defined('TYPO3_MODE'))
+if (! defined('TYPO3_MODE')) {
     die('Access denied.');
+}
 
 
 require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
@@ -14,7 +15,7 @@ tx_rnbase_util_Extensions::addService(
         'title' => 'T3rest logging service',
         'description' => 'Access to logging data',
         'subtype' => 'logs',
-        'available' => TRUE,
+        'available' => true,
         'priority' => 50,
         'quality' => 50,
         'os' => '',

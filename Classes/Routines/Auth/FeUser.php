@@ -34,159 +34,159 @@ tx_rnbase::load('Tx_T3rest_Routines_Auth_InterfaceAuth');
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Routines_Auth_FeUser
-	implements
-		Tx_T3rest_Routines_InterfaceRouter,
-		Tx_T3rest_Routines_InterfaceRoute,
-		Tx_T3rest_Routines_Auth_InterfaceAuth
+class Tx_T3rest_Routines_Auth_FeUser implements
+    Tx_T3rest_Routines_InterfaceRouter,
+    Tx_T3rest_Routines_InterfaceRoute,
+    Tx_T3rest_Routines_Auth_InterfaceAuth
 {
-	/**
-	 * the required fe groups to access a route
-	 *
-	 * @var string
-	 */
-	private $feGroups = 0;
+    /**
+     * the required fe groups to access a route
+     *
+     * @var string
+     */
+    private $feGroups = 0;
 
-	/**
-	 * constructor
-	 *
-	 * @param string $feGroups
-	 * @return void
-	 */
-	public function __construct($feGroups = 0) {
-		$this->feGroups = $feGroups;
-	}
+    /**
+     * constructor
+     *
+     * @param string $feGroups
+     * @return void
+     */
+    public function __construct($feGroups = 0)
+    {
+        $this->feGroups = $feGroups;
+    }
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		// register post routine for Respect/Rest
-		if ($router instanceof Tx_T3rest_Router_Respect) {
-			$router->always(
-				'By',
-				array($this, 'byInitUserRespect')
-			);
-		}
-	}
+    /**
+     * add the before and after callbacks
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        // register post routine for Respect/Rest
+        if ($router instanceof Tx_T3rest_Router_Respect) {
+            $router->always(
+                'By',
+                array($this, 'byInitUserRespect')
+            );
+        }
+    }
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param array|\Respect\Rest\Routes\AbstractRoute $route
-	 * @return void
-	 */
-	public function prepareRoute($route)
-	{
-		// iterate over multiple routes
-		if (is_array($route)) {
-			foreach ($route as $r) {
-				$this->prepareRoute($r);
-			}
-		}
-		// register post routine for Respect/Rest
-		elseif ($route instanceof \Respect\Rest\Routes\AbstractRoute) {
-			$route->by(array($this, 'byLoginRespect'));
-		}
-	}
+    /**
+     * add the before and after callbacks
+     *
+     * @param array|\Respect\Rest\Routes\AbstractRoute $route
+     * @return void
+     */
+    public function prepareRoute($route)
+    {
+        // iterate over multiple routes
+        if (is_array($route)) {
+            foreach ($route as $r) {
+                $this->prepareRoute($r);
+            }
+        } // register post routine for Respect/Rest
+        elseif ($route instanceof \Respect\Rest\Routes\AbstractRoute) {
+            $route->by(array($this, 'byLoginRespect'));
+        }
+    }
 
-	/**
-	 * was called before a provider is called and initializes the user.
-	 *
-	 * @return boolean
-	 */
-	public function byInitUserRespect()
-	{
-		$this->initUser();
+    /**
+     * was called before a provider is called and initializes the user.
+     *
+     * @return bool
+     */
+    public function byInitUserRespect()
+    {
+        $this->initUser();
 
-		return TRUE;
-	}
+        return true;
+    }
 
-	/**
-	 * was called before a provider is called and checks the access
-	 *
-	 * @return string
-	 */
-	public function byLoginRespect()
-	{
-		$this->initUser();
+    /**
+     * was called before a provider is called and checks the access
+     *
+     * @return string
+     */
+    public function byLoginRespect()
+    {
+        $this->initUser();
 
-		// all right, grant access!
-		if ($this->checkAccess()) {
-			return TRUE;
-		}
+        // all right, grant access!
+        if ($this->checkAccess()) {
+            return true;
+        }
 
-		// no access, don't process the route!
-		header('WWW-Authenticate: Basic realm="' . $GLOBALS['TSFE']->TYPO3_CONF_VARS['SYS']['sitename'] . '"');
-		\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
-			\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
-		);
-		return FALSE;
-	}
+        // no access, don't process the route!
+        header('WWW-Authenticate: Basic realm="' . $GLOBALS['TSFE']->TYPO3_CONF_VARS['SYS']['sitename'] . '"');
+        \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
+            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
+        );
 
-	/**
-	 * log in a user
-	 *
-	 * @return void
-	 */
-	public function initUser()
-	{
-		/* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$tsFe = $GLOBALS['TSFE'];
+        return false;
+    }
 
-		// there is allready a user, skip multiple init calls.
-		if (is_object($tsFe->fe_user) && is_array($tsFe->fe_user->user) && $tsFe->fe_user->user['uid']) {
-			return;
-		}
+    /**
+     * log in a user
+     *
+     * @return void
+     */
+    public function initUser()
+    {
+        /* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        $tsFe = $GLOBALS['TSFE'];
 
-		// auth nach redirect herstellen
-		if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-			list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
-				explode(':' , base64_decode(substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)));
-		}
+        // there is allready a user, skip multiple init calls.
+        if (is_object($tsFe->fe_user) && is_array($tsFe->fe_user->user) && $tsFe->fe_user->user['uid']) {
+            return;
+        }
 
-		// there are user and pwd, so we has to reauth by this data
-		if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
-			$_POST['user'] = $_SERVER['PHP_AUTH_USER'];
-			$_POST['pass'] = $_SERVER['PHP_AUTH_PW'];
-			$_POST['logintype'] = 'login';
-			$_POST['pid'] = Tx_T3rest_Utility_Config::getAuthUserStoragePid();
-		}
+        // auth nach redirect herstellen
+        if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
+                explode(':', base64_decode(substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)));
+        }
+
+        // there are user and pwd, so we has to reauth by this data
+        if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
+            $_POST['user'] = $_SERVER['PHP_AUTH_USER'];
+            $_POST['pass'] = $_SERVER['PHP_AUTH_PW'];
+            $_POST['logintype'] = 'login';
+            $_POST['pid'] = Tx_T3rest_Utility_Config::getAuthUserStoragePid();
+        }
 
 
-		// init fe user
-		if (!is_object($tsFe->fe_user)) {
-			$tsFe->initFEuser();
-		}
+        // init fe user
+        if (!is_object($tsFe->fe_user)) {
+            $tsFe->initFEuser();
+        }
 
-		// init groups, if required
-		if ($this->feGroups && !$tsFe->gr_list) {
-			$tsFe->initUserGroups();
-		}
-	}
+        // init groups, if required
+        if ($this->feGroups && !$tsFe->gr_list) {
+            $tsFe->initUserGroups();
+        }
+    }
 
-	/**
-	 * check user access to a route
-	 *
-	 * @return boolean
-	 */
-	public function checkAccess()
-	{
-		/* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$tsFe = $GLOBALS['TSFE'];
+    /**
+     * check user access to a route
+     *
+     * @return bool
+     */
+    public function checkAccess()
+    {
+        /* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        $tsFe = $GLOBALS['TSFE'];
 
-		$hasAccess = TRUE;
-		if ($this->feGroups) {
-			$hasAccess = $tsFe->checkPageGroupAccess(
-				array('fe_group' => $this->feGroups)
-			);
-		}
+        $hasAccess = true;
+        if ($this->feGroups) {
+            $hasAccess = $tsFe->checkPageGroupAccess(
+                array('fe_group' => $this->feGroups)
+            );
+        }
 
-		return $hasAccess;
-	}
+        return $hasAccess;
+    }
 }

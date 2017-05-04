@@ -1,8 +1,8 @@
 <?php
 namespace Respect\Rest\Routines;
 
-use Respect\Rest\Request,
-    Respect\Rest\Router;
+use Respect\Rest\Request;
+use Respect\Rest\Router;
 use Stubs\Routines\ByClassWithInvoke;
 
 /**
@@ -18,8 +18,8 @@ class ByTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new By(function () {
-              return 'from by callback';
-            });
+            return 'from by callback';
+        });
     }
 
     /**
@@ -38,7 +38,9 @@ class ByTest extends \PHPUnit_Framework_TestCase
     {
         $request = new Request();
         $params  = array();
-        $routine = new By(function() { return 'from by callback'; });
+        $routine = new By(function () {
+            return 'from by callback';
+        });
         $this->assertEquals('from by callback', $routine->by($request, $params));
     }
 
@@ -49,8 +51,12 @@ class ByTest extends \PHPUnit_Framework_TestCase
     public function test_by_on_a_route()
     {
         $router = new Router();
-        $router->get('/', function() { return 'route'; })
-               ->by(function() { return 'by'; });
+        $router->get('/', function () {
+            return 'route';
+        })
+               ->by(function () {
+                   return 'by';
+               });
         // By does not affect the output of the route.
         $this->assertEquals(
             $expected = 'route',
@@ -65,7 +71,9 @@ class ByTest extends \PHPUnit_Framework_TestCase
     public function test_by_on_a_route_with_classname()
     {
         $router = new Router();
-        $router->get('/', function() { return 'route'; })
+        $router->get('/', function () {
+            return 'route';
+        })
                ->by('Stubs\Routines\ByClassWithInvoke');
         // By does not affect the output of the route.
         $this->assertEquals(
@@ -82,7 +90,9 @@ class ByTest extends \PHPUnit_Framework_TestCase
     {
         $router  = new Router;
         $routine = new ByClassWithInvoke;
-        $router->get('/', function() { return 'route'; })
+        $router->get('/', function () {
+            return 'route';
+        })
                ->by($routine);
         // By does not affect the output of the route.
         $this->assertEquals(

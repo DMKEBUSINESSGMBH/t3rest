@@ -29,90 +29,85 @@
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Model_Supplier
-	extends stdClass
+class Tx_T3rest_Model_Supplier extends stdClass
 {
 
-	/**
-	 *
-	 * @var unknown
-	 */
-	private $ignoreKeys = array(
-		'ignoreKeys',
-		'hidden',
-		'deleted',
-		'pid',
-		'crdate',
-		'cruser_id',
-		'sorting',
-	);
+    /**
+     *
+     * @var unknown
+     */
+    private $ignoreKeys = array(
+        'ignoreKeys',
+        'hidden',
+        'deleted',
+        'pid',
+        'crdate',
+        'cruser_id',
+        'sorting',
+    );
 
-	/**
-	 * constructor
-	 *
-	 * @param array $ignoreKeys
-	 * @return void
-	 */
-	public function __construct(
-		array $ignoreKeys = array()
-	) {
-		$this->ignoreKeys = array_flip(array_merge($ignoreKeys, $this->ignoreKeys));
-	}
+    /**
+     * constructor
+     *
+     * @param array $ignoreKeys
+     * @return void
+     */
+    public function __construct(
+        array $ignoreKeys = array()
+    ) {
+        $this->ignoreKeys = array_flip(array_merge($ignoreKeys, $this->ignoreKeys));
+    }
 
-	/**
-	 * add some values to supplier/stdClass
-	 *
-	 * @param mixed $key
-	 * @param mixed $value
-	 * @return Tx_T3rest_Model_Supplier
-	 */
-	public function add($key, $value = NULL)
-	{
-		if ($value === NULL) {
-			$value = $key;
-			$node = &$this;
-		} else {
-			if (isset($this->ignoreKeys[$key])) {
-				return $this;
-			}
+    /**
+     * add some values to supplier/stdClass
+     *
+     * @param mixed $key
+     * @param mixed $value
+     * @return Tx_T3rest_Model_Supplier
+     */
+    public function add($key, $value = null)
+    {
+        if ($value === null) {
+            $value = $key;
+            $node = &$this;
+        } else {
+            if (isset($this->ignoreKeys[$key])) {
+                return $this;
+            }
 
-			if (!isset($this->{$key})) {
-				$this->{$key} = NULL;
-			}
-			$node = &$this->{$key};
-			if (!is_scalar($value) && !is_object($node)) {
-				$node = new self(array_keys($this->ignoreKeys));
-			}
-		}
+            if (!isset($this->{$key})) {
+                $this->{$key} = null;
+            }
+            $node = &$this->{$key};
+            if (!is_scalar($value) && !is_object($node)) {
+                $node = new self(array_keys($this->ignoreKeys));
+            }
+        }
 
-		// there is an array
-		if (is_array($value)) {
-			// check for Array type
-			if (array_values($value) === $value) {
-				$node = $value;
-			}
-			// anassoziative Array, iterate it and set the values
-			else {
-				foreach ($value as $subKey => $subValue) {
-					$node->add($subKey, $subValue);
-				}
-			}
-		}
-		// there is a object, parse all object vars
-		elseif (is_object($value)) {
-			$vars = get_object_vars($value);
-			// there is a model too, parse the record data
-			if ($value instanceof Tx_Rnbase_Domain_Model_DataInterface) {
-				$node->add($value->getProperty());
-				unset($vars['record']);
-			}
-			$node->add($vars);
-		}
-		else {
-			$node = $value;
-		}
+        // there is an array
+        if (is_array($value)) {
+            // check for Array type
+            if (array_values($value) === $value) {
+                $node = $value;
+            } // anassoziative Array, iterate it and set the values
+            else {
+                foreach ($value as $subKey => $subValue) {
+                    $node->add($subKey, $subValue);
+                }
+            }
+        } // there is a object, parse all object vars
+        elseif (is_object($value)) {
+            $vars = get_object_vars($value);
+            // there is a model too, parse the record data
+            if ($value instanceof Tx_Rnbase_Domain_Model_DataInterface) {
+                $node->add($value->getProperty());
+                unset($vars['record']);
+            }
+            $node->add($vars);
+        } else {
+            $node = $value;
+        }
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

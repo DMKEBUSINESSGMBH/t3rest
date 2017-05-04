@@ -30,34 +30,42 @@ tx_rnbase::load('Tx_Rnbase_Database_Connection');
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base {
-	protected static $externals = array('dampictures', 'categories');
+class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base
+{
+    protected static $externals = array('dampictures', 'categories');
 
-	protected function addDampictures($item, $configurations, $confId) {
-		$pics = tx_t3rest_util_DAM::getDamPictures($item->getUid(), 'tt_news', 'tx_damnews_dam_images', $configurations, $confId);
-		$item->setProperty('dampictures', $pics);
-	}
+    protected function addDampictures($item, $configurations, $confId)
+    {
+        $pics = tx_t3rest_util_DAM::getDamPictures($item->getUid(), 'tt_news', 'tx_damnews_dam_images', $configurations, $confId);
+        $item->setProperty('dampictures', $pics);
+    }
 
-	protected function addCategories($item) {
-		$from = array('tt_news_cat As NEWSCAT JOIN tt_news_cat_mm AS NEWSCATMM ON NEWSCATMM.uid_foreign = NEWSCAT.UID',
-				'tt_news_cat', 'NEWSCAT');
-//		$options['wrapperclass'] = 'tx_t3rest_models_Generic';
-		$options['where'] = 'NEWSCATMM.uid_local = '. $item->getUid();
-		$item->setProperty('categories',
-				Tx_Rnbase_Database_Connection::getInstance()->doSelect('uid,title,image', $from, $options));
-	}
+    protected function addCategories($item)
+    {
+        $from = array('tt_news_cat As NEWSCAT JOIN tt_news_cat_mm AS NEWSCATMM ON NEWSCATMM.uid_foreign = NEWSCAT.UID',
+                'tt_news_cat', 'NEWSCAT');
+        $options['where'] = 'NEWSCATMM.uid_local = '. $item->getUid();
+        $item->setProperty(
+            'categories',
+            Tx_Rnbase_Database_Connection::getInstance()->doSelect('uid,title,image', $from, $options)
+        );
+    }
 
-	/**
-	 * @overwrite
-	 */
-	protected function getExternals() {
-		return self::$externals;
-	}
-	protected function getDecoratorId() {
-		return 'news';
-	}
-	protected function handleItemBefore($item, $configurations, $confId) {
-	}
-	protected function handleItemAfter($item, $configurations, $confId) {
-	}
+    /**
+     * @overwrite
+     */
+    protected function getExternals()
+    {
+        return self::$externals;
+    }
+    protected function getDecoratorId()
+    {
+        return 'news';
+    }
+    protected function handleItemBefore($item, $configurations, $confId)
+    {
+    }
+    protected function handleItemAfter($item, $configurations, $confId)
+    {
+    }
 }

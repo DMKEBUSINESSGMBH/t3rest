@@ -29,185 +29,181 @@
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Transformer_Simple
-	extends Tx_T3rest_Model_ProviderHolder
-	implements Tx_T3rest_Transformer_InterfaceTransformer
+class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implements Tx_T3rest_Transformer_InterfaceTransformer
 {
 
-	/**
-	 *  transforms the item.
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
-	 * @param string $confId
-	 * @return Tx_T3rest_Model_Supplier
-	 */
-	public function transform(
-		Tx_Rnbase_Domain_Model_DataInterface $item,
-		$confId = 'item.'
-	) {
-		$this->prepareItem($item, $confId);
-		$this->wrapRecord($item, $confId . 'record.');
-		$this->prepareLinks($item, $confId . 'links.');
+    /**
+     *  transforms the item.
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param string $confId
+     * @return Tx_T3rest_Model_Supplier
+     */
+    public function transform(
+        Tx_Rnbase_Domain_Model_DataInterface $item,
+        $confId = 'item.'
+    ) {
+        $this->prepareItem($item, $confId);
+        $this->wrapRecord($item, $confId . 'record.');
+        $this->prepareLinks($item, $confId . 'links.');
 
-		return $this->buildSupplier($item, $confId);
-	}
+        return $this->buildSupplier($item, $confId);
+    }
 
-	/**
-	 * prepares the item to transform
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
-	 * @param string $confId
-	 * @return void
-	 */
-	protected function prepareItem(
-		Tx_Rnbase_Domain_Model_DataInterface $item,
-		$confId = 'item.'
-	) {
-	}
+    /**
+     * prepares the item to transform
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param string $confId
+     * @return void
+     */
+    protected function prepareItem(
+        Tx_Rnbase_Domain_Model_DataInterface $item,
+        $confId = 'item.'
+    ) {
+    }
 
-	/**
-	 * wraps the record using stdwrap.
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
-	 * @param string $confId
-	 * @return void
-	 */
-	protected function wrapRecord(
-		Tx_Rnbase_Domain_Model_DataInterface $item,
-		$confId = 'item.record.'
-	) {
-		$cObj = $this->getConfigurations()->getCObj();
-		$config = $this->getConfig($confId);
+    /**
+     * wraps the record using stdwrap.
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param string $confId
+     * @return void
+     */
+    protected function wrapRecord(
+        Tx_Rnbase_Domain_Model_DataInterface $item,
+        $confId = 'item.record.'
+    ) {
+        $cObj = $this->getConfigurations()->getCObj();
+        $config = $this->getConfig($confId);
 
-		// Add dynamic columns
-		if (is_array($config) && !empty($config)) {
-			$keys = $this->getConfigurations()->getUniqueKeysNames($config);
-			foreach($keys As $key) {
-				if (
-					$key{0} === 'd'
-					&& $key{0} === 'c'
-					&& !$item->hasProperty($key)
-				) {
-					$item->setProperty($key, $config[$key]);
-				}
-			}
-		}
+        // Add dynamic columns
+        if (is_array($config) && !empty($config)) {
+            $keys = $this->getConfigurations()->getUniqueKeysNames($config);
+            foreach ($keys as $key) {
+                if ($key{0} === 'd'
+                    && $key{0} === 'c'
+                    && !$item->hasProperty($key)
+                ) {
+                    $item->setProperty($key, $config[$key]);
+                }
+            }
+        }
 
-		// @TODO: thats a big performance hole! why?
-		$cObjTempData = $cObj->data;
-		$cObj->data = $item->getProperty();
-		foreach ($cObj->data As $colname => $value) {
-			if ($config[$colname]) {
-				// Get value using cObjGetSingle
-				$cObj->setCurrentVal($value);
-				$item->setProperty(
-					$colname,
-					$cObj->cObjGetSingle($config[$colname], $config[$colname . '.'])
-				);
-				$cObj->setCurrentVal(FALSE);
-			}
-			else {
-				$item->setProperty(
-					$colname,
-					$cObj->stdWrap($value, $config[$colname . '.'])
-				);
-			}
-		}
+        // @TODO: thats a big performance hole! why?
+        $cObjTempData = $cObj->data;
+        $cObj->data = $item->getProperty();
+        foreach ($cObj->data as $colname => $value) {
+            if ($config[$colname]) {
+                // Get value using cObjGetSingle
+                $cObj->setCurrentVal($value);
+                $item->setProperty(
+                    $colname,
+                    $cObj->cObjGetSingle($config[$colname], $config[$colname . '.'])
+                );
+                $cObj->setCurrentVal(false);
+            } else {
+                $item->setProperty(
+                    $colname,
+                    $cObj->stdWrap($value, $config[$colname . '.'])
+                );
+            }
+        }
 
-		$cObj->data = $cObjTempData;
-	}
+        $cObj->data = $cObjTempData;
+    }
 
-	/**
-	 * creates the links.
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
-	 * @param string $confId
-	 * @return void
-	 */
-	protected function prepareLinks(
-		Tx_Rnbase_Domain_Model_DataInterface $item,
-		$confId = 'item.links.'
-	) {
-		// prepare the tsfe for link creation (config,sys_page and tmpl are required)
-		tx_rnbase::load('tx_rnbase_util_Misc');
-		tx_rnbase_util_Misc::prepareTSFE();
+    /**
+     * creates the links.
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param string $confId
+     * @return void
+     */
+    protected function prepareLinks(
+        Tx_Rnbase_Domain_Model_DataInterface $item,
+        $confId = 'item.links.'
+    ) {
+        // prepare the tsfe for link creation (config,sys_page and tmpl are required)
+        tx_rnbase::load('tx_rnbase_util_Misc');
+        tx_rnbase_util_Misc::prepareTSFE();
 
-		$linkIds = $this->getConfigurations()->getKeyNames($confId);
-		foreach ($linkIds as $link) {
-			$linkId = $confId . $link . '.';
-			$params = array();
-			$paramMap = (array) $this->getConfig($linkId . '_cfg.params.');
-			foreach($paramMap As $paramName => $colName) {
-				if (is_scalar($colName) && $item->hasProperty($colName)) {
-					$params[$paramName] = $item->getProperty($colName);
-				}
-			}
-			$linkObj = $this->getConfigurations()->createLink(FALSE);
-			$linkObj->initByTS($this->getConfigurations(), $linkId, $params);
-			// Immer absolute URLs setzen!
-			$linkObj->isAbsUrl() ?: $linkObj->setAbsUrl(TRUE);
-			$item->setProperty(
-				'link_' . $link,
-				$linkObj->makeUrl(FALSE)
-			);
-		}
-	}
+        $linkIds = $this->getConfigurations()->getKeyNames($confId);
+        foreach ($linkIds as $link) {
+            $linkId = $confId . $link . '.';
+            $params = array();
+            $paramMap = (array) $this->getConfig($linkId . '_cfg.params.');
+            foreach ($paramMap as $paramName => $colName) {
+                if (is_scalar($colName) && $item->hasProperty($colName)) {
+                    $params[$paramName] = $item->getProperty($colName);
+                }
+            }
+            $linkObj = $this->getConfigurations()->createLink(false);
+            $linkObj->initByTS($this->getConfigurations(), $linkId, $params);
+            // Immer absolute URLs setzen!
+            $linkObj->isAbsUrl() ?: $linkObj->setAbsUrl(true);
+            $item->setProperty(
+                'link_' . $link,
+                $linkObj->makeUrl(false)
+            );
+        }
+    }
 
-	/**
-	 * creates an link object
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
-	 * @param string $confId
-	 * @param array $parameters
-	 * @return tx_rnbase_util_Link
-	 */
-	protected function initLink(
-		Tx_Rnbase_Domain_Model_DataInterface $item,
-		$confId = 'item.links.show.',
-		array $parameters = array()
-	) {
-		$linkObj = $this->getConfigurations()->createLink();
-		$linkObj->initByTS($this->getConfigurations(), $confId, $parameters);
+    /**
+     * creates an link object
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param string $confId
+     * @param array $parameters
+     * @return tx_rnbase_util_Link
+     */
+    protected function initLink(
+        Tx_Rnbase_Domain_Model_DataInterface $item,
+        $confId = 'item.links.show.',
+        array $parameters = array()
+    ) {
+        $linkObj = $this->getConfigurations()->createLink();
+        $linkObj->initByTS($this->getConfigurations(), $confId, $parameters);
 
-		if (!$linkObj->isAbsUrl()) {
-			$linkObj->setAbsUrl(true);
-		}
+        if (!$linkObj->isAbsUrl()) {
+            $linkObj->setAbsUrl(true);
+        }
 
-		return $linkObj;
-	}
+        return $linkObj;
+    }
 
-	/**
-	 * creates the supplier
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
-	 * @param string $confId
-	 * @return Tx_T3rest_Model_Supplier
-	 */
-	protected function buildSupplier(
-		Tx_Rnbase_Domain_Model_DataInterface $item,
-		$confId = 'item.'
-	) {
-		return Tx_T3rest_Utility_Factory::getSupplier(
-			$this->getIgnoreFields($confId . 'record.')
-		)
-			->add('_object', get_class($item))
-			->add($item)
-		;
-	}
+    /**
+     * creates the supplier
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param string $confId
+     * @return Tx_T3rest_Model_Supplier
+     */
+    protected function buildSupplier(
+        Tx_Rnbase_Domain_Model_DataInterface $item,
+        $confId = 'item.'
+    ) {
+        return Tx_T3rest_Utility_Factory::getSupplier(
+            $this->getIgnoreFields($confId . 'record.')
+        )
+            ->add('_object', get_class($item))
+            ->add($item);
+    }
 
-	/**
-	 * get ignorefields from ts.
-	 *
-	 * @param string $confId
-	 * @return Ambigous <multitype:, string, multitype:unknown >
-	 */
-	protected function getIgnoreFields($confId = 'item.record.')
-	{
-		tx_rnbase::load('tx_rnbase_util_Strings');
-		return tx_rnbase_util_Strings::trimExplode(
-			',',
-			$this->getConfig($confId . 'ignoreFields'),
-			TRUE
-		);
-	}
+    /**
+     * get ignorefields from ts.
+     *
+     * @param string $confId
+     * @return Ambigous <multitype:, string, multitype:unknown >
+     */
+    protected function getIgnoreFields($confId = 'item.record.')
+    {
+        tx_rnbase::load('tx_rnbase_util_Strings');
+
+        return tx_rnbase_util_Strings::trimExplode(
+            ',',
+            $this->getConfig($confId . 'ignoreFields'),
+            true
+        );
+    }
 }

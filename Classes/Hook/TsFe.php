@@ -32,31 +32,30 @@
 class Tx_T3rest_Hook_TsFe
 {
 
-	/**
-	 * in this hook we check for an mobile redirect.
-	 *
-	 * @param array &$params
-	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe
-	 * @return void
-	 */
-	public function checkAndRunRestApi(&$params, $tsfe)
-	{
-		// the hook is not enabled, skip!
-		if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
-			return;
-		}
+    /**
+     * in this hook we check for an mobile redirect.
+     *
+     * @param array &$params
+     * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe
+     * @return void
+     */
+    public function checkAndRunRestApi(&$params, $tsfe)
+    {
+        // the hook is not enabled, skip!
+        if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
+            return;
+        }
 
-		$this->getController()->execute();
-	}
+        $this->getController()->execute();
+    }
 
-	/**
-	 * returns an instance of a controller.
-	 *
-	 * @return Tx_T3rest_Controller_InterfaceController
-	 */
-	public function getController()
-	{
-		return Tx_T3rest_Utility_Factory::getRestApiController();
-	}
-
+    /**
+     * returns an instance of a controller.
+     *
+     * @return Tx_T3rest_Controller_InterfaceController
+     */
+    public function getController()
+    {
+        return Tx_T3rest_Utility_Factory::getRestApiController();
+    }
 }

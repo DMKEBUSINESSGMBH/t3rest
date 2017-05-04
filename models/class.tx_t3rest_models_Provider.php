@@ -28,5 +28,6 @@ tx_rnbase::load('Tx_T3rest_Model_Provider');
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_models_Provider extends Tx_T3rest_Model_Provider {
+class tx_t3rest_models_Provider extends Tx_T3rest_Model_Provider
+{
 }

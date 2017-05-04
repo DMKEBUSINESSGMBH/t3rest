@@ -2,6 +2,7 @@
 namespace Respect\Rest\Routines;
 
 use Respect\Rest\Request;
+
 /**
  * @covers Respect\Rest\Routines\UserAgent
  * @author Nick Lombard <github@jigsoft.co.za>
@@ -20,10 +21,11 @@ class UserAgentTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new UserAgent(array(
-            'FIREFOX' => function (){},
-            'InhernetExplorer' => function (){},
+            'FIREFOX' => function () {
+            },
+            'InhernetExplorer' => function () {
+            },
         ));
-
     }
 
     /**
@@ -49,7 +51,6 @@ class UserAgentTest extends \PHPUnit_Framework_TestCase
         $_SERVER['HTTP_USER_AGENT'] = 'InhernetExplorer';
         $this->assertTrue($alias->when($request, $params));
         $this->assertInstanceOf('Closure', $alias->through($request, $params));
-
     }
     public function testThroughInvalid()
     {
@@ -61,5 +62,4 @@ class UserAgentTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($alias->when($request, $params));
         $this->assertNull($alias->through($request, $params));
     }
-
 }

@@ -32,78 +32,78 @@
  */
 final class Tx_T3rest_Utility_Config
 {
-	/**
-	 * reads the extension config.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	private static function getExtConf($key)
-	{
-		static $config = array();
-		if (!isset($config[$key])) {
-			tx_rnbase::load('tx_rnbase_configurations');
-			$config[$key] = tx_rnbase_configurations::getExtensionCfgValue(
-				't3rest',
-				$key
-			);
-		}
+    /**
+     * reads the extension config.
+     *
+     * @param string $key
+     * @return mixed
+     */
+    private static function getExtConf($key)
+    {
+        static $config = array();
+        if (!isset($config[$key])) {
+            tx_rnbase::load('tx_rnbase_configurations');
+            $config[$key] = tx_rnbase_configurations::getExtensionCfgValue(
+                't3rest',
+                $key
+            );
+        }
 
-		return $config[$key];
-	}
+        return $config[$key];
+    }
 
-	/**
-	 * is the new rest api hook enabled?
-	 *
-	 * @return bool
-	 */
-	public static function isRestHookEnabled()
-	{
-		return (boolean) self::getExtConf('restEnableHook');
-	}
+    /**
+     * is the new rest api hook enabled?
+     *
+     * @return bool
+     */
+    public static function isRestHookEnabled()
+    {
+        return (boolean) self::getExtConf('restEnableHook');
+    }
 
-	/**
-	 * returns the rest api path segment with leading and trailing slash.
-	 * default is /api/
-	 *
-	 * @return string
-	 */
-	public static function getRestApiUriPath()
-	{
-		$apiSegment = self::getExtConf('restApiUriPath') ?: 'api';
-		$apiSegment = trim($apiSegment, '/');
-		$apiSegment = '/' . (empty($apiSegment) ? '' : $apiSegment . '/');
-		return $apiSegment;
-	}
+    /**
+     * returns the rest api path segment with leading and trailing slash.
+     * default is /api/
+     *
+     * @return string
+     */
+    public static function getRestApiUriPath()
+    {
+        $apiSegment = self::getExtConf('restApiUriPath') ?: 'api';
+        $apiSegment = trim($apiSegment, '/');
+        $apiSegment = '/' . (empty($apiSegment) ? '' : $apiSegment . '/');
 
-	/**
-	 * returns the pid of the storage with the fe users.
-	 *
-	 * @return int
-	 */
-	public static function getAuthUserStoragePid()
-	{
-		return (int) self::getExtConf('restAuthUserStoragePid');
-	}
+        return $apiSegment;
+    }
 
-	/**
-	 * returns the controller class.
-	 *
-	 * @return string
-	 */
-	public static function getRestApiController()
-	{
-		return self::getExtConf('restApiController') ?: 'Tx_T3rest_Controller_Json';
-	}
+    /**
+     * returns the pid of the storage with the fe users.
+     *
+     * @return int
+     */
+    public static function getAuthUserStoragePid()
+    {
+        return (int) self::getExtConf('restAuthUserStoragePid');
+    }
 
-	/**
-	 * returns the router class.
-	 *
-	 * @return string
-	 */
-	public static function getRestApiRouter()
-	{
-		return self::getExtConf('restApiRouter') ?: 'Tx_T3rest_Router_Respect';
-	}
+    /**
+     * returns the controller class.
+     *
+     * @return string
+     */
+    public static function getRestApiController()
+    {
+        return self::getExtConf('restApiController') ?: 'Tx_T3rest_Controller_Json';
+    }
 
+    /**
+     * returns the router class.
+     *
+     * @return string
+     */
+    public static function getRestApiRouter()
+    {
+        return self::getExtConf('restApiRouter') ?: 'Tx_T3rest_Router_Respect';
+    }
 }

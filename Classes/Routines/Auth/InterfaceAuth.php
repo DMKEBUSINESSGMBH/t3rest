@@ -34,17 +34,17 @@ tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
 interface Tx_T3rest_Routines_Auth_InterfaceAuth
 {
 
-	/**
-	 * log in a user
-	 *
-	 * @return void
-	 */
-	public function initUser();
+    /**
+     * log in a user
+     *
+     * @return void
+     */
+    public function initUser();
 
-	/**
-	 * check user access to a route
-	 *
-	 * @return boolean
-	 */
-	public function checkAccess();
+    /**
+     * check user access to a route
+     *
+     * @return bool
+     */
+    public function checkAccess();
 }

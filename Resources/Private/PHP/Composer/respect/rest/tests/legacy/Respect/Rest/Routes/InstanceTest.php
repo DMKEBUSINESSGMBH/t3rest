@@ -7,7 +7,7 @@ namespace Respect\Rest\Routes;
  */
 class InstanceTest extends \PHPUnit_Framework_TestCase
 {
-    function setUp() 
+    public function setUp()
     {
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP';
         $_SERVER['REQUEST_URI'] = '/';
@@ -16,7 +16,7 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Respect\Rest\Routes\Instance::getReflection
      */
-    function test_getReflection_should_return_instance_of_current_routed_class()
+    public function test_getReflection_should_return_instance_of_current_routed_class()
     {
         $route = new Instance('any', '/', new \DateTime);
         $refl = $route->getReflection('format');

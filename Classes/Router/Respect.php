@@ -33,39 +33,36 @@ Tx_T3rest_Utility_Composer::autoload();
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-class Tx_T3rest_Router_Respect
-	extends \Respect\Rest\Router
-	implements Tx_T3rest_Router_InterfaceRouter
+class Tx_T3rest_Router_Respect extends \Respect\Rest\Router implements Tx_T3rest_Router_InterfaceRouter
 {
-	/**
-	* disable the auto dispatching!
-	*
-	* @var bool
-	*/
-	public $isAutoDispatched = FALSE;
+    /**
+     * disable the auto dispatching!
+     *
+     * @var bool
+     */
+    public $isAutoDispatched = false;
 
-	/**
-	 * register an route.
-	 *
-	 * @param string $method
-	 * @param string $path
-	 * @param string $class
-	 * @param array $arguments
-	 * @return Respect\Rest\Routes\ClassName The route instance
-	 */
-	public function addRoute(
-		$method,
-		$path,
-		$class,
-		array $arguments = array()
-	) {
-		$baseUri = Tx_T3rest_Utility_Config::getRestApiUriPath();
+    /**
+     * register an route.
+     *
+     * @param string $method
+     * @param string $path
+     * @param string $class
+     * @param array $arguments
+     * @return Respect\Rest\Routes\ClassName The route instance
+     */
+    public function addRoute(
+        $method,
+        $path,
+        $class,
+        array $arguments = array()
+    ) {
+        $baseUri = Tx_T3rest_Utility_Config::getRestApiUriPath();
 
-		return $this->$method(
-			$baseUri . ltrim($path, '/'),
-			$class,
-			$arguments
-		);
-	}
-
+        return $this->$method(
+            $baseUri . ltrim($path, '/'),
+            $class,
+            $arguments
+        );
+    }
 }

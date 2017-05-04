@@ -29,16 +29,16 @@
  * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
-interface Tx_T3rest_Routines_InterfaceRouter {
+interface Tx_T3rest_Routines_InterfaceRouter
+{
 
-	/**
-	 * add the before and after callbacks
-	 *
-	 * @param Tx_T3rest_Router_InterfaceRouter $router
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	);
-
+    /**
+     * add the before and after callbacks
+     *
+     * @param Tx_T3rest_Router_InterfaceRouter $router
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    );
 }

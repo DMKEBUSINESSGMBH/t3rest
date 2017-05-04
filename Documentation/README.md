@@ -82,20 +82,20 @@ so wird der Router dies erkennen und den Aufruf an die getSearch Methode weiter 
 Als Parameter wird in diesem Falle *dmk* mitgeliefert.
 
 ```php
-	/**
-	 * initializes the router.
-	 *
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		$router->addRoute(
-			$router::METHOD_GET,
-			'/news/search/*',
-			array($this, 'getSearch')
-		);
-	}
+    /**
+     * initializes the router.
+     *
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        $router->addRoute(
+            $router::METHOD_GET,
+            '/news/search/*',
+            array($this, 'getSearch')
+        );
+    }
 ```
 
 Ein Beispiel der getSearch Methode,
@@ -104,44 +104,44 @@ die Suche durchführt, die Daten aufbereitet und zurück gibt:
 
 
 ```php
-	/**
-	 * search for news.
-	 *
-	 * @param string $query
-	 * @return Tx_T3rest_Model_Supplier
-	 */
-	public function getSearch($query)
-	{
-		$transformer = $this->getTransformer();
-		$news = array();
-		foreach ($service->search($query) as $item) {
-			$news[] = $transformer->transform(
-				$item,
-				'search.news.'
-			);
-		}
-		
-		$return = Tx_T3rest_Utility_Factory::getSupplier();
-		return $return->add('items', $news);
-	}
+    /**
+     * search for news.
+     *
+     * @param string $query
+     * @return Tx_T3rest_Model_Supplier
+     */
+    public function getSearch($query)
+    {
+        $transformer = $this->getTransformer();
+        $news = array();
+        foreach ($service->search($query) as $item) {
+            $news[] = $transformer->transform(
+                $item,
+                'search.news.'
+            );
+        }
+        
+        $return = Tx_T3rest_Utility_Factory::getSupplier();
+        return $return->add('items', $news);
+    }
 ```
 
 Je nachdem, was der Service für Daten für die News liefert,
 könnte das Ergebnis dann so aussehen:
 
 ```javascript
-	{
-		"items": {
-			"0": {
-				"uid": 5,
-				"title": "MKMAILER: komfortable Mailing-Features"
-			},
-			"1": {
-				"uid": 7,
-				"title": "Offenheit leben, Innovation stärken! - Social Collaboration mit HumHub"
-			}
-		}
-	}
+    {
+        "items": {
+            "0": {
+                "uid": 5,
+                "title": "MKMAILER: komfortable Mailing-Features"
+            },
+            "1": {
+                "uid": 7,
+                "title": "Offenheit leben, Innovation stärken! - Social Collaboration mit HumHub"
+            }
+        }
+    }
 ```
 
 ## Transformer
@@ -160,18 +160,18 @@ Der Transformer kann zum einen im Providerdatensatz
 über TypoScript oder über die Providerklasse angegeben werden.
 
 ```
-	transformer.class = Tx_T3rest_Transformer_Simple
+    transformer.class = Tx_T3rest_Transformer_Simple
 ```
 ```php
-	/**
-	 * returns the transformer class for this provider.
-	 *
-	 * @return Tx_T3rest_Transformer_InterfaceTransformer
-	 */
-	protected function getTransformerClass()
-	{
-		return 'Tx_T3rest_Transformer_Simple';
-	}
+    /**
+     * returns the transformer class for this provider.
+     *
+     * @return Tx_T3rest_Transformer_InterfaceTransformer
+     */
+    protected function getTransformerClass()
+    {
+        return 'Tx_T3rest_Transformer_Simple';
+    }
 ```
 
 
@@ -183,22 +183,22 @@ Im Providerdatensatz kann eine Gruppe hinterlegt werden,
 welche zugriff auf die API erhalten soll.
 
 ```php
-	/**
-	 * initializes the router.
-	 *
-	 * @return void
-	 */
-	public function prepareRouter(
-		Tx_T3rest_Router_InterfaceRouter $router
-	) {
-		$this->getAuthFeUserRoutine()->prepareRoute(
-			$router->addRoute(
-				$router::METHOD_GET,
-				'/news/edit/*',
-				array($this, 'getEdit')
-			)
-		);
-	}
+    /**
+     * initializes the router.
+     *
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        $this->getAuthFeUserRoutine()->prepareRoute(
+            $router->addRoute(
+                $router::METHOD_GET,
+                '/news/edit/*',
+                array($this, 'getEdit')
+            )
+        );
+    }
 ```
 
 Die Providerklasse muss jede zu schützende Route

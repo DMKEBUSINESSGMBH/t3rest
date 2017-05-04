@@ -1,8 +1,8 @@
 <?php
 namespace Respect\Rest\Routines {
 
-use Respect\Rest\Request,
-    Respect\Rest\Router;
+use Respect\Rest\Request;
+use Respect\Rest\Router;
 use Stubs\Routines\WhenAlwaysTrue;
 
 /**
@@ -23,8 +23,8 @@ class WhenTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new When(function () {
-                return true;
-            });
+            return true;
+        });
     }
 
     /**
@@ -50,8 +50,8 @@ class WhenTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $header);
 
         $this->object = new When(function () {
-                return false;
-            });
+            return false;
+        });
         $alias = &$this->object;
 
         $this->assertFalse($alias->when($request, $params));
@@ -62,7 +62,9 @@ class WhenTest extends \PHPUnit_Framework_TestCase
     {
         $router  = new Router;
         $routine = new WhenAlwaysTrue;
-        $router->get('/', function() { return 'route'; })
+        $router->get('/', function () {
+            return 'route';
+        })
                ->by($routine);
         // By does not affect the output of the route.
         $this->assertEquals(
@@ -82,8 +84,9 @@ class WhenTest extends \PHPUnit_Framework_TestCase
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header))
+            if (!$replace && isset($header)) {
                 return;
+            }
 
             $header[$string] = $string;
         }
@@ -95,8 +98,9 @@ namespace Respect\Rest {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header))
+            if (!$replace && isset($header)) {
                 return;
+            }
 
             $header[$string] = $string;
         }

@@ -26,23 +26,26 @@
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_models_Response {
-	public $info = array();
-	public $data;
+class tx_t3rest_models_Response
+{
+    public $info = array();
+    public $data;
 
-	/**
-	 * Add request info
-	 * @param string $key
-	 * @param mixed $value
-	 */
-	public function addInfo($key, $value) {
-		$this->info[$key] = $value;
-	}
-	public function setData($data) {
-		$this->data = $data;
-	}
+    /**
+     * Add request info
+     * @param string $key
+     * @param mixed $value
+     */
+    public function addInfo($key, $value)
+    {
+        $this->info[$key] = $value;
+    }
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php']);
 }

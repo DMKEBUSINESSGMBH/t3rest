@@ -28,85 +28,89 @@ tx_rnbase::load('tx_rnbase_model_base');
  *
  * @author Rene Nitzsche
  */
-class Tx_T3rest_Model_Provider
-	extends tx_rnbase_model_base
+class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
 {
-	private $configurations = NULL;
+    private $configurations = null;
 
-	/**
-	 * Gets the name of the database table
-	 *
-	 * @return String Tabellenname
-	 */
-	function getTableName() {
-		return 'tx_t3rest_providers';
-	}
+    /**
+     * Gets the name of the database table
+     *
+     * @return String Tabellenname
+     */
+    public function getTableName()
+    {
+        return 'tx_t3rest_providers';
+    }
 
-	/**
-	 * set the provider config
-	 *
-	 * @param tx_rnbase_configurations $config
-	 * @deprecated only used for the old api
-	 * @return void
-	 */
-	public function setConfigurations($config) {
-		$this->configurations = $config;
-	}
+    /**
+     * set the provider config
+     *
+     * @param tx_rnbase_configurations $config
+     * @deprecated only used for the old api
+     * @return void
+     */
+    public function setConfigurations($config)
+    {
+        $this->configurations = $config;
+    }
 
-	/**
-	 * the ts config for from the provider
-	 *
-	 * @return tx_rnbase_configurations
-	 */
-	public function getConfigurations() {
-		if ($this->configurations === NULL) {
-			tx_rnbase::load('tx_rnbase_util_TS');
-			$configArray = tx_rnbase_util_TS::parseTsConfig($this->getConfig());
-			/* @var $configurations tx_rnbase_configurations */
-			$this->configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
-			$this->configurations->init($configArray, false, 't3rest', 't3rest');
-		}
+    /**
+     * the ts config for from the provider
+     *
+     * @return tx_rnbase_configurations
+     */
+    public function getConfigurations()
+    {
+        if ($this->configurations === null) {
+            tx_rnbase::load('tx_rnbase_util_TS');
+            $configArray = tx_rnbase_util_TS::parseTsConfig($this->getConfig());
+            /* @var $configurations tx_rnbase_configurations */
+            $this->configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+            $this->configurations->init($configArray, false, 't3rest', 't3rest');
+        }
 
-		return $this->configurations;
-	}
+        return $this->configurations;
+    }
 
-	/**
-	 * returns an instance of the provider.
-	 *
-	 * @return Tx_T3rest_Provider_InterfaceProvider
-	 */
-	public function getProviderClassName()
-	{
-		return $this->getProperty('classname');
-	}
+    /**
+     * returns an instance of the provider.
+     *
+     * @return Tx_T3rest_Provider_InterfaceProvider
+     */
+    public function getProviderClassName()
+    {
+        return $this->getProperty('classname');
+    }
 
-	/**
-	 * returns an instance of the provider.
-	 *
-	 * @return Tx_T3rest_Provider_InterfaceProvider
-	 */
-	public function getProviderInstance()
-	{
-		try {
-			tx_rnbase::getClassInfo($this->getProviderClassName());
-		} catch (Exception $e) {
-			tx_rnbase::load('tx_rnbase_util_Logger');
-			tx_rnbase_util_Logger::warn(
-				sprintf(
-					'Providerclass "%3$s" for Provider "%2$s (%1$s)" could not be loaded',
-					$this->getUid(),
-					$this->getName(),
-					$this->getProviderClassName()
-				),
-				't3rest'
-			);
-			return NULL;
-		}
+    /**
+     * returns an instance of the provider.
+     *
+     * @return Tx_T3rest_Provider_InterfaceProvider
+     */
+    public function getProviderInstance()
+    {
+        try {
+            tx_rnbase::getClassInfo($this->getProviderClassName());
+        } catch (Exception $e) {
+            tx_rnbase::load('tx_rnbase_util_Logger');
+            tx_rnbase_util_Logger::warn(
+                sprintf(
+                    'Providerclass "%3$s" for Provider "%2$s (%1$s)" could not be loaded',
+                    $this->getUid(),
+                    $this->getName(),
+                    $this->getProviderClassName()
+                ),
+                't3rest'
+            );
 
-		$instance = tx_rnbase::makeInstance($this->getProviderClassName());
-		if ($instance instanceof Tx_T3rest_Model_ProviderHolder) {
-			$instance->setProvider($this);
-		}
-		return $instance;
-	}
+            return null;
+        }
+
+        $instance = tx_rnbase::makeInstance($this->getProviderClassName());
+        if ($instance instanceof Tx_T3rest_Model_ProviderHolder) {
+            $instance->setProvider($this);
+        }
+
+        return $instance;
+    }
 }

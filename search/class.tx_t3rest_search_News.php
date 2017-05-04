@@ -29,57 +29,73 @@ tx_rnbase::load('tx_t3rest_provider_IProvider');
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_search_News extends tx_rnbase_util_SearchBase {
+class tx_t3rest_search_News extends tx_rnbase_util_SearchBase
+{
+    protected function getTableMappings()
+    {
+        $tableMapping['NEWS'] = 'tt_news';
+        $tableMapping['RELATEDNEWSMM'] = 'tt_news_related_mm';
+        $tableMapping['RELATEDNEWS'] = 'tt_news';
+        $tableMapping['NEWSCATMM'] = 'tt_news_cat_mm';
 
-	protected function getTableMappings() {
-		$tableMapping['NEWS'] = 'tt_news';
-		$tableMapping['RELATEDNEWSMM'] = 'tt_news_related_mm';
-		$tableMapping['RELATEDNEWS'] = 'tt_news';
-		$tableMapping['NEWSCATMM'] = 'tt_news_cat_mm';
+        // Hook to append other tables
+        tx_rnbase_util_Misc::callHook(
+            't3rest',
+            'search_news_getTableMapping_hook',
+            array('tableMapping' => &$tableMapping),
+            $this
+        );
 
-		// Hook to append other tables
-		tx_rnbase_util_Misc::callHook('t3rest','search_news_getTableMapping_hook',
-			array('tableMapping' => &$tableMapping), $this);
-		return $tableMapping;
-	}
+        return $tableMapping;
+    }
 
-	protected function useAlias() {
-		return true;
-	}
+    protected function useAlias()
+    {
+        return true;
+    }
 
-	protected function getBaseTableAlias() {
-		return 'NEWS';
-	}
+    protected function getBaseTableAlias()
+    {
+        return 'NEWS';
+    }
 
-	protected function getBaseTable() {
-		return 'tt_news';
-	}
+    protected function getBaseTable()
+    {
+        return 'tt_news';
+    }
 
-	function getWrapperClass() {
-		return 'tx_t3rest_models_Generic';
-	}
+    public function getWrapperClass()
+    {
+        return 'tx_t3rest_models_Generic';
+    }
 
-	protected function getJoins($tableAliases) {
-		$join = '';
+    protected function getJoins($tableAliases)
+    {
+        $join = '';
 
-		if (isset($tableAliases['NEWSCATMM'])) {
-			$join .= ' JOIN tt_news_cat_mm AS NEWSCATMM ON NEWS.uid = NEWSCATMM.uid_local';
-		}
-		// TODO: Check visibility of related news.
-		if (isset($tableAliases['RELATEDNEWSMM']) || (isset($tableAliases['RELATEDNEWS']))) {
-			$join .= ' LEFT JOIN tt_news_related_mm AS RELATEDNEWSMM ON (RELATEDNEWSMM.uid_foreign = NEWS.uid AND RELATEDNEWSMM.tablenames="tt_news")';
-		}
-		if (isset($tableAliases['RELATEDNEWS'])) {
-			$join .= ' JOIN tt_news AS RELATEDNEWS ON RELATEDNEWS.uid = RELATEDNEWSMM.uid_local';
-		}
+        if (isset($tableAliases['NEWSCATMM'])) {
+            $join .= ' JOIN tt_news_cat_mm AS NEWSCATMM ON NEWS.uid = NEWSCATMM.uid_local';
+        }
+        // TODO: Check visibility of related news.
+        if (isset($tableAliases['RELATEDNEWSMM']) || (isset($tableAliases['RELATEDNEWS']))) {
+            $join .= ' LEFT JOIN tt_news_related_mm AS RELATEDNEWSMM ON (RELATEDNEWSMM.uid_foreign = NEWS.uid AND RELATEDNEWSMM.tablenames="tt_news")';
+        }
+        if (isset($tableAliases['RELATEDNEWS'])) {
+            $join .= ' JOIN tt_news AS RELATEDNEWS ON RELATEDNEWS.uid = RELATEDNEWSMM.uid_local';
+        }
 
-		// Hook to append other tables
-		tx_rnbase_util_Misc::callHook('t3rest','search_news_getJoins_hook',
-			array('join' => &$join, 'tableAliases' => $tableAliases), $this);
-		return $join;
-	}
+        // Hook to append other tables
+        tx_rnbase_util_Misc::callHook(
+            't3rest',
+            'search_news_getJoins_hook',
+            array('join' => &$join, 'tableAliases' => $tableAliases),
+            $this
+        );
+
+        return $join;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_News.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_News.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_News.php']);
 }

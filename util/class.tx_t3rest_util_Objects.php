@@ -28,43 +28,50 @@ tx_rnbase::load('tx_rnbase_util_Logger');
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_util_Objects {
-	/**
-	 * Wandelt ein record-Array in ein stdObject um.
-	 *
-	 * @param tx_rnbase_model_base $record
-	 * @param array $ignore
-	 * @return stdClass
-	 */
-	public static function record2StdClass($item, $ignore = array()) {
-		if(empty($ignore))
-			$ignore = self::getIgnoreFields();
-		$ignore = array_flip($ignore);
-		$ret = new stdClass();
-		if(!$item) {
-			//tx_rnbase_util_Logger::info("Item ist null", "t3rest", array('Trail'=>t3lib_div::debug_trail()));
-			return $ret;
-		}
-		foreach($item->getProperty() As $field => $value) {
-			if(!$field || array_key_exists($field, $ignore))
-				continue;
-			$ret->$field = $value;
-		}
-		foreach($item As $fieldName => $value) {
-			if(!$fieldName || array_key_exists($fieldName, $ignore))
-				continue;
-			if($fieldName == 'record')
-				continue;
-			$ret->$fieldName = $value;
-		}
-		return $ret;
-	}
-	/**
-	 * Liefert TYPO3 Felder, die man eigentlich nicht benötigt
-	 * @return array
-	 */
-	public static function getIgnoreFields() {
-		return array('hidden', 'deleted', 'pid','crdate','cruser_id','sorting');
-	}
-}
+class tx_t3rest_util_Objects
+{
+    /**
+     * Wandelt ein record-Array in ein stdObject um.
+     *
+     * @param tx_rnbase_model_base $record
+     * @param array $ignore
+     * @return stdClass
+     */
+    public static function record2StdClass($item, $ignore = array())
+    {
+        if (empty($ignore)) {
+            $ignore = self::getIgnoreFields();
+        }
+        $ignore = array_flip($ignore);
+        $ret = new stdClass();
+        if (!$item) {
+            //tx_rnbase_util_Logger::info("Item ist null", "t3rest", array('Trail'=>t3lib_div::debug_trail()));
+            return $ret;
+        }
+        foreach ($item->getProperty() as $field => $value) {
+            if (!$field || array_key_exists($field, $ignore)) {
+                continue;
+            }
+            $ret->$field = $value;
+        }
+        foreach ($item as $fieldName => $value) {
+            if (!$fieldName || array_key_exists($fieldName, $ignore)) {
+                continue;
+            }
+            if ($fieldName == 'record') {
+                continue;
+            }
+            $ret->$fieldName = $value;
+        }
 
+        return $ret;
+    }
+    /**
+     * Liefert TYPO3 Felder, die man eigentlich nicht benötigt
+     * @return array
+     */
+    public static function getIgnoreFields()
+    {
+        return array('hidden', 'deleted', 'pid','crdate','cruser_id','sorting');
+    }
+}
