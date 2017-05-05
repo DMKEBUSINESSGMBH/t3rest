@@ -59,6 +59,21 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
      */
     public function handle(array $err)
     {
+        $accepted = $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandlerErrors'];
+        foreach ($err as $k1 => $value) {
+            // leave only configured errors!
+            if (!($value[0] & $accepted)) {
+                unset($err[$k1]);
+            }
+            // unset arguments from err array
+            unset($err[$k1][4]);
+            continue;
+        }
+
+        if (empty($err)) {
+            return null;
+        }
+
         return 'Sorry, an error happened: ' . var_export($err, true);
     }
 }
