@@ -102,7 +102,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
                     $cObj->cObjGetSingle($config[$colname], $config[$colname . '.'])
                 );
                 $cObj->setCurrentVal(false);
-            } else {
+            } elseif (!empty($config[$colname . '.'])) {
                 $item->setProperty(
                     $colname,
                     $cObj->stdWrap($value, $config[$colname . '.'])
