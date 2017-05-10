@@ -32,6 +32,7 @@
 interface Tx_T3rest_Router_InterfaceRouter
 {
     const METHOD_GET = 'get';
+    const METHOD_POST = 'post';
     const METHOD_PUT = 'put';
     const METHOD_DELETE = 'delete';
     const METHOD_HEAD = 'head';
