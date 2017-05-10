@@ -67,7 +67,7 @@ class Tx_T3rest_Model_Supplier extends stdClass
      */
     public function add($key, $value = null)
     {
-        if ($value === null) {
+        if (!is_scalar($key) && $value === null) {
             $value = $key;
             $node = &$this;
         } else {
