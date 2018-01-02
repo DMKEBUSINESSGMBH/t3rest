@@ -1,8 +1,9 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Rene Nitzsche
+ *  (c) 2012-2017 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,43 +23,52 @@
  ***************************************************************/
 
 /**
- * Utilty methods for DAM
+ * Utilty methods for FAL
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_util_DAM
+class tx_t3rest_util_FAL
 {
-    public static function getDamPictures($refUid, $refTable, $refField, $configurations, $confId, $fields = array())
+
+    public static function getFalPictures($refUid, $refTable, $refField, $configurations, $confId, $fields = array())
     {
         $picCfg = $configurations->getKeyNames($confId);
-        if (empty($fields)) {
-            $fields = array('uid','title','file_hash', 'tstamp');
+        if (empty($fields))
+            $fields = array(
+                'uid',
+                'title',
+                'file_hash',
+                'tstamp'
+            );
+        tx_rnbase::load('tx_rnbase_util_TSFAL');
+        $ret = [];
+        $files = tx_rnbase_util_TSFAL::fetchFiles($refTable, $refUid, $refField);
+        foreach ($files as $uid => $media) {
+            $ret[] = self::convertFal2StdClass($media->getProperty(), $configurations, $confId, $picCfg, $fields);
         }
-        tx_rnbase::load('tx_rnbase_util_TSDAM');
-        $ret = array();
-        $files = tx_rnbase_util_TSDAM::fetchFiles($refTable, $refUid, $refField);
-        foreach ($files['rows'] as $uid => $record) {
-            $ret[] = self::convertDAM2StdClass($record, $configurations, $confId, $picCfg, $fields);
-        }
-
         return $ret;
     }
-    public static function convertDAM2StdClass($record, $configurations, $confId, $picCfg, $fields = array())
+
+    public static function convertFal2StdClass($record, $configurations, $confId, $picCfg, $fields = array())
     {
-        if (empty($fields)) {
-            $fields = array('uid','title','file_hash', 'tstamp');
-        }
+        if (empty($fields))
+            $fields = array(
+                'uid',
+                'title',
+                'file_hash',
+                'tstamp'
+            );
         $data = new stdClass();
-        $filepath = $record['file_path'].$record['file_name'];
+        $filepath = $record['file_path'] . $record['file_name'];
         $data->filepath = $filepath;
         $server = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-        $data->absFilepath = $server.$filepath;
+        $data->absFilepath = $server . $filepath;
         $record['file'] = $filepath;
         // Bild skalieren
         $cObj = $configurations->getCObj(1);
         $cObj->data = $record;
         foreach ($picCfg as $picName) {
-            $data->$picName = $cObj->cObjGetSingle($configurations->get($confId.$picName), $configurations->get($confId.$picName.'.'));
+            $data->$picName = $cObj->cObjGetSingle($configurations->get($confId . $picName), $configurations->get($confId . $picName . '.'));
             if ($data->$picName) {
                 $data->$picName = $server . $data->$picName;
             }
@@ -66,11 +76,7 @@ class tx_t3rest_util_DAM
         foreach ($fields as $fieldName) {
             $data->$fieldName = $record[$fieldName];
         }
-
         return $data;
     }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_util_DAM.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_util_DAM.php']);
-}

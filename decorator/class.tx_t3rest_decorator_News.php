@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2016 Rene Nitzsche
+ *  (c) 2012-2017 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,7 +22,7 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_t3rest_decorator_Base');
-tx_rnbase::load('tx_t3rest_util_DAM');
+tx_rnbase::load('tx_t3rest_util_FAL');
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 /**
@@ -36,7 +36,7 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base
 
     protected function addDampictures($item, $configurations, $confId)
     {
-        $pics = tx_t3rest_util_DAM::getDamPictures($item->getUid(), 'tt_news', 'tx_damnews_dam_images', $configurations, $confId);
+        $pics = tx_t3rest_util_FAL::getFalPictures($item->getUid(), 'tt_news', 'tx_mktools_fal_images', $configurations, $confId);
         $item->setProperty('dampictures', $pics);
     }
 
