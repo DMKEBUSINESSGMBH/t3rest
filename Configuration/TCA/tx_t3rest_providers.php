@@ -11,7 +11,7 @@ return array(
         'enablecolumns' => array(
             'disabled' => 'hidden',
         ),
-        'iconfile' => tx_rnbase_util_Extensions::extRelPath('t3rest') . 'icon_table.gif',
+        'iconfile' => 'EXT:t3rest/icon_table.gif',
     ),
     'interface' => array(
         'showRecordFieldList' => 'hidden,starttime,fe_group,name'
@@ -61,6 +61,7 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'size' => 7,
                 'maxitems' => 20,
                 'items' => array(

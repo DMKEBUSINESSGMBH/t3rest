@@ -91,7 +91,7 @@ abstract class tx_t3rest_decorator_Base
             // Add dynamic columns
             $keys = $configurations->getUniqueKeysNames($conf);
             foreach ($keys as $key) {
-                if (t3lib_div::isFirstPartOfStr($key, 'dc') && !isset($record[$key])) {
+                if (Tx_Rnbase_Utility_Strings::isFirstPartOfStr($key, 'dc') && !isset($record[$key])) {
                     $item->setProperty($key, $conf[$key]);
                 }
             }
@@ -123,9 +123,9 @@ abstract class tx_t3rest_decorator_Base
         $paramExternals = $configurations->getParameters()->get('externals');
         $externals = array();
         if (is_array($paramExternals) && array_key_exists($this->getDecoratorId(), $paramExternals)) {
-            $externals = t3lib_div::trimExplode(',', $paramExternals[$this->getDecoratorId()]);
+            $externals = Tx_Rnbase_Utility_Strings::trimExplode(',', $paramExternals[$this->getDecoratorId()]);
         }
-        $externals = array_unique(array_merge($externals, t3lib_div::trimExplode(',', $configurations->get($confId.'record.externals'))));
+        $externals = array_unique(array_merge($externals, Tx_Rnbase_Utility_Strings::trimExplode(',', $configurations->get($confId.'record.externals'))));
         foreach ($externals as $external) {
             if (!in_array($external, $known)) {
                 continue;
@@ -152,7 +152,7 @@ abstract class tx_t3rest_decorator_Base
     protected function getIgnoreFields($configurations, $confId)
     {
         $ignoreFields = $configurations->get($confId.'record.ignoreFields');
-        $ignoreFields = $ignoreFields ? t3lib_div::trimExplode(',', $ignoreFields) : array();
+        $ignoreFields = $ignoreFields ? Tx_Rnbase_Utility_Strings::trimExplode(',', $ignoreFields) : array();
 
         return array_merge($ignoreFields, tx_t3rest_util_Objects::getIgnoreFields());
     }

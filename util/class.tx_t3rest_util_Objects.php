@@ -45,7 +45,6 @@ class tx_t3rest_util_Objects
         $ignore = array_flip($ignore);
         $ret = new stdClass();
         if (!$item) {
-            //tx_rnbase_util_Logger::info("Item ist null", "t3rest", array('Trail'=>t3lib_div::debug_trail()));
             return $ret;
         }
         foreach ($item->getProperty() as $field => $value) {

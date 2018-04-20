@@ -116,9 +116,6 @@ class tx_t3rest_cache_CacheHandlerDefault
         $key = $this->generateKey($providerData);
         $out = $cache->get($key);
 
-//t3lib_div::debug(array($configurations->getPluginId(), $configurations->cObj->data), $confId.' - class.tx_rnbase_action_CacheHandlerDefault.php Line: ' . __LINE__); // TODO: remove me
-//t3lib_div::debug($out, $key.' - From CACHE class.tx_rnbase_action_CacheHandlerDefault.php Line: ' . __LINE__); // TODO: remove me
-
         return $out;
     }
 }

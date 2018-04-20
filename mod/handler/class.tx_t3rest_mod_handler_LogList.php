@@ -53,12 +53,12 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
      */
     public function handleRequest(tx_rnbase_mod_IModule $mod)
     {
-        $submitted = t3lib_div::_GP('sendmsg');
+        $submitted = tx_rnbase_parameters::getPostOrGetParameter('sendmsg');
         if (!$submitted) {
             return '';
         }
 
-        $this->data = t3lib_div::_GP('data');
+        $this->data = tx_rnbase_parameters::getPostOrGetParameter('data');
 
         $mod->addMessage('###LABEL_MESSAGE_SENT###', 'Hinweis', 0);
     }

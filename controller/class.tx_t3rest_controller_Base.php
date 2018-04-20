@@ -202,7 +202,7 @@ class tx_t3rest_controller_Base
     {
         $ts = $providerData->getConfig();
         // This handles ts setup from flexform
-        $tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+        $tsParser = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
         // Man muss vorher selbst nach Includes suchen. Typisch TYPO3... :-/
         $ts = $tsParser->checkIncludeLines($ts);
         $tsParser->parse($ts);
@@ -222,8 +222,7 @@ class tx_t3rest_controller_Base
     }
     protected function init()
     {
-        tslib_eidtools::connectDB(); //Connect to database
-        tslib_eidtools::initTCA();
+        tx_rnbase_util_TCA::loadTCA('');
         tx_rnbase_util_Misc::prepareTSFE();
     }
 

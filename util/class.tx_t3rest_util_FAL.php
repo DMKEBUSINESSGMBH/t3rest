@@ -61,7 +61,7 @@ class tx_t3rest_util_FAL
         $data = new stdClass();
         $filepath = $record['file_path'] . $record['file_name'];
         $data->filepath = $filepath;
-        $server = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+        $server = Tx_Rnbase_Utility_T3General::getIndpEnv('TYPO3_SITE_URL');
         $data->absFilepath = $server . $filepath;
         $record['file'] = $filepath;
         // Bild skalieren

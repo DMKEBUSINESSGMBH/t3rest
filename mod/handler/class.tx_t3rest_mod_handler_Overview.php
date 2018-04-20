@@ -59,12 +59,12 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
      */
     public function handleRequest(tx_rnbase_mod_IModule $mod)
     {
-        $submitted = t3lib_div::_GP('change');
+        $submitted = tx_rnbase_parameters::getPostOrGetParameter('change');
         if (!$submitted) {
             return '';
         }
 
-        $this->data = t3lib_div::_GP('data');
+        $this->data = tx_rnbase_parameters::getPostOrGetParameter('data');
 
         // Daten übernehmen
         $options['type'] = 'ses';
