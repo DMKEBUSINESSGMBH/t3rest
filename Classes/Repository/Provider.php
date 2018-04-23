@@ -75,8 +75,18 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
 
         // load the tca
         if (empty($GLOBALS['TCA']) || empty($GLOBALS['TCA'][$options['basetable']])) {
-            tx_rnbase::load('tx_rnbase_util_TCA');
-            tx_rnbase_util_TCA::loadTCA($options['basetable']);
+            // normally the TCA will be loaded in TYPO3 8 automatically but not
+            // not when the connectToDB Hook is executed. That's why load the TCA ourselves.
+            // In TYPO3 9 could be changes which would make this workaround obsolete.
+            // @todo check when updating to TYPO3 9
+            if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+                $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+                $bootstrap->loadBaseTca();
+                $bootstrap->loadExtensionTables();
+            } else {
+                tx_rnbase::load('tx_rnbase_util_TCA');
+                tx_rnbase_util_TCA::loadTCA($options['basetable']);
+            }
         }
 
         return parent::search($fields, $options);

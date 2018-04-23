@@ -37,11 +37,11 @@ class Tx_T3rest_Controller_Json extends Tx_T3rest_Controller_AbstractController
     /**
      * register the through routine, to transform the return value to json.
      *
-     * @param Tx_T3rest_Router_Respect $router
+     * @param Tx_T3rest_Router_InterfaceRouter $router
      * @return void
      */
     protected function prepareRoutines(
-        Tx_T3rest_Router_Respect $router
+        Tx_T3rest_Router_InterfaceRouter $router
     ) {
         parent::prepareRoutines($router);
 

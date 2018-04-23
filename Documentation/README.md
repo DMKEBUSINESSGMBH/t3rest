@@ -144,6 +144,9 @@ könnte das Ergebnis dann so aussehen:
     }
 ```
 
+### POST Daten abfragen
+Um in einem Provider die gesamten POST Daten abzufragen, kann die Methode $this->getRawRequestBody() genutzt werden.
+
 ## Transformer
 
 Ein Transformer ist dafür zuständig die Rohdaten der Provider
