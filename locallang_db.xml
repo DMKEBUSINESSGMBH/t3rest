@@ -8,7 +8,7 @@
         <languageKey index="default" type="array">
             <label index="tx_t3rest_providers">T3rest provider</label>
             <label index="tx_t3rest_providers_name">Name</label>
-            <label index="tx_t3rest_providers_restkey">REST key</label>
+            <label index="tx_t3rest_providers_restkey">REST key (obsolete)</label>
             <label index="tx_t3rest_providers_classname">PHP Class name of provider</label>
             <label index="tx_t3rest_providers_config">Configuration</label>
 

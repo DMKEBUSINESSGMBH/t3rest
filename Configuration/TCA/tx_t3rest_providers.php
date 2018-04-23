@@ -44,7 +44,7 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
-                'eval' => 'required,trim',
+                'eval' => 'trim',
             )
         ),
         'classname' => array(
