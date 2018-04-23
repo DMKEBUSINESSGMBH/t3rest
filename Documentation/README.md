@@ -1,4 +1,4 @@
-#T3REST - REST for TYPO3
+# T3REST - REST for TYPO3
 
 Mit dieser Extension kann man ein
 REST-Interface für TYPO3 bereitstellen.
@@ -17,9 +17,9 @@ Aktiviert die neue REST-API. Andernfalls werden die URL's vom TYPO3 verarbeitet.
 
 **restApiUriPath**
 
-Der Pfad, anhand die Extension erkennt, ob es sich um eine REST-Anfrage handelt.  
+Der Pfad, anhand die Extension erkennt, ob es sich um eine REST-Anfrage handelt.
 T3REST prüft beim Aufruf die URLs. Beginnt die REQUEST_URI mit diesem Pfadsegment,
-so wird T3REST aktiv und verarbeitet die Routen.  
+so wird T3REST aktiv und verarbeitet die Routen.
 Ist beispielsweise rest-api konfiguriert, so werden alle Aufrufe
 von domain.net/rest-api/* an den Router weiter gegeben.
 
@@ -32,7 +32,7 @@ muss hier die PID des Storages angegeben werden, wo sich die fe_users Datensätz
 
 Der zu verwendende Controller. Dieser wird angesteuert,
 wenn der restApiUriPath übereinstimmt. Der Controller kümmert sich
-um das Registrieren der Routen über die Provider.  
+um das Registrieren der Routen über die Provider.
 Aktuell ist ein JSON Controller implementiert,
 der die Rückgabewerte der Provider als JSON ausliefert.
 
@@ -40,7 +40,7 @@ der die Rückgabewerte der Provider als JSON ausliefert.
 
 Der zu verwendende Router. Dieser wird vom Controller angesteuert
 und verarbeitet die aktuelle REQUEST_URI mit
-den von den Providern konfigurierten Routen.  
+den von den Providern konfigurierten Routen.
 Aktuell wird nur eine Route für
 das [Respect\Rest](http://respect.github.io/Rest/) Framework mitgeliefert.
 
@@ -58,13 +58,13 @@ Mehr dazu unter [Authentifizierung](#authentifizierung)
 ### Datensatz konfiguration
 
 Für einen neuen Provider muss im TYPO3 zunächst
-ein Datensatz vom Typ *T3rest provider* angelegt werden.  
-Das Feld *Name* ist lediglich zur Wiedererkennung in der Listenansicht.  
+ein Datensatz vom Typ *T3rest provider* angelegt werden.
+Das Feld *Name* ist lediglich zur Wiedererkennung in der Listenansicht.
 Das Feld *REST key* wird für die obsolete API verwendet und spiegelt die Action wieder.
-Für die neue API ist dieses Feld nicht erforderlich.  
+Für die neue API ist dieses Feld nicht erforderlich.
 Im Feld *Configuration* kann über die TypoScript Notation
 eine Konfiguration abgelegt werden,
-welche dem Provider zur Verfügung gestellt wird.  
+welche dem Provider zur Verfügung gestellt wird.
 In das Feld *Classname* ist der Klassenname des Providers einzutragen.
 
 
@@ -120,7 +120,7 @@ die Suche durchführt, die Daten aufbereitet und zurück gibt:
                 'search.news.'
             );
         }
-        
+
         $return = Tx_T3rest_Utility_Factory::getSupplier();
         return $return->add('items', $news);
     }
@@ -202,11 +202,11 @@ welche zugriff auf die API erhalten soll.
 ```
 
 Die Providerklasse muss jede zu schützende Route
-an die AuthFeUser Routine koppeln.  
-Diese Routine kümmert sich um den Login des Nutzers, 
+an die AuthFeUser Routine koppeln.
+Diese Routine kümmert sich um den Login des Nutzers,
 prüft anschließend die Zugriffsberechtigung über die Nutzergruppen
 und liefert ggf. einen 401 zurück.
 
-Ein FE-Nutzer kann entweder über den fe_typo_user Cookie 
-oder über den Authorization Header mit Nutzer-Passwort-Daten angemeldet werden.  
+Ein FE-Nutzer kann entweder über den fe_typo_user Cookie
+oder über den Authorization Header mit Nutzer-Passwort-Daten angemeldet werden.
 Die Daten müssen dann bei jedem Request erneut mitgesendet werden.
