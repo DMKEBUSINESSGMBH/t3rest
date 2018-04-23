@@ -176,6 +176,7 @@ Der Transformer kann zum einen im Providerdatensatz
 
 
 <a id="authentifizierung" />
+
 ## Authentifizierung
 
 Die Authentifizierung ist aktuell über FE-user-Datensätze gelöst.
