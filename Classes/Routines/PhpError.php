@@ -74,6 +74,10 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
             return null;
         }
 
+        // @todo make configurable
+        \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
+            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500
+        );
         return 'Sorry, an error happened: ' . var_export($err, true);
     }
 }
