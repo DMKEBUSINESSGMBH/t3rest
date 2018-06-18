@@ -45,6 +45,13 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
     private $rawRequestBody = null;
 
     /**
+     *
+     * @var Tx_T3rest_Routines_Auth_Ip
+     */
+    protected $ipAuthentication;
+
+
+    /**
      * a transformer instance
      *
      * @return Tx_T3rest_Transformer_InterfaceTransformer
@@ -90,6 +97,23 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
         }
 
         return $this->auth;
+    }
+
+    /**
+     * a instance od the auth IP routine
+     *
+     * @return Tx_T3rest_Routines_Auth_Ip
+     */
+    protected function getAuthIpRoutine()
+    {
+        if ($this->ipAuthentication === null) {
+            $this->ipAuthentication = tx_rnbase::makeInstance(
+                'Tx_T3rest_Routines_Auth_Ip',
+                $this->getProvider()->getConfigurations()->get('allowedIps.')
+            );
+        }
+
+        return $this->ipAuthentication;
     }
 
     /**

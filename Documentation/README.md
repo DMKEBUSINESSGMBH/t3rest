@@ -182,7 +182,26 @@ Der Transformer kann zum einen im Providerdatensatz
 
 ## Authentifizierung
 
-Die Authentifizierung ist aktuell über FE-user-Datensätze gelöst.
+Die möglichen Authentifizierungs-Routinen können auch kombiniert werden.
+
+```php
+
+    /**
+     * initializes the router.
+     *
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        $route = $router->addRoute(...);
+        $this->getAuthIpRoutine()->prepareRoute($route);
+        $this->getAuthFeUserRoutine()->prepareRoute($route);
+    }
+```
+
+### über FE Nutzer
+Dafür werden FE-User-Datensätze genutzt.
 Im Providerdatensatz kann eine Gruppe hinterlegt werden,
 welche zugriff auf die API erhalten soll.
 
@@ -214,3 +233,35 @@ und liefert ggf. einen 401 zurück.
 Ein FE-Nutzer kann entweder über den fe_typo_user Cookie
 oder über den Authorization Header mit Nutzer-Passwort-Daten angemeldet werden.
 Die Daten müssen dann bei jedem Request erneut mitgesendet werden.
+
+### über IP
+Im Providerdatensatz kann in der Konfiguration im Pfad allowedIps. ein Array von erlaubten IPs konfiguriert werden.
+
+```typoscript
+
+    allowedIps{
+        0 = 1.2.3.4
+        1 = 4.5.*
+    }
+```
+
+Die Providerklasse muss jede zu schützende Route an die AuthIp Routine koppeln.
+Diese Routine kümmert sich um die Prüfung und liefert ggf. einen 401 zurück.
+
+```php
+    /**
+     * initializes the router.
+     *
+     * @return void
+     */
+    public function prepareRouter(
+        Tx_T3rest_Router_InterfaceRouter $router
+    ) {
+        $this->getAuthIpRoutine()->prepareRoute(
+            $router->addRoute(
+                $router::METHOD_GET,
+                '/news/edit/*',
+                array($this, 'getEdit')
+            )
+        );
+    }
