@@ -1,7 +1,7 @@
 {
     "name": "dmk/t3rest",
     "description": "Provides a REST interface for TYPO3.",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "type": "typo3-cms-extension",
     "keywords": [
         "TYPO3 CMS",
