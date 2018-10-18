@@ -109,7 +109,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
         if ($this->ipAuthentication === null) {
             $this->ipAuthentication = tx_rnbase::makeInstance(
                 'Tx_T3rest_Routines_Auth_Ip',
-                $this->getProvider()->getConfigurations()->get('allowedIps.')
+                (array) $this->getProvider()->getConfigurations()->get('allowedIps.')
             );
         }
 
