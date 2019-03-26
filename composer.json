@@ -27,7 +27,7 @@
     },
     "require": {
         "digedag/rn-base" : ">=1.7.1",
-        "typo3/cms": ">=6.2.0 <=8.7.99"
+        "typo3/cms": ">=6.2.0 <=9.5.99"
     },
     "replace": {
         "typo3-ter/t3rest": "*"
