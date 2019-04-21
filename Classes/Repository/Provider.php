@@ -82,7 +82,13 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
             if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
                 $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
                 $bootstrap->loadBaseTca();
-                $bootstrap->loadExtensionTables();
+
+                if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+                    $bootstrap::loadExtTables();
+                } else {
+                    $bootstrap->loadExtensionTables();
+                }
+
             } else {
                 tx_rnbase::load('tx_rnbase_util_TCA');
                 tx_rnbase_util_TCA::loadTCA($options['basetable']);
