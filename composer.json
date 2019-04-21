@@ -32,7 +32,13 @@
     "replace": {
         "typo3-ter/t3rest": "*"
     },
+    "require-dev": {
+        "nimut/testing-framework": "*"
+    },
     "autoload": {
+        "psr-4": {
+            "DMK\\T3rest\\": "Classes"
+        },
         "classmap": [
             "cache/",
             "Classes/",
@@ -47,5 +53,10 @@
             "srv/",
             "util/"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DMK\\T3rest\\Tests\\": "Tests"
+        }
     }
 }
