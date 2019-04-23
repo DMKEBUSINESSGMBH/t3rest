@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
@@ -50,7 +51,7 @@ class AuthResolverTest extends UnitTestCase
         $body->write('{"user": "foo", "pass": "bar", "logintype": "login"}');
         $body->rewind();
 
-        $request = new ServerRequest('api/login', 'POST', $body);
+        $request = new ServerRequest('/t3rest/login', 'POST', $body);
         $requestHandler = new class implements RequestHandlerInterface
         {
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -68,5 +69,34 @@ class AuthResolverTest extends UnitTestCase
         $this->assertSame('foo', $_POST['user']);
         $this->assertSame('bar', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
+
+        fclose($fp);
+    }
+
+    /**
+     * @test
+     */
+    public function testNoProcessIfUriDoesNotMatch()
+    {
+        $request = new ServerRequest('/not/a/rest/api/endpoint', 'GET');
+        $requestHandler = new class implements RequestHandlerInterface
+        {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return new NullResponse();
+            }
+        };
+        $authMiddleware = $this->getMockBuilder(AuthResolver::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getParsedBody'])
+            ->getMock();
+        $authMiddleware
+            ->expects($this->never())
+            ->method('getParsedBody');
+
+        $response = $authMiddleware->process($request, $requestHandler);
+
+        $this->assertTrue($response instanceof ResponseInterface);
+        $this->assertSame('', $response->getBody()->getContents());
     }
 }

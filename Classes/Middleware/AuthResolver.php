@@ -34,8 +34,8 @@ class AuthResolver implements MiddlewareInterface
         \Psr\Http\Server\RequestHandlerInterface $handler
     ): \Psr\Http\Message\ResponseInterface {
 
-        // the hook is not enabled, skip!
-        if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
+        // if hook is not enabled or uri is not an api call, proceed with next handler!
+        if (!Tx_T3rest_Utility_Config::isRestHookEnabled() || !$this->isApiCall($request)) {
             return $handler->handle($request);
         }
         $requestBody = $this->getParsedBody($request);
@@ -47,6 +47,21 @@ class AuthResolver implements MiddlewareInterface
         $_POST['logintype'] = $requestBody['logintype'];
 
         return $handler->handle($this->addFeUserPid($request));
+    }
+
+    /**
+     * Check if API URI is first occurrence in request URI path.
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return bool
+     */
+    protected function isApiCall(ServerRequestInterface $request)
+    {
+        $requestUri = ltrim($request->getUri()->getPath(), '/');
+        $apiSegment = ltrim(Tx_T3rest_Utility_Config::getRestApiUriPath(), '/');
+
+        return strpos($requestUri, $apiSegment) === 0;
     }
 
     /**

@@ -41,6 +41,7 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
      */
     public function execute()
     {
+        //TODO: in T3 >= 9 this should be checked in the middleware
         if (!$this->isApiCall()) {
             return;
         }
