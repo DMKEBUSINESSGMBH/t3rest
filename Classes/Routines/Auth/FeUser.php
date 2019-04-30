@@ -130,17 +130,21 @@ class Tx_T3rest_Routines_Auth_FeUser implements
     }
 
     /**
-     * log in a user
+     * Log in a user.
      *
      * @return void
      */
     public function initUser()
     {
-        /* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        $tsFe = $GLOBALS['TSFE'];
+        $tsFe = $this->getFrontendController();
 
-        // there is allready a user, skip multiple init calls.
+        // there is already a user, skip multiple init calls.
         if (is_object($tsFe->fe_user) && is_array($tsFe->fe_user->user) && $tsFe->fe_user->user['uid']) {
+            //In TYPO3 9 the groups for fe users are not initialized yet.
+            if (tx_rnbase_util_TYPO3::isTYPO90OrHigher() && empty($tsFe->fe_user->groupData['uid'])) {
+                $tsFe->initUserGroups();
+            }
+
             return;
         }
 
@@ -165,22 +169,24 @@ class Tx_T3rest_Routines_Auth_FeUser implements
         }
 
         // init groups, if required
-        if ($this->feGroups && !$tsFe->gr_list) {
+        if ($this->feGroups && !$tsFe->gr_list ||
+            (tx_rnbase_util_TYPO3::isTYPO90OrHigher() && empty($tsFe->fe_user->groupData['uid']))
+        ) {
             $tsFe->initUserGroups();
         }
     }
 
     /**
-     * check user access to a route
+     * Check user access to a route.
      *
      * @return bool
      */
     public function checkAccess()
     {
-        /* @var $tsFe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        $tsFe = $GLOBALS['TSFE'];
+        $tsFe = $this->getFrontendController();
 
-        $hasAccess = true;
+        //check if fe user auth has failed and that an user exists.
+        $hasAccess = ($tsFe->fe_user->loginFailure !== true && $tsFe->fe_user->user !== null);
         if ($this->feGroups) {
             $hasAccess = $tsFe->checkPageGroupAccess(
                 array('fe_group' => $this->feGroups)
@@ -188,5 +194,13 @@ class Tx_T3rest_Routines_Auth_FeUser implements
         }
 
         return $hasAccess;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 }
