@@ -106,4 +106,14 @@ final class Tx_T3rest_Utility_Config
     {
         return self::getExtConf('restApiRouter') ?: 'Tx_T3rest_Router_Respect';
     }
+
+    /**
+     * returns if Basic Auth header should be send
+     *
+     * @return bool
+     */
+    public static function isBasicAuthHeaderEnabled()
+    {
+        return (bool)self::getExtConf('isBasicAuthHeaderEnabled');
+    }
 }

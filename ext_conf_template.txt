@@ -1,6 +1,8 @@
   # cat=restapi//10; type=boolean; label= Enable TSFE-Hook for new REST-API by URL segment
 restEnableHook = 0
 
+# cat=restapi//10; type=boolean; label= Enable sending of Basic HTTP Authentification header (Basic Auth popup by browser will show up)
+isBasicAuthHeaderEnabled = 1
 
   # cat=restapi//10; type=string; label= API URL segment: The server name for the REST-API. The API request is only processed if the SERVER_NAME matches this Domain. Leave empty to skip this chek an use restApiUriPath only.
 #restApiServerName =

@@ -121,7 +121,9 @@ class Tx_T3rest_Routines_Auth_FeUser implements
         }
 
         // no access, don't process the route!
-        header('WWW-Authenticate: Basic realm="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"');
+        if (Tx_T3rest_Utility_Config::isBasicAuthHeaderEnabled()) {
+            header('WWW-Authenticate: Basic realm="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"');
+        }
         \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
             \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
         );
