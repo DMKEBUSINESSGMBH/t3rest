@@ -7,6 +7,8 @@ use DMK\T3rest\Request\BodyParserInterface;
 use DMK\T3rest\Request\JsonBodyParser;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use tx_rnbase;
+use tx_rnbase_util_Logger;
 use Tx_T3rest_Utility_Config;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -21,7 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AuthResolver implements MiddlewareInterface
 {
-
     /**
      * Process an incoming server request.
      *
@@ -73,7 +74,25 @@ class AuthResolver implements MiddlewareInterface
      */
     protected function getParsedBody(ServerRequestInterface $request)
     {
-        return $this->getBodyParser()->parseBody($request);
+        $result = [];
+        try {
+            $result = $this->getBodyParser()->parseBody($request);
+        } catch (\InvalidArgumentException $argumentException) {
+            tx_rnbase::load('tx_rnbase_util_Logger');
+            tx_rnbase_util_Logger::warn(
+                sprintf(
+                    '%s: could not parse body as JSON: %s',
+                    __CLASS__,
+                    $argumentException->getMessage()
+                ),
+                't3rest',
+                [
+                    'exception' => $argumentException
+                ]
+            );
+        }
+
+        return $result;
     }
 
     /**
