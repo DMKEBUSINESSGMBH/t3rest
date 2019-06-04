@@ -22,6 +22,7 @@ use Respect\Rest\Routes\AbstractRoute;
  * @method \Respect\Rest\Routes\AbstractRoute delete(\string $path, $routeTarget)
  * @method \Respect\Rest\Routes\AbstractRoute head(\string $path, $routeTarget)
  * @method \Respect\Rest\Routes\AbstractRoute options(\string $path, $routeTarget)
+ * @method \Respect\Rest\Routes\AbstractRoute patch(\string $path, $routeTarget)
  * @method \Respect\Rest\Routes\AbstractRoute any(\string $path, $routeTarget)
  */
 class Router
@@ -290,6 +291,8 @@ class Router
             $route->appendRoutine($routine);
         }
 
+        $this->sortRoutesByComplexity();
+
         return $this;
     }
 
@@ -467,7 +470,7 @@ class Router
      *
      * @param string $method  The HTTP metod (GET, POST, etc)
      * @param string $path    The URI Path (/foo/bar...)
-     * @param string $intance An instance of Routinable
+     * @param string $instance An instance of Routinable
      *
      * @return Respect\Rest\Routes\Instance The route created
      */
@@ -528,7 +531,6 @@ class Router
     public function routeDispatch()
     {
         $this->applyVirtualHost();
-        $this->sortRoutesByComplexity();
 
         $matchedByPath  = $this->getMatchedRoutesByPath();
         $allowedMethods = $this->getAllowedMethods(
@@ -537,7 +539,7 @@ class Router
 
         //OPTIONS? Let's inform the allowd methods
         if ($this->request->method === 'OPTIONS' && $allowedMethods) {
-            header('Allow: '.implode(', ', $allowedMethods));
+            $this->handleOptionsRequest($allowedMethods, $matchedByPath);
         } elseif (0 === count($matchedByPath)) {
             header('HTTP/1.1 404');
         } elseif (!$this->routineMatch($matchedByPath) instanceof Request) {
@@ -557,6 +559,7 @@ class Router
     public function run(Request $request = null)
     {
         $route = $this->dispatchRequest($request);
+
         if (
             !$route
             || (isset($request->method)
@@ -579,7 +582,7 @@ class Router
     /**
      * Creates and returns a static route
      *
-     * @param string $method      The HTTP metod (GET, POST, etc)
+     * @param string $method      The HTTP method (GET, POST, etc)
      * @param string $path        The URI Path (/foo/bar...)
      * @param string $staticValue Some static value to be printed
      *
@@ -593,7 +596,7 @@ class Router
         return $route;
     }
 
-    /** Appliesthe virtualHost prefix on the current request */
+    /** Applies the virtualHost prefix on the current request */
     protected function applyVirtualHost()
     {
         if ($this->virtualHost) {
@@ -610,7 +613,7 @@ class Router
      *
      * @param Request       $request Some request
      * @param AbstractRoute $route   Some route
-     * @param array         $param   A list of URI params
+     * @param array         $params   A list of URI params
      *
      * @see Respect\Rest\Request::$params
      *
@@ -648,7 +651,7 @@ class Router
     /**
      * Sends an Allow header with allowed methods from a list
      *
-     * @param array $allowedMehods A list of allowed methods
+     * @param array $allowedMethods A list of allowed methods
      *
      * @return null sends an Allow header.
      */
@@ -661,7 +664,7 @@ class Router
      * Informs the PHP environment of a not allowed method alongside
      * its allowed methods for that path
      *
-     * @param array $allowedMehods A list of allowed methods
+     * @param array $allowedMethods A list of allowed methods
      *
      * @return null sends HTTP Status Line and Allow header.
      */
@@ -675,6 +678,26 @@ class Router
 
         $this->informAllowedMethods($allowedMethods);
         $this->request->route = null;
+    }
+
+    /**
+     * Handles a OPTIONS request, inform of the allowed methods and
+     * calls custom OPTIONS handler (if any).
+     *
+     * @param array $allowedMethods A list of allowed methods
+     * @param \SplObjectStorage $matchedByPath A list of matched routes by path
+     *
+     * @return null sends Allow header.
+     */
+    protected function handleOptionsRequest(array $allowedMethods, \SplObjectStorage $matchedByPath)
+    {
+        $this->informAllowedMethods($allowedMethods);
+
+        if (in_array('OPTIONS', $allowedMethods)) {
+            $this->routineMatch($matchedByPath);
+        } else {
+            $this->request->route = null;
+        }
     }
 
     /**
@@ -722,7 +745,7 @@ class Router
     /**
      * Checks if a route matches its routines
      *
-     * @param SplObjectStorage $matchedByPath A list of routes matched by path
+     * @param \SplObjectStorage $matchedByPath A list of routes matched by path
      *
      * @return bool true if route matches its routines
      */
@@ -756,20 +779,24 @@ class Router
             function ($a, $b) {
                 $a = $a->pattern;
                 $b = $b->pattern;
-                $pi = AbstractRoute::PARAM_IDENTIFIER;
 
-                //Compare similarity and ocurrences of "/"
-                if (Router::compareRoutePatterns($a, $b, '/')) {
-                    return 1;
-
-                //Compare similarity and ocurrences of /*
-                } elseif (Router::compareRoutePatterns($a, $b, $pi)) {
+                //Compare similarity and ocurrences of "/**"
+                if (Router::compareRoutePatterns($a, $b,
+                        AbstractRoute::CATCHALL_IDENTIFIER))
                     return -1;
 
-                //Hard fallback for consistency
-                } else {
+                //Compare similarity and ocurrences of "/*"
+                elseif (Router::compareRoutePatterns($a, $b,
+                        AbstractRoute::PARAM_IDENTIFIER))
+                    return -1;
+
+                //Compare for "/" without wildcards
+                elseif (Router::compareRoutePatterns(
+                        preg_replace('#(/\*+)*$#', '', $a),
+                        preg_replace('#(/\*+)*$#', '', $b), '/'))
                     return 1;
-                }
+
+                return 0;
             }
         );
     }

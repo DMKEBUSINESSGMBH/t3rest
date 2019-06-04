@@ -7,30 +7,30 @@ namespace Respect\Rest;
  */
 class LegacyRequestTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    function setUp() 
     {
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP';
         $_SERVER['REQUEST_URI'] = '/';
         $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
-    public function test_casting_to_string_returns_response()
+    function test_casting_to_string_returns_response()
     {
         $request = new Request;
-        $request->route = new Routes\Callback('GET', '/', function () {
+        $request->route = new Routes\Callback('GET', '/', function() {
             return 'ok';
         });
         $this->assertEquals('ok', (string) $request);
     }
 
-    public function test_unsynced_param_comes_as_null()
+    function test_unsynced_param_comes_as_null()
     {
         $request = new Request;
-        $request->route = new Routes\Callback('GET', '/', function ($bar) {
+        $request->route = new Routes\Callback('GET', '/', function($bar) {
             return 'ok';
         });
         $args = array();
-        $request->route->appendRoutine($routine = new Routines\By(function ($foo, $bar, $baz) use (&$args) {
+        $request->route->appendRoutine($routine = new Routines\By(function($foo, $bar, $baz) use (&$args){
             $args = func_get_args();
         }));
         $dummy=array('bar');

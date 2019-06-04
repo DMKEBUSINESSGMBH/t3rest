@@ -1,17 +1,17 @@
 [
     {
         "name": "respect/rest",
-        "version": "0.6.0",
-        "version_normalized": "0.6.0.0",
+        "version": "0.6.1",
+        "version_normalized": "0.6.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Respect/Rest.git",
-            "reference": "4f60aa199623d738a3391ca1e80bafb754bc9308"
+            "reference": "72cde63b78143b706011ed2e54c581705f107b71"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Respect/Rest/zipball/4f60aa199623d738a3391ca1e80bafb754bc9308",
-            "reference": "4f60aa199623d738a3391ca1e80bafb754bc9308",
+            "url": "https://api.github.com/repos/Respect/Rest/zipball/72cde63b78143b706011ed2e54c581705f107b71",
+            "reference": "72cde63b78143b706011ed2e54c581705f107b71",
             "shasum": ""
         },
         "require": {
@@ -20,8 +20,13 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4.0"
         },
-        "time": "2015-01-12 09:55:16",
+        "time": "2019-03-22T17:26:19+00:00",
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.6-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {

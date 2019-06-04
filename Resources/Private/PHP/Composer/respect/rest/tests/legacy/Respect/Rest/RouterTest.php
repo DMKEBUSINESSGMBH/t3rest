@@ -2,9 +2,7 @@
 
 namespace Respect\Rest {
 
-    class DummyRoute extends \DateTime implements Routable
-    {
-    }
+    class DummyRoute extends \DateTime implements Routable {}
     /**
      * @covers Respect\Rest\Router
      * @covers Respect\Rest\Request
@@ -42,7 +40,7 @@ namespace Respect\Rest {
      */
     class NewRouterTest extends \PHPUnit_Framework_TestCase
     {
-        public function setUp()
+        function setUp()
         {
             $_SERVER['SERVER_PROTOCOL'] = 'HTTP';
             $_SERVER['REQUEST_URI'] = '/';
@@ -58,143 +56,119 @@ namespace Respect\Rest {
             global $header;
             $header = array();
         }
-        public function test_magic_call_should_throw_exception_with_just_one_arg()
+        function test_magic_call_should_throw_exception_with_just_one_arg()
         {
             $this->setExpectedException('InvalidArgumentException');
             $this->router->thisIsAnInvalidMagicCallWithOnlyOneArg('foo');
         }
 
-        public function test_magic_call_should_throw_exception_with_zero_args()
+        function test_magic_call_should_throw_exception_with_zero_args()
         {
             $this->setExpectedException('InvalidArgumentException');
             $this->router->thisIsAnInvalidMagicCallWithOnlyOneArg();
         }
 
-        public function test_magic_call_with_closure_should_create_callback_route()
+        function test_magic_call_with_closure_should_create_callback_route()
         {
-            $route = $this->router->thisIsAMagicCall('/some/path', function () {
-            });
+            $route = $this->router->thisIsAMagicCall('/some/path', function() {});
             $this->assertInstanceOf('Respect\Rest\Routes\Callback', $route);
         }
-        public function test_magic_call_with_func_name_should_create_callback_route()
+        function test_magic_call_with_func_name_should_create_callback_route()
         {
             $route = $this->router->thisIsAMagicCall('/some/path', 'strlen');
             $this->assertInstanceOf('Respect\Rest\Routes\Callback', $route);
         }
-        public function test_magic_call_with_object_instance_should_create_instance_route()
+        function test_magic_call_with_object_instance_should_create_instance_route()
         {
             $route = $this->router->thisIsAMagicCall(
                 '/some/path', new DummyRoute
             );
             $this->assertInstanceOf('Respect\Rest\Routes\Instance', $route);
         }
-        public function test_magic_call_with_class_name_should_return_classname_route()
+        function test_magic_call_with_class_name_should_return_classname_route()
         {
             $route = $this->router->thisIsAMagicCall(
                 '/some/path', 'DateTime'
             );
             $this->assertInstanceOf('Respect\Rest\Routes\ClassName', $route);
         }
-        public function test_magic_call_with_class_callback_should_return_factory_route()
+        function test_magic_call_with_class_callback_should_return_factory_route()
         {
             $route = $this->router->thisIsAMagicCall(
                 '/some/path', 'DateTime', array(new \Datetime, 'format')
             );
             $this->assertInstanceOf('Respect\Rest\Routes\Factory', $route);
         }
-        public function test_magic_call_with_class_with_constructor_should_return_class_route()
+        function test_magic_call_with_class_with_constructor_should_return_class_route()
         {
             $route = $this->router->thisIsAMagicCall(
                 '/some/path', 'DateTime', array('2989374983')
             );
             $this->assertInstanceOf('Respect\Rest\Routes\ClassName', $route);
         }
-        public function test_magic_call_with_some_static_value()
+        function test_magic_call_with_some_static_value()
         {
             $route = $this->router->thisIsAMagicCall(
                 '/some/path', array('foo')
             );
             $this->assertInstanceOf('Respect\Rest\Routes\StaticValue', $route);
         }
-        public function test_destructor_runs_router_automatically_when_protocol_is_present()
+        function test_destructor_runs_router_automatically_when_protocol_is_present()
         {
-            $this->router->get('/**', function () {
-                return 'ok';
-            });
+            $this->router->get('/**', function(){ return 'ok'; });
             $this->router->isAutoDispatched = true;
             ob_start();
             unset($this->router);
             $response = ob_get_clean();
             $this->assertEquals('ok', $response);
         }
-        public function test_dispatch_non_existing_route()
+        function test_dispatch_non_existing_route()
         {
             global $header;
-            $this->router->any('/', function () {
-            });
+            $this->router->any('/', function() {});
             $this->router->dispatch('get', '/my/name/is/hall');
             $this->assertContains('HTTP/1.1 404', $header);
             $this->assertNotContains('HTTP/1.1 405', $header);
         }
-        public function test_method_not_allowed_header()
+        function test_method_not_allowed_header()
         {
             global $header;
-            $this->router->get('/', function () {
-                return 'ok';
-            });
-            $this->router->put('/', function () {
-                return 'ok';
-            });
+            $this->router->get('/', function() { return 'ok'; });
+            $this->router->put('/', function() { return 'ok'; });
             $this->router->dispatch('delete', '/');
             $this->assertContains('HTTP/1.1 405', $header);
             $this->assertContains('Allow: GET, PUT', $header);
         }
-        public function test_bad_request_header()
+        function test_bad_request_header()
         {
             global $header;
-            $this->router->get('/', function () {
-                return 'ok';
-            })->when(function () {
-                return false;
-            });
+            $this->router->get('/', function() { return 'ok'; })->when(function(){return false;});
             $this->router->dispatch('get', '/');
             $this->assertContains('HTTP/1.1 400', $header);
         }
-        public function test_method_not_allowed_header_with_conneg()
+        function test_method_not_allowed_header_with_conneg()
         {
             global $header;
-            $this->router->get('/', function () {
-                return 'ok';
-            })
-                         ->accept(array('text/html' => function ($d) {
-                             return $d;
-                         }));
+            $this->router->get('/', function() { return 'ok'; })
+                         ->accept(array('text/html' => function($d) {return $d;}));
             $this->router->dispatch('delete', '/');
             $this->assertContains('HTTP/1.1 405', $header);
             $this->assertContains('Allow: GET', $header);
         }
-        public function test_transparent_options_allow_methods()
+        function test_transparent_options_allow_methods()
         {
             global $header;
-            $this->router->get('/', function () {
-                return 'ok';
-            });
-            $this->router->post('/', function () {
-                return 'ok';
-            });
+            $this->router->get('/', function() { return 'ok'; });
+            $this->router->post('/', function() { return 'ok'; });
             $this->router->dispatch('options', '/');
             $this->assertNotContains('HTTP/1.1 405', $header);
             $this->assertContains('Allow: GET, POST', $header);
         }
-        public function test_transparent_global_options_allow_methods()
+        function test_transparent_global_options_allow_methods()
         {
             global $header;
-            $this->router->get('/', function () {
-                return 'ok';
-            });
-            $this->router->post('/', function () {
-                return 'ok';
-            });
+            $this->router->get('/', function() { return 'ok'; });
+            $this->router->post('/', function() { return 'ok'; });
             $this->router->dispatch('options', '*');
             $this->assertNotContains('HTTP/1.1 405', $header);
             $this->assertContains('Allow: GET, POST', $header);
@@ -202,13 +176,11 @@ namespace Respect\Rest {
         /**
          * @ticket 45
          */
-        public function test_method_overriding()
+        function test_method_overriding()
         {
             $this->router->methodOverriding = true;
             $_REQUEST['_method'] = 'PUT';
-            $this->router->put('/', function () {
-                return 'ok';
-            });
+            $this->router->put('/', function() { return 'ok'; });
             $response = $this->router->run(new Request('POST', '/'));
             $this->assertEquals('ok', (string) $response);
             $this->router->methodOverriding = false;
@@ -216,63 +188,47 @@ namespace Respect\Rest {
         /**
          * @ticket 45
          */
-        public function test_invalid_method_overriding_with_get()
+        function test_invalid_method_overriding_with_get()
         {
             global $header;
             $this->router->methodOverriding = true;
             $_REQUEST['_method'] = 'PUT';
-            $this->router->put('/', function () {
-                return 'ok';
-            });
+            $this->router->put('/', function() { return 'ok'; });
             $response = $this->router->run(new Request('GET', '/'));
             $this->assertNotEquals('ok', (string) $response);
             $this->assertContains('HTTP/1.1 405', $header);
             $this->router->methodOverriding = false;
         }
-        public function test_method_not_acceptable()
+        function test_method_not_acceptable()
         {
             global $header;
-            $this->router->get('/', function () {
-                return 'ok';
-            })
-                         ->accept(array('foo/bar' => function ($d) {
-                             return $d;
-                         }));
+            $this->router->get('/', function() { return 'ok'; })
+                         ->accept(array('foo/bar' => function($d) {return $d;}));
             $this->router->dispatch('get', '/');
             $this->assertContains('HTTP/1.1 406', $header);
             $this->assertContains('Allow: GET', $header);
         }
-        public function test_append_routine_honours_routine_chaining()
+        function test_append_routine_honours_routine_chaining()
         {
-            $this->router->get('/one-time', function () {
-                return "one-time";
-            })
-                ->appendRoutine(new Routines\Through(function ($data) {
-                    return function ($data) {
-                        return "$data-through1";
-                    };
-                }))
-                ->through(function ($data) {
-                    return function ($data) {
-                        return "$data-through2";
-                    };
-                });
+            $this->router->get('/one-time', function() { return "one-time"; })
+                ->appendRoutine(new Routines\Through(function ($data) {return function ($data) { return "$data-through1";};}))
+                ->through(function ($data) {return function ($data) {return "$data-through2";};});
             $response = $this->router->dispatch('GET', '/one-time');
             $this->assertEquals('one-time-through1-through2', $response);
         }
-        public function test_callback_gets_param_array()
+        function test_callback_gets_param_array()
         {
-            $this->router->get('/one-time/*', function ($frag, $param1, $param2) {
+            $this->router->get('/one-time/*', function($frag, $param1, $param2) {
                 return "one-time-$frag-$param1-$param2";
             }, array('addl','add2'));
             $response = $this->router->dispatch('GET', '/one-time/1');
             $this->assertEquals('one-time-1-addl-add2', $response);
         }
-        public function test_http_method_head()
+        function test_http_method_head()
         {
             global $header;
             $expectedHeader = 'X-Burger: With Cheese!';
-            $this->router->get('/', function () use ($expectedHeader) {
+            $this->router->get('/', function() use ($expectedHeader) {
                 header($expectedHeader);
                 return 'ok';
             });
@@ -281,74 +237,64 @@ namespace Respect\Rest {
             $this->assertEquals('ok', (string) $getResponse);
             $this->assertContains($expectedHeader, $header);
         }
-        public function test_http_method_head_with_classes_and_routines()
+        function test_http_method_head_with_classes_and_routines()
         {
             global $header;
             $expectedHeader = 'X-Burger: With Cheese!';
             $this->router->get('/', __NAMESPACE__.'\\HeadTest', array($expectedHeader))
-                         ->when(function () {
-                             return true;
-                         });
+                         ->when(function(){return true;});
             $headResponse = $this->router->dispatch('HEAD', '/');
             $getResponse  = $this->router->dispatch('GET', '/');
             $this->assertEquals('ok', $getResponse->response());
             $this->assertContains($expectedHeader, $header);
         }
-        public function test_user_agent_class()
+        function test_user_agent_class()
         {
             $u = new KnowsUserAgent(array('*' => function () {
-                //        print_r(\func_get_args());
+        //        print_r(\func_get_args());
             }));
 
-            $this->assertFalse($u->knowsCompareItems('a', 'b'));
-            $this->assertFalse($u->knowsCompareItems('c', 'b'));
-            $this->assertTrue($u->knowsCompareItems(1, '1'));
-            $this->assertTrue($u->knowsCompareItems('0', ''));
-            $this->assertTrue($u->knowsCompareItems('a', '*'));
+            $this->assertFalse($u->knowsCompareItems('a','b'));
+            $this->assertFalse($u->knowsCompareItems('c','b'));
+            $this->assertTrue($u->knowsCompareItems(1,'1'));
+            $this->assertTrue($u->knowsCompareItems('0',''));
+            $this->assertTrue($u->knowsCompareItems('a','*'));
         }
 
-        public function test_user_agent_content_negotiation()
+        function test_user_agent_content_negotiation()
         {
             $_SERVER['HTTP_USER_AGENT'] = 'FIREFOX';
             $this->router->get('/', function () {
                 return 'unknown';
             })->userAgent(array(
-                'FIREFOX' => function () {
-                    return 'FIREFOX';
-                },
-                'IE' => function () {
-                    return 'IE';
-                },
+                'FIREFOX' => function() { return 'FIREFOX'; },
+                'IE' => function() { return 'IE'; },
             ));
             $response = $this->router->dispatch('GET', '/');
             $this->assertEquals('FIREFOX', $response);
         }
-        public function test_user_agent_content_negotiation_fallback()
+        function test_user_agent_content_negotiation_fallback()
         {
             $_SERVER['HTTP_USER_AGENT'] = 'FIREFOX';
             $this->router->get('/', function () {
                 return 'unknown';
             })->userAgent(array(
-                '*' => function () {
-                    return 'IE';
-                },
+                '*' => function() { return 'IE'; },
             ));
             $response = $this->router->dispatch('GET', '/');
             $this->assertEquals('IE', $response);
         }
-        public function test_stream_routine()
+        function test_stream_routine()
         {
             $done                            = false;
             $self                            = $this;
             $request                         = new Request('GET', '/input');
             $_SERVER['HTTP_ACCEPT_ENCODING'] = 'deflate';
-            $this->router->get('/input', function () {
-                return fopen('php://input', 'r+');
-            })
+            $this->router->get('/input', function() { return fopen('php://input', 'r+'); })
                          ->acceptEncoding(array(
-                            'deflate' => function ($stream) use ($self, &$done) {
+                            'deflate' => function($stream) use ($self, &$done) {
                                 $done = true;
-                                $self->assertTrue(is_resource($stream));
+                                $self->assertInternalType('resource', $stream);
                                 stream_filter_append($stream, 'zlib.deflate', STREAM_FILTER_READ);
                                 return $stream; //now deflated on demand
                             }
@@ -365,69 +311,64 @@ namespace Respect\Rest {
          * @group issues
          * @ticket 37
         **/
-        public function test_optional_parameter_in_class_routes()
-        {
+        function test_optional_parameter_in_class_routes(){
             $r = new Router();
             $r->any('/optional/*', __NAMESPACE__.'\\MyOptionalParamRoute');
             $response = $r->dispatch('get', '/optional')->response();
             $this->assertEquals('John Doe', (string) $response);
         }
 
-        public function test_optional_parameter_in_function_routes()
-        {
+        function test_optional_parameter_in_function_routes(){
             $r = new Router();
-            $r->any('/optional/*', function ($user=null) {
+            $r->any('/optional/*', function($user=null){
                 return $user ?: 'John Doe';
             });
             $response = $r->dispatch('get', '/optional')->response();
             $this->assertEquals('John Doe', (string) $response);
         }
 
-        public function test_optional_parameter_in_function_routes_multiple()
-        {
+        function test_optional_parameter_in_function_routes_multiple(){
             $r = new Router();
-            $r->any('/optional', function () {
+            $r->any('/optional', function(){
                 return 'No User';
             });
-            $r->any('/optional/*', function ($user=null) {
+            $r->any('/optional/*', function($user=null){
                 return $user ?: 'John Doe';
             });
             $response = $r->dispatch('get', '/optional')->response();
             $this->assertEquals('No User', (string) $response);
         }
-        public function test_two_optional_parameters_in_function_routes()
-        {
+        function test_two_optional_parameters_in_function_routes(){
             $r = new Router();
-            $r->any('/optional/*/*', function ($user=null, $list=null) {
+            $r->any('/optional/*/*', function($user=null, $list=null){
                 return $user . $list;
             });
             $response = $r->dispatch('get', '/optional/Foo/Bar')->response();
             $this->assertEquals('FooBar', (string) $response);
         }
-        public function test_two_optional_parameters_one_passed_in_function_routes()
-        {
+        function test_two_optional_parameters_one_passed_in_function_routes(){
             $r = new Router();
-            $r->any('/optional/*/*', function ($user=null, $list=null) {
+            $r->any('/optional/*/*', function($user=null, $list=null){
                 return $user . $list;
             });
             $response = $r->dispatch('get', '/optional/Foo')->response();
             $this->assertEquals('Foo', (string) $response);
         }
-        public function test_single_last_param()
+        function test_single_last_param()
         {
             $r = new Router();
             $args = array();
-            $r->any('/documents/*', function ($documentId) use (&$args) {
+            $r->any('/documents/*', function($documentId) use (&$args) {
                 $args = func_get_args();
             });
             $r->dispatch('get', '/documents/1234')->response();
             $this->assertEquals(array('1234'), $args);
         }
-        public function test_single_last_param2()
+        function test_single_last_param2()
         {
             $r = new Router();
             $args = array();
-            $r->any('/documents/**', function ($documentsPath) use (&$args) {
+            $r->any('/documents/**', function($documentsPath) use (&$args) {
                 $args = func_get_args();
             });
             $r->dispatch('get', '/documents/foo/bar')->response();
@@ -439,15 +380,15 @@ namespace Respect\Rest {
          * Catchall route called with / only would not get passed a parameter
          * to the callback function.
          */
-        public function test_catchall_on_root_call_should_get_callback_parameter()
+        function test_catchall_on_root_call_should_get_callback_parameter()
         {
             $r = new Router();
             $args = array();
-            $r->any('/**', function ($documentsPath) use (&$args) {
+            $r->any('/**', function($documentsPath) use (&$args) {
                 $args = func_get_args();
             });
             $r->dispatch('get', '/')->response();
-            $this->assertTrue(\is_array($args[0]));
+            $this->assertInternalType('array', $args[0]);
         }
 
         /**
@@ -467,7 +408,7 @@ namespace Respect\Rest {
             $this->assertEquals($e, (string) $response);
         }
 
-        public static function provider_content_type()
+        static function provider_content_type()
         {
             return array(
                 array('text/html'),
@@ -478,7 +419,7 @@ namespace Respect\Rest {
          * @dataProvider provider_content_type
          * @ticket 44
          */
-        public function test_automatic_content_type_header($ctype)
+        function test_automatic_content_type_header($ctype)
         {
             global $header;
             $_SERVER['HTTP_ACCEPT'] = $ctype;
@@ -493,7 +434,7 @@ namespace Respect\Rest {
          * @dataProvider provider_content_type
          * @ticket 44
          */
-        public function test_wildcard_automatic_content_type_header($ctype)
+        function test_wildcard_automatic_content_type_header($ctype)
         {
             global $header;
             $_SERVER['HTTP_ACCEPT'] = '*/*';
@@ -504,22 +445,20 @@ namespace Respect\Rest {
             $r = $r->dispatch('get', '/auto')->response();
             $this->assertContains('Content-Type: '.$ctype, $header);
         }
-        public function test_request_forward()
+        function test_request_forward()
         {
             $r = new Router();
             $r1 = $r->get('/route1', 'route1');
             $response = $r->dispatch('get', '/route1')->response();
-            $this->assertEquals('route1', $response);
+            $this->assertEquals('route1',$response);
             $r2 = $r->get('/route2', 'route2');
             $response = $r->dispatch('get', '/route2')->response();
-            $this->assertEquals('route2', $response);
-            $r2->by(function () use ($r1) {
-                return $r1;
-            });
+            $this->assertEquals('route2',$response);
+            $r2->by(function() use ($r1) { return $r1;});
             $response = $r->dispatch('get', '/route2')->response();
-            $this->assertEquals('route1', $response);
+            $this->assertEquals('route1',$response);
         }
-        public static function provider_content_type_extension()
+        static function provider_content_type_extension()
         {
             return array(
                 array('text/html','.html'),
@@ -527,21 +466,15 @@ namespace Respect\Rest {
                 array('text/xml','.xml')
             );
         }
-        public function test_negotiate_acceptable_complete_headers()
+        function test_negotiate_acceptable_complete_headers()
         {
             global $header;
             $_SERVER['REQUEST_URI'] = '/accept';
             $_SERVER['HTTP_ACCEPT'] = 'foo/bar';
             $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '13375p34|<';
-            $this->router->get('/accept', function () {
-                return 'ok';
-            })
-                         ->accept(array('foo/bar' => function ($d) {
-                             return $d;
-                         }))
-                         ->acceptLanguage(array('13375p34|<' => function ($d) {
-                             return $d;
-                         }));
+            $this->router->get('/accept', function() { return 'ok'; })
+                         ->accept(array('foo/bar' => function($d) {return $d;}))
+                         ->acceptLanguage(array('13375p34|<' => function($d) {return $d;}));
             $this->router->dispatch('get', '/accept');
             $this->assertContains('Content-Type: foo/bar', $header);
             $this->assertContains('Content-Language: 13375p34|<', $header);
@@ -551,30 +484,22 @@ namespace Respect\Rest {
             $this->assertContains('Expires: Thu, 01 Jan 1980 00:00:00 GMT', $header);
             $this->assertContains('Cache-Control: max-age=86400', $header);
         }
-        public function test_accept_content_type_header()
+        function test_accept_content_type_header()
         {
             global $header;
             $_SERVER['HTTP_ACCEPT'] = 'foo/bar';
-            $this->router->get('/', function () {
-                return 'ok';
-            })
-                         ->accept(array('foo/bar' => function ($d) {
-                             return $d;
-                         }));
+            $this->router->get('/', function() { return 'ok'; })
+                         ->accept(array('foo/bar' => function($d) {return $d;}));
             $this->router->dispatch('get', '/');
             $this->assertContains('Content-Type: foo/bar', $header);
             $this->assertRegExp('/Vary: negotiate,.*accept(?!-)/', implode("\n", $header));
         }
-        public function test_accept_content_language_header()
+        function test_accept_content_language_header()
         {
             global $header;
             $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '13375p34|<';
-            $this->router->get('/', function () {
-                return 'ok';
-            })
-                         ->acceptLanguage(array('13375p34|<' => function ($d) {
-                             return $d;
-                         }));
+            $this->router->get('/', function() { return 'ok'; })
+                         ->acceptLanguage(array('13375p34|<' => function($d) {return $d;}));
             $this->router->dispatch('get', '/');
             $this->assertContains('Content-Language: 13375p34|<', $header);
             $this->assertRegExp('/Vary: negotiate,.*accept-language/', implode("\n", $header));
@@ -583,7 +508,7 @@ namespace Respect\Rest {
          * @dataProvider provider_content_type_extension
          * @ticket 44
          */
-        public function test_do_not_set_automatic_content_type_header_for_extensions($ctype, $ext)
+        function test_do_not_set_automatic_content_type_header_for_extensions($ctype, $ext)
         {
             global $header;
             $header = array();
@@ -599,42 +524,41 @@ namespace Respect\Rest {
         /**
          * @covers \Respect\Rest\Routes\AbstractRoute
          */
-        public function test_optional_parameters_should_be_allowed_only_at_the_end_of_the_path()
+        function test_optional_parameters_should_be_allowed_only_at_the_end_of_the_path()
         {
             $r = new Router();
-            $r->get('/users/*/photos/*', function ($username, $photoId=null) {
+            $r->get('/users/*/photos/*', function($username, $photoId=null) {
                 return 'match';
             });
             $response = $r->dispatch('get', '/users/photos')->response();
             $this->assertNotEquals('match', $response);
         }
-        public function test_route_ordering_with_when()
+        function test_route_ordering_with_when()
         {
+
             $when = false;
             $r = new Router();
 
-            $r->get('/', 'HOME');
+            $r->get('/','HOME');
 
-            $r->get('/users', function () {
+            $r->get('/users',function(){
                 return 'users';
             });
 
-            $r->get('/users/*', function ($userId) {
+            $r->get('/users/*',function($userId){
                 return 'user-'.$userId;
-            })->when(function ($userId) use (&$when) {
+            })->when(function($userId) use (&$when){
                 $when = true;
                 return is_numeric($userId) && $userId > 0;
             });
 
-            $r->get('/docs', function () {
-                return 'DOCS!';
-            });
+            $r->get('/docs', function() {return 'DOCS!';});
             $response = $r->dispatch('get', '/users/1')->response();
 
             $this->assertTrue($when);
             $this->assertEquals('user-1', $response);
         }
-        public function test_when_should_be_called_only_on_existent_methods()
+        function test_when_should_be_called_only_on_existent_methods()
         {
             $_SERVER['HTTP_ACCEPT'] = 'application/json';
 
@@ -649,37 +573,34 @@ namespace Respect\Rest {
             $out = (string) $router->run(new \Respect\Rest\Request('get', '/meow/blub')); // ReflectionException
 
             $this->assertEquals('"ok: blub"', $out);
+
         }
         
-        public function test_request_should_be_available_from_router_after_dispatching()
+        function test_request_should_be_available_from_router_after_dispatching()
         {
             $request = new \Respect\Rest\Request('get', '/foo');
             $router = new \Respect\Rest\Router();
             $router->isAutoDispatched = false;
             $phpunit = $this;
-            $router->get('/foo', function () use ($router, $request, $phpunit) {
+            $router->get('/foo', function() use ($router, $request, $phpunit) {
                 $phpunit->assertSame($request, $router->request);
                 return spl_object_hash($router->request);
             });
             $out = $router->run($request);
             $this->assertEquals($out, spl_object_hash($request));
         }
+
     }
-    class RouteKnowsGet implements \Respect\Rest\Routable
-    {
-        public function get($param)
-        {
+    class RouteKnowsGet implements \Respect\Rest\Routable {
+        public function get($param) {
             return "ok: $param";
         }
     }
-    class RouteKnowsNothing implements \Respect\Rest\Routable
-    {
+    class RouteKnowsNothing implements \Respect\Rest\Routable {
     }
 
-    class KnowsUserAgent extends Routines\UserAgent
-    {
-        public function knowsCompareItems($requested, $provided)
-        {
+    class KnowsUserAgent extends Routines\UserAgent {
+        public function knowsCompareItems($requested, $provided) {
             return $this->authorize($requested, $provided);
         }
     }
@@ -687,6 +608,7 @@ namespace Respect\Rest {
     if (!class_exists(__NAMESPACE__.'\\MyOptionalParamRoute')) {
         class MyOptionalParamRoute implements Routable
         {
+
             public function get($user=null)
             {
                 return $user ?: 'John Doe';
@@ -724,9 +646,8 @@ namespace Respect\Rest {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header)) {
+            if (!$replace && isset($header))
                 return;
-            }
 
             $header[$string] = $string;
         }
@@ -738,9 +659,8 @@ namespace Respect\Rest\Routines {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header)) {
+            if (!$replace && isset($header))
                 return;
-            }
 
             $header[$string] = $string;
         }

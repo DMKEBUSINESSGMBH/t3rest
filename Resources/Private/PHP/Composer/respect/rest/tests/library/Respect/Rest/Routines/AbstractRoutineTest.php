@@ -30,9 +30,7 @@ class AbstractRoutineTest extends \PHPUnit_Framework_TestCase
     public function provide_valid_constructor_arguments()
     {
         return array(
-            array(function () {
-                return 'Hello';
-            }), // an anonymous function
+            array(function() { return 'Hello'; }), // an anonymous function
             array(array('DateTime', 'createFromFormat')), // a class-method callable pair
             array(new InstanceWithInvoke), // instance of a callable class
             array('Stubs\Routines\WhenAlwaysTrue') // a callable class name

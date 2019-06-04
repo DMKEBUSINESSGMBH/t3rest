@@ -2,7 +2,6 @@
 namespace Respect\Rest\Routines;
 
 use Respect\Rest\Request;
-
 /**
  * @covers Respect\Rest\Routines\ContentType
  * @author Nick Lombard <github@jigsoft.co.za>
@@ -21,13 +20,10 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new ContentType(array(
-            'text/html' => function () {
-                return 'from html callback';
-            },
-            'application/json' => function () {
-                return 'from json callback';
-            },
+            'text/html' => function (){return 'from html callback';},
+            'application/json' => function (){return 'from json callback';},
         ));
+
     }
 
     /**

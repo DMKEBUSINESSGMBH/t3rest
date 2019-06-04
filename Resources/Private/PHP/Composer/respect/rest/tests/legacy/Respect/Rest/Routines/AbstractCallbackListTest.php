@@ -1,6 +1,7 @@
 <?php
 namespace Respect\Rest\Routines;
 
+
 /**
  * @covers Respect\Rest\Routines\AbstractCallbackList
  * @author Nick Lombard <github@jigsoft.co.za>
@@ -13,9 +14,7 @@ class AbstractCallbackListTest extends \PHPUnit_Framework_TestCase
     {
         $ar = array(
                 'a' => 'htmlentities',
-                'b' => function () {
-                    return true;
-                },
+                'b' => function () { return true; },
                 'c' => 'strpos',
                 'd' => 'this is invalid',
                 'e' => 'is_numeric',
@@ -34,7 +33,7 @@ class AbstractCallbackListTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteCallback()
     {
-        $this->assertEquals('&lt;p&gt;&lt;/p&gt;', $this->object->funkyExecuteCallback('a', array('<p></p>')));
+        $this->assertEquals('&lt;p&gt;&lt;/p&gt;',$this->object->funkyExecuteCallback('a',array('<p></p>')));
         $this->assertTrue($this->object->funkyExecuteCallback('b', array()));
         $this->assertFalse($this->object->funkyExecuteCallback('c', array('d','abc')));
         $this->assertTrue($this->object->funkyExecuteCallback('e', array(4)));
@@ -44,10 +43,10 @@ class AbstractCallbackListTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCallback()
     {
-        $this->assertTrue(is_callable($this->object->funkyGetCallback('a')));
-        $this->assertTrue(is_callable($this->object->funkyGetCallback('b')));
-        $this->assertTrue(is_callable($this->object->funkyGetCallback('c')));
-        $this->assertTrue(is_callable($this->object->funkyGetCallback('e')));
+        $this->assertInternalType('callable', $this->object->funkyGetCallback('a'));
+        $this->assertInternalType('callable', $this->object->funkyGetCallback('b'));
+        $this->assertInternalType('callable', $this->object->funkyGetCallback('c'));
+        $this->assertInternalType('callable', $this->object->funkyGetCallback('e'));
     }
     /**
      * @covers Respect\Rest\Routines\AbstractCallbackList::__construct
@@ -115,16 +114,18 @@ class AbstractCallbackListTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains('d', $a);
         $this->assertContains('e', $a);
     }
+
+
+
+
 }
 
-class FunkyAbstractCallbackList extends AbstractCallbackList
-{
-    public function funkyExecuteCallback($key, $params)
-    {
+class FunkyAbstractCallbackList extends AbstractCallbackList{
+    public function funkyExecuteCallback($key, $params) {
         return $this->executeCallback($key, $params);
     }
-    public function funkyGetCallback($key)
-    {
+    public function funkyGetCallback($key) {
         return $this->getCallback($key);
     }
 }
+

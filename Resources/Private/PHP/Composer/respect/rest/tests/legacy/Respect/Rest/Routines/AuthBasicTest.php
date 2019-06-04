@@ -7,8 +7,8 @@ namespace Respect\Rest\Routines {
  */
 use Respect\Rest\Router;
 
-class AuthBasicTest extends \PHPUnit_Framework_TestCase
-{
+class AuthBasicTest extends \PHPUnit_Framework_TestCase {
+
     private static $wantedParams;
     private $router;
 
@@ -17,7 +17,7 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(self::$wantedParams, func_get_args(), 'wrong arguments were passed to the routine\'s callback');
     }
 
-    public function setUp()
+    function setUp()
     {
         global $header;
         $header = array();
@@ -43,6 +43,7 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
      */
     public function test_pass_all_params_to_callback()
     {
+
         $user = 'John';
         $pass = 'Doe';
         $param1 = 'abc';
@@ -69,13 +70,13 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
     /*
      *  @covers Respect\Rest\Routines\AuthBasic::by
      */
-    public function test_http_auth_should_send_401_and_WWW_headers_when_authentication_fails()
+    function test_http_auth_should_send_401_and_WWW_headers_when_authentication_fails()
     {
         global $header;
 
-        $auth = function ($username, $password) {
-            return true;
-        };
+        $auth = function($username, $password) {
+                        return true;
+            };
         $this->router->get('/', 'ok')->authBasic("Test Realm", $auth);
         $this->router->dispatch('get', '/')->response();
         $this->assertContains('HTTP/1.1 401', $header);
@@ -85,14 +86,14 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
     /**
      *  @covers Respect\Rest\Routines\AuthBasic::by
      */
-    public function test_http_auth_should_allow_redirects_inside_auth_closure()
+    function test_http_auth_should_allow_redirects_inside_auth_closure()
     {
         global $header;
 
         $login = $this->router->get('/login', 'Login');
-        $auth = function ($username, $password) use ($login) {
-            return $login;
-        };
+        $auth = function($username, $password) use($login) {
+                    return $login;
+            };
         $this->router->get('/', 'ok')->authBasic("Test Realm", $auth);
         $response = $this->router->dispatch('get', '/')->response();
         $this->assertEquals('Login', $response);
@@ -103,20 +104,20 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
     /**
      *  @covers Respect\Rest\Routines\AuthBasic::by
      */
-    public function test_auth_basic_request_should_be_aware_of_Authorization_headers()
+    function test_auth_basic_request_should_be_aware_of_Authorization_headers()
     {
         global $header;
         $user           = 'John';
         $pass           = 'Doe';
         $checkpoint     = false;
         $_SERVER['HTTP_AUTHORIZATION'] = 'Basic ' . base64_encode($user.':'.$pass);
-        $this->router->get('/', 'ok')->authBasic("Test Realm", function ($username, $password) use (&$checkpoint, $user, $pass) {
-            if (($username == $user) && ($password == $pass)) {
-                $checkpoint = true;
-                return true;
-            }
-            return false;
-        });
+        $this->router->get('/', 'ok')->authBasic("Test Realm", function($username, $password) use (&$checkpoint, $user, $pass) {
+                        if (($username == $user) && ($password == $pass)) {
+                            $checkpoint = true;
+                            return true;
+                        }
+                        return false;
+                     });
         (string) $this->router->dispatch('GET', '/')->response();
         $this->assertTrue($checkpoint, 'Auth not run');
         $this->assertNotContains('HTTP/1.1 401', $header);
@@ -127,7 +128,7 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
     /**
      *  @covers Respect\Rest\Routines\AuthBasic::by
      */
-    public function test_auth_basic_authorized_should_be_aware_of_PHP_env_auth_variables()
+    function test_auth_basic_authorized_should_be_aware_of_PHP_env_auth_variables()
     {
         global $header;
         $user           = 'John';
@@ -135,13 +136,13 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
         $checkpoint     = false;
         $_SERVER['PHP_AUTH_USER'] = $user;
         $_SERVER['PHP_AUTH_PW']   = $pass;
-        $this->router->get('/', 'ok')->authBasic("Test Realm", function ($username, $password) use (&$checkpoint, $user, $pass) {
-            if (($username == $user) && ($password == $pass)) {
-                $checkpoint = true;
-                return true;
-            }
-            return false;
-        });
+        $this->router->get('/', 'ok')->authBasic("Test Realm", function($username, $password) use (&$checkpoint, $user, $pass) {
+                        if (($username == $user) && ($password == $pass)) {
+                            $checkpoint = true;
+                            return true;
+                        }
+                        return false;
+                     });
         (string) $this->router->dispatch('GET', '/')->response();
         $this->assertTrue($checkpoint, 'Auth not run');
         $this->assertNotContains('HTTP/1.1 401', $header);
@@ -152,7 +153,7 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
     /**
      *  @covers Respect\Rest\Routines\AuthBasic::by
      */
-    public function test_auth_basic_pass_all_parameters_to_routine()
+    function test_auth_basic_pass_all_parameters_to_routine()
     {
         global $header;
         $user = 'John';
@@ -162,7 +163,8 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
         $checkpoint = false;
         $_SERVER['PHP_AUTH_USER'] = $user;
         $_SERVER['PHP_AUTH_PW'] = $pass;
-        $this->router->get('/*/*', 'ok')->authBasic("Test Realm", function ($username, $password, $p1, $p2) use (&$checkpoint, $user, $pass, $param1, $param2) {
+        $this->router->get('/*/*', 'ok')->authBasic("Test Realm", function($username, $password, $p1, $p2) use (&$checkpoint, $user, $pass, $param1, $param2)
+        {
             if (($p1 === $param1) && $p2 === $param2) {
                 $checkpoint = true;
                 return true;
@@ -179,13 +181,13 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
      * @group issues
      * @ticket 49
      */
-    public function test_http_auth_should_send_401_and_WWW_headers_when_authBasic_returns_false()
+    function test_http_auth_should_send_401_and_WWW_headers_when_authBasic_returns_false()
     {
         global $header;
         $user = 'John';
         $pass = 'Doe';
         $_SERVER['HTTP_AUTHORIZATION'] = 'Basic ' . base64_encode($user.':'.$pass);
-        $this->router->get('/', 'ok')->authBasic('Test Realm', function ($username, $password) {
+        $this->router->get('/', 'ok')->authBasic('Test Realm', function($username, $password) {
             return (($username == 'user') && ($password == 'pass'));
         });
         (string) $this->router->dispatch('GET', '/')->response();
@@ -198,29 +200,26 @@ class AuthBasicTest extends \PHPUnit_Framework_TestCase
      * @covers Respect\Rest\Router::always
      * #64
      */
-    public function test_always_can_take_multiple_parameters_for_routine_constructor()
-    {
+    public function test_always_can_take_multiple_parameters_for_routine_constructor() {
         $this->assertEmpty(DummyRoutine::$result);
         $r3 = new \Respect\Rest\Router();
         $r3->always('dummyRoutine', 'arg1', 'arg2', 'arg3');
         $this->assertEquals('arg1, arg2, arg3', DummyRoutine::$result);
     }
 }
-class DummyRoutine implements Routinable
-{
+class DummyRoutine implements Routinable {
     public static $result = '';
-    public function __construct($param1, $param2, $param3)
-    {
+    public function __construct($param1, $param2, $param3) {
         static::$result = "$param1, $param2, $param3";
     }
+
 }
     if (!function_exists(__NAMESPACE__.'\\header')) {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header)) {
+            if (!$replace && isset($header))
                 return;
-            }
 
             $header[$string] = $string;
         }
@@ -232,9 +231,8 @@ namespace Respect\Rest {
         function header($string, $replace=true, $http_response_code=200)
         {
             global $header;
-            if (!$replace && isset($header)) {
+            if (!$replace && isset($header))
                 return;
-            }
 
             $header[$string] = $string;
         }

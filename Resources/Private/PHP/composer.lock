@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "e1ec6c6743475d97d99c29788be7882b",
+    "content-hash": "a1f97cac7ae4789184af37ae567d0fc4",
     "packages": [
         {
             "name": "respect/rest",
-            "version": "0.6.0",
+            "version": "0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Rest.git",
-                "reference": "4f60aa199623d738a3391ca1e80bafb754bc9308"
+                "reference": "72cde63b78143b706011ed2e54c581705f107b71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Rest/zipball/4f60aa199623d738a3391ca1e80bafb754bc9308",
-                "reference": "4f60aa199623d738a3391ca1e80bafb754bc9308",
+                "url": "https://api.github.com/repos/Respect/Rest/zipball/72cde63b78143b706011ed2e54c581705f107b71",
+                "reference": "72cde63b78143b706011ed2e54c581705f107b71",
                 "shasum": ""
             },
             "require": {
@@ -27,6 +27,11 @@
                 "phpunit/phpunit": "~4.4.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Respect\\": "library/Respect"
@@ -48,14 +53,14 @@
             ],
             "description": "Thin controller for RESTful applications",
             "homepage": "http://respect.li/",
-            "time": "2015-01-12 09:55:16"
+            "time": "2019-03-22T17:26:19+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": []

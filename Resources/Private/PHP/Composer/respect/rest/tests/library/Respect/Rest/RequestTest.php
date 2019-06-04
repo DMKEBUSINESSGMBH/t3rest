@@ -5,12 +5,12 @@ use Exception;
 use PHPUnit_Framework_TestCase;
 use ReflectionFunction;
 
-/**
- * @covers Respect\Rest\Request
+/** 
+ * @covers Respect\Rest\Request 
  */
 class RequestTest extends PHPUnit_Framework_TestCase
 {
-    /**
+    /** 
      * @covers  Respect\Rest\Request::__construct
      */
     public function testIsPossibleToConstructUsingValuesFromSuperglobals()
@@ -21,12 +21,12 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request;
 
         $this->assertEquals(
-            '/users',
-            $request->uri,
+            '/users', 
+            $request->uri, 
             'Should inherit the path from $_SERVER'
         );
         $this->assertEquals(
-            'GET',
+            'GET', 
             $request->method,
             'Should inherit the method from $_SERVER'
         );
@@ -34,7 +34,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         return $request;
     }
 
-    /**
+    /** 
      * @covers  Respect\Rest\Request::__construct
      */
     public function testIsPossibleToConstructWithCustomMethod()
@@ -45,18 +45,18 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request('PATCH');
 
         $this->assertNotEquals(
-            'NOTPATCH',
+            'NOTPATCH', 
             $request->method,
             'Should ignore $_SERVER if method was passed on constructor'
         );
         $this->assertEquals(
-            'PATCH',
+            'PATCH', 
             $request->method,
             'Should use constructor method'
         );
     }
 
-    /**
+    /** 
      * @covers  Respect\Rest\Request::__construct
      */
     public function testIsPossibleToConstructWithCustomUri()
@@ -67,19 +67,19 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(null, '/images');
 
         $this->assertNotEquals(
-            '/videos',
+            '/videos', 
             $request->uri,
             'Should ignore $_SERVER if path was passed on constructor'
         );
 
         $this->assertEquals(
-            '/images',
+            '/images', 
             $request->uri,
             'Should use constructor path'
         );
     }
 
-    /**
+    /** 
      * @covers      Respect\Rest\Request::__construct
      */
     public function testAbsoluteUrisShouldBeParsedToExtractThePathOnConstructor()
@@ -89,13 +89,13 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request('GET');
 
         $this->assertNotEquals(
-            'http://google.com/search?q=foo',
+            'http://google.com/search?q=foo', 
             $request->uri,
             'Absolute URI should not be on path' //See TODO below
         );
 
         $this->assertEquals(
-            '/search',
+            '/search', 
             $request->uri,
             'Path should be extracted from absolute URI'
         );
@@ -104,32 +104,28 @@ class RequestTest extends PHPUnit_Framework_TestCase
         //TODO same behavior for env vars and constructor params regarding parse_url
     }
 
-    /**
-     * @covers  Respect\Rest\Request::response
-     * @depends testIsPossibleToConstructUsingValuesFromSuperglobals
+    /** 
+     * @covers  Respect\Rest\Request::response 
+     * @depends testIsPossibleToConstructUsingValuesFromSuperglobals 
      */
     public function testResponseIsNullWithoutSettingARoute(Request $request)
     {
         $response = $request->response();
 
-        $this->assertSame(
-            null,
-            $response,
-            'Response should be null if no route is set'
-        );
+        $this->assertNull($response, 'Response should be null if no route is set');
 
         //TODO Request::response() should check if $this->route instanceof AbstractRoute
     }
 
-    /**
-     * @covers  Respect\Rest\Request::response
+    /** 
+     * @covers  Respect\Rest\Request::response 
      * @depends testIsPossibleToConstructUsingValuesFromSuperglobals
      */
     public function testRequestIsAbleToDeliverAResponseWithoutSettingPathParams(Request $request)
     {
         $request->route = $this->getMockForRoute(
-            'GET',
-            '/notebooks',
+            'GET', 
+            '/notebooks', 
             array('Vaio', 'MacBook', 'ThinkPad')
         );
         $response = $request->response();
@@ -141,16 +137,16 @@ class RequestTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers  Respect\Rest\Request::response
-     * @depends testIsPossibleToConstructUsingValuesFromSuperglobals
+    /** 
+     * @covers  Respect\Rest\Request::response 
+     * @depends testIsPossibleToConstructUsingValuesFromSuperglobals 
      */
     public function testRequestIsAbleToDeliverAResponseUsingPreviouslySetPathParams(Request $request)
     {
         $request->route = $this->getMockForRoute(
-            'GET',
-            '/printers',
-            'Some Printers Response',
+            'GET', 
+            '/printers', 
+            'Some Printers Response', 
             'GET',
             array('dpi', 'price')
         );
@@ -160,7 +156,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers  Respect\Rest\Request::forward
-     *
+     * 
      */
     public function testForwardReplacesRouteAndReturnsResponse()
     {
@@ -173,7 +169,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request->forward($forwardedRoute);
 
         $this->assertNotSame(
-            $inactiveRoute,
+            $inactiveRoute, 
             $request->route,
             'After forwarding a route, the previous one should not be in the route attribute'
         );
@@ -186,7 +182,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers       Respect\Rest\Request::response
-     * @depends      testForwardReplacesRouteAndReturnsResponse
+     * @depends      testForwardReplacesRouteAndReturnsResponse 
      * @dataProvider providerForUserImplementedForwards
      */
     public function testDeveloperCanForwardRoutesByReturningThemOnTheirImplementation(
@@ -202,14 +198,14 @@ class RequestTest extends PHPUnit_Framework_TestCase
     public function providerForUserImplementedForwards()
     {
         $internallyForwardedRoute = $this->getMockForRoute(
-            'GET',
-            '/candies/cupcakes',
+            'GET', 
+            '/candies/cupcakes', 
             'Delicious Cupcake Internally Forwarded'
         );
         $forwardWithTarget = $this->getMockForRoute(
-            'GET',
-            '/cupcakes',
-            function () use ($internallyForwardedRoute) {
+            'GET', 
+            '/cupcakes', 
+            function() use ($internallyForwardedRoute) {
                 return $internallyForwardedRoute;
             }
         );
@@ -250,11 +246,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
             $response,
             'Response should not be the protected content.'
         );
-        $this->assertSame(
-            false,
-            $response,
-            'Response should false when aborting response.'
-        );
+        $this->assertFalse($response, 'Response should false when aborting response.');
     }
 
     /**
@@ -264,16 +256,16 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $request = new Request('GET', '/logs');
         $route = $this->getMockForRoute(
-            'GET',
-            '/logs',
+            'GET', 
+            '/logs', 
             'user-deleted-something', // <-- Stub response, keep that in mind
-            'GET',
+            'GET', 
             $expectedParams = array()
         );
         $routine = $this->getMockForRoutine('ProxyableThrough');
         $routine->expects($this->once())
                 ->method('through')
-                ->will($this->returnValue(function ($thatLogStubReturnedAbove) {
+                ->will($this->returnValue(function($thatLogStubReturnedAbove) {
                     // Remember the stub response?
                     return str_replace('-', ' ', $thatLogStubReturnedAbove);
                 }));
@@ -299,10 +291,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request->params = $params;
 
         $route = $this->getMockForRoute(
-            'GET',
-            '/version',
+            'GET', 
+            '/version', 
             'MySoftwareName',
-            'GET',
+            'GET', 
             $params
         );
         foreach ($checkers as $checker) {
@@ -322,91 +314,91 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $params = array(15, 10, 5);
 
         $pureSynced = array(
-            function ($majorVersion, $minorVersion, $patchVersion) use ($phpUnit) {
+            function($majorVersion, $minorVersion, $patchVersion) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
                 $phpUnit->assertSame(10, $minorVersion);
                 $phpUnit->assertSame(5, $patchVersion);
             },
-            function ($patchVersion, $minorVersion, $majorVersion) use ($phpUnit) {
+            function($patchVersion, $minorVersion, $majorVersion) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
                 $phpUnit->assertSame(10, $minorVersion);
                 $phpUnit->assertSame(5, $patchVersion);
             },
-            function ($majorVersion) use ($phpUnit) {
+            function($majorVersion) use($phpUnit) {
                 $phpUnit->assertCount(1, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
             },
-            function () use ($phpUnit) {
+            function() use($phpUnit) {
                 $phpUnit->assertCount(0, func_get_args());
             },
         );
 
         $pureNulls = array(
-            function ($majorVersion, $minorVersion, $patchVersion) use ($phpUnit) {
+            function($majorVersion, $minorVersion, $patchVersion) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
-                $phpUnit->assertSame(null, $majorVersion);
-                $phpUnit->assertSame(null, $minorVersion);
-                $phpUnit->assertSame(null, $patchVersion);
+                $phpUnit->assertNull($majorVersion);
+                $phpUnit->assertNull($minorVersion);
+                $phpUnit->assertNull($patchVersion);
             },
-            function ($patchVersion, $minorVersion, $majorVersion) use ($phpUnit) {
+            function($patchVersion, $minorVersion, $majorVersion) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
-                $phpUnit->assertSame(null, $majorVersion);
-                $phpUnit->assertSame(null, $minorVersion);
-                $phpUnit->assertSame(null, $patchVersion);
+                $phpUnit->assertNull($majorVersion);
+                $phpUnit->assertNull($minorVersion);
+                $phpUnit->assertNull($patchVersion);
             },
-            function ($patchVersion, $minorVersion, $majorVersion) use ($phpUnit) {
+            function($patchVersion, $minorVersion, $majorVersion) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
-                $phpUnit->assertSame(null, $majorVersion);
-                $phpUnit->assertSame(null, $minorVersion);
-                $phpUnit->assertSame(null, $patchVersion);
+                $phpUnit->assertNull($majorVersion);
+                $phpUnit->assertNull($minorVersion);
+                $phpUnit->assertNull($patchVersion);
             },
-            function ($majorVersion) use ($phpUnit) {
+            function($majorVersion) use($phpUnit) {
                 $phpUnit->assertCount(1, func_get_args());
-                $phpUnit->assertSame(null, $majorVersion);
+                $phpUnit->assertNull($majorVersion);
             },
-            function () use ($phpUnit) {
+            function() use($phpUnit) {
                 $phpUnit->assertCount(0, func_get_args());
             },
         );
 
         $pureDefaults = array(
-            function ($majorVersion=15, $minorVersion=10, $patchVersion=5) use ($phpUnit) {
+            function($majorVersion=15, $minorVersion=10, $patchVersion=5) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
                 $phpUnit->assertSame(10, $minorVersion);
                 $phpUnit->assertSame(5, $patchVersion);
             },
-            function ($patchVersion=5, $minorVersion=10, $majorVersion=15) use ($phpUnit) {
+            function($patchVersion=5, $minorVersion=10, $majorVersion=15) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
                 $phpUnit->assertSame(10, $minorVersion);
                 $phpUnit->assertSame(5, $patchVersion);
             },
-            function ($majorVersion=15) use ($phpUnit) {
+            function($majorVersion=15) use($phpUnit) {
                 $phpUnit->assertCount(1, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
             },
-            function () use ($phpUnit) {
+            function() use($phpUnit) {
                 $phpUnit->assertCount(0, func_get_args());
             },
         );
 
         $mixed = array(
-            function ($majorVersion, $minorVersion, $patchVersion=5) use ($phpUnit) {
+            function($majorVersion, $minorVersion, $patchVersion=5) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
                 $phpUnit->assertSame(10, $minorVersion);
                 $phpUnit->assertSame(5, $patchVersion);
             },
-            function ($majorVersion=15, $minorVersion, $patchVersion) use ($phpUnit) {
+            function($majorVersion=15, $minorVersion, $patchVersion) use($phpUnit) {
                 $phpUnit->assertCount(3, func_get_args());
                 $phpUnit->assertSame(15, $majorVersion);
                 $phpUnit->assertSame(10, $minorVersion);
-                $phpUnit->assertSame(null, $patchVersion);
+                $phpUnit->assertNull($patchVersion);
             },
-            function () use ($phpUnit) {
+            function() use($phpUnit) {
                 $phpUnit->assertCount(0, func_get_args());
             },
         );
@@ -419,8 +411,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testConvertingToStringCallsResponse()
-    {
+    public function testConvertingToStringCallsResponse() {
         $request = $this->getMockForRequest('GET', '/users/alganet/lists', 'Some list items');
         $toString = (string) $request;
 
@@ -441,7 +432,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
                 ->will($this->returnValue($reflection->getParameters()));
         $routine->expects($this->any())
           ->method(strtolower($name))
-          ->will($this->returnCallback(function ($request, $params) use ($implementation) {
+          ->will($this->returnCallback(function($request, $params) use ($implementation) {
               return call_user_func_array($implementation, $params);
           }));
 
@@ -460,8 +451,8 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $constructorParams = array($method, $uri);
 
         $request = $this->getMock(
-            'Respect\Rest\Request',
-            $mockedMethods,
+            'Respect\Rest\Request', 
+            $mockedMethods, 
             $constructorParams
         );
 
@@ -474,7 +465,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         return $request;
     }
 
-    protected function getMockForRoute($method, $pattern, $target = null,
+    protected function getMockForRoute($method, $pattern, $target = null, 
         $targetMethod = 'GET', $targetParams = array())
     {
         $hasTarget = !is_null($target);
@@ -492,7 +483,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         );
 
         if ($hasTarget) {
-            if (is_callable($target)) {
+            if (is_callable($target)){
                 $performAction = $this->returnCallback($target);
             } else {
                 $performAction = $this->returnValue($target);
@@ -518,7 +509,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $interfaceName = 'GeneratedInterface'.md5(rand());
 
         $interfaceList = (array) $interfaceList;
-        array_walk($interfaceList, function (&$interfaceSuffix) {
+        array_walk($interfaceList, function(&$interfaceSuffix) {
             $interfaceSuffix = "Respect\Rest\Routines\\$interfaceSuffix";
         });
         $interfaceList[] = 'Respect\Rest\Routines\Routinable';
