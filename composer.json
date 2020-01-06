@@ -26,7 +26,7 @@
         "email": "dev@dmk-ebusiness.de"
     },
     "require": {
-        "typo3/cms-core": "^6.2 || ^7.6 || ^8.7 || ^9.5",
+        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5",
         "digedag/rn-base" : ">=1.7.1"
     },
     "replace": {

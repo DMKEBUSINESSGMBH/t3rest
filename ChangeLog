@@ -2,6 +2,10 @@
 Changelog
 ----------
 
+v9.0.0 (06.01.2020)
+ * Unterstützung für TYPO3 Version 9.5 durch Nutzung der Middleware
+ * Support für TYPO3 6.2 gedroppt
+
 v0.2.0 (22.02.2012) (not released)
  * Erweiterungen für T3sports
 
