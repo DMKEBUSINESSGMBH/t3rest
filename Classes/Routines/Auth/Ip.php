@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -23,17 +23,14 @@
  */
 
 /**
- * This routine ahtuenticates a route by the source IP of the request
+ * This routine ahtuenticates a route by the source IP of the request.
  *
- * @package         TYPO3
- * @subpackage      t3rest
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, Tx_T3rest_Routines_InterfaceRoute
 {
-
     /**
      * @var array
      */
@@ -48,7 +45,8 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see Tx_T3rest_Routines_InterfaceRouter::prepareRouter()
      */
     public function prepareRouter(
@@ -58,13 +56,14 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
                 'By',
-                array($this, 'checkRemoteIp')
+                [$this, 'checkRemoteIp']
             );
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see Tx_T3rest_Routines_InterfaceRoute::prepareRoute()
      */
     public function prepareRoute($route)
@@ -76,12 +75,13 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
             }
         } // register post routine for Respect/Rest
         elseif ($route instanceof \Respect\Rest\Routes\AbstractRoute) {
-            $route->by(array($this, 'checkRemoteIp'));
+            $route->by([$this, 'checkRemoteIp']);
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see Tx_T3rest_Routines_Auth_InterfaceAuth::checkAccess()
      */
     public function checkRemoteIp()

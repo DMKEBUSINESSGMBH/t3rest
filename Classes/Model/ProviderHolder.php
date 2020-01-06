@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -26,14 +26,12 @@
  * a provider holder trait.
  * actually a abstract class, for php 5.3 support.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 abstract class Tx_T3rest_Model_ProviderHolder
 {
     /**
-     * @var Tx_T3rest_Model_Provider $model
+     * @var Tx_T3rest_Model_Provider
      */
     private $provider = null;
 
@@ -41,6 +39,7 @@ abstract class Tx_T3rest_Model_ProviderHolder
      * injects the provider model.
      *
      * @param Tx_T3rest_Model_Provider $model
+     *
      * @return Tx_T3rest_Provider_AbstractProvider
      */
     public function setProvider(
@@ -52,7 +51,7 @@ abstract class Tx_T3rest_Model_ProviderHolder
     }
 
     /**
-     * returns the provider model with the config
+     * returns the provider model with the config.
      *
      * @return Tx_T3rest_Model_Provider
      */
@@ -62,7 +61,7 @@ abstract class Tx_T3rest_Model_ProviderHolder
     }
 
     /**
-     * the config from the provider
+     * the config from the provider.
      *
      * @return tx_rnbase_configurations
      */
@@ -72,9 +71,10 @@ abstract class Tx_T3rest_Model_ProviderHolder
     }
 
     /**
-     * a configuration for the path from the providerconfiguration
+     * a configuration for the path from the providerconfiguration.
      *
      * @param string $confId
+     *
      * @return mixed
      */
     protected function getConfig($confId)

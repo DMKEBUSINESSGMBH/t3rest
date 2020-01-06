@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
 
 /**
@@ -29,32 +28,32 @@ tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
  * after the router did its job, this routine was called
  * and its the return value will be transformed to json.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRouter
 {
-    protected $times = array();
+    protected $times = [];
 
     /**
-     * add a time tracking
+     * add a time tracking.
      *
      * @param string $key
      * @param int $microtime
+     *
      * @return Tx_T3rest_Routines_Log_TimeTrack
      */
     public function add($key, $microtime = null)
     {
-        $this->times[$key] = $microtime !== null ? $microtime : microtime(true);
+        $this->times[$key] = null !== $microtime ? $microtime : microtime(true);
 
         return $this;
     }
 
     /**
-     * add the before and after callbacks
+     * add the before and after callbacks.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     public function prepareRouter(
@@ -68,12 +67,12 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
                 'By',
-                array($this, 'byRespect')
+                [$this, 'byRespect']
             );
             $router->always(
                 'Through',
                 function () use ($through) {
-                    return array($through, 'throughRespect');
+                    return [$through, 'throughRespect'];
                 }
             );
         }
@@ -81,9 +80,10 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
 
     /**
      * was called after provider returns his value.
-     * this method can be extended by child classes
+     * this method can be extended by child classes.
      *
      * @param mixed $data
+     *
      * @return void
      */
     public function byRespect($data)
@@ -93,9 +93,10 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
 
     /**
      * was called after provider returns his value.
-     * this method can be extended by child classes
+     * this method can be extended by child classes.
      *
      * @param mixed $data
+     *
      * @return string
      */
     public function throughRespect($data)
@@ -112,10 +113,10 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
         foreach ($this->times as $key => $value) {
             $times->add(
                 $key,
-                array(
+                [
                     'stamp' => $value,
                     'time' => $value === $last ? 0 : $value - $last,
-                )
+                ]
             );
             $last = $value;
         }

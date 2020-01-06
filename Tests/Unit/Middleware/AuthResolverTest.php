@@ -13,10 +13,8 @@ use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
- * Class AuthResolverTest
+ * Class AuthResolverTest.
  *
- * @package    TYPO3
- * @subpackage DMK\T3rest\Tests
  * @author     Mario Seidel <mario.seidel@dmk-ebusiness.com>
  * @license    http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -24,7 +22,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 class AuthResolverTest extends UnitTestCase
 {
     /**
-     * setup
+     * setup.
      */
     protected function setUp()
     {
@@ -52,8 +50,7 @@ class AuthResolverTest extends UnitTestCase
         $body->rewind();
 
         $request = new ServerRequest('/t3rest/login', 'POST', $body);
-        $requestHandler = new class implements RequestHandlerInterface
-        {
+        $requestHandler = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new JsonResponse(
@@ -79,8 +76,7 @@ class AuthResolverTest extends UnitTestCase
     public function testNoProcessIfUriDoesNotMatch()
     {
         $request = new ServerRequest('/not/a/rest/api/endpoint', 'GET');
-        $requestHandler = new class implements RequestHandlerInterface
-        {
+        $requestHandler = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new NullResponse();

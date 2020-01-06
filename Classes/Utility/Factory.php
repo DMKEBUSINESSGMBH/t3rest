@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,12 +22,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 /**
- * extension configs
+ * extension configs.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 final class Tx_T3rest_Utility_Factory
@@ -42,12 +39,7 @@ final class Tx_T3rest_Utility_Factory
         $class = Tx_T3rest_Utility_Config::getRestApiController();
         $instance = tx_rnbase::makeInstance($class);
         if (!$instance instanceof Tx_T3rest_Controller_InterfaceController) {
-            throw new Exception(
-                sprintf(
-                    'Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".',
-                    get_class($instance)
-                )
-            );
+            throw new Exception(sprintf('Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".', get_class($instance)));
         }
 
         return $instance;
@@ -63,19 +55,14 @@ final class Tx_T3rest_Utility_Factory
         $class = Tx_T3rest_Utility_Config::getRestApiRouter();
         $instance = tx_rnbase::makeInstance($class);
         if (!$instance instanceof Tx_T3rest_Router_InterfaceRouter) {
-            throw new Exception(
-                sprintf(
-                    'Router "%1$s" has to implement the interface "Tx_T3rest_Router_InterfaceRouter".',
-                    get_class($instance)
-                )
-            );
+            throw new Exception(sprintf('Router "%1$s" has to implement the interface "Tx_T3rest_Router_InterfaceRouter".', get_class($instance)));
         }
 
         return $instance;
     }
 
     /**
-     * returns an provider repo instance
+     * returns an provider repo instance.
      *
      * @return Tx_T3rest_Repository_Provider
      */
@@ -94,12 +81,7 @@ final class Tx_T3rest_Utility_Factory
         $class = empty($class) ? 'Tx_T3rest_Transformer_Simple' : $class;
         $instance = tx_rnbase::makeInstance($class);
         if (!$instance instanceof Tx_T3rest_Transformer_InterfaceTransformer) {
-            throw new Exception(
-                sprintf(
-                    'Transformer "%1$s" has to implement the interface "Tx_T3rest_Transformer_InterfaceTransformer".',
-                    get_class($instance)
-                )
-            );
+            throw new Exception(sprintf('Transformer "%1$s" has to implement the interface "Tx_T3rest_Transformer_InterfaceTransformer".', get_class($instance)));
         }
 
         return $instance;
@@ -111,7 +93,7 @@ final class Tx_T3rest_Utility_Factory
      *
      * @return Tx_T3rest_Model_Supplier
      */
-    public static function getSupplier(array $ignoreKeys = array())
+    public static function getSupplier(array $ignoreKeys = [])
     {
         return tx_rnbase::makeInstance(
             'Tx_T3rest_Model_Supplier',

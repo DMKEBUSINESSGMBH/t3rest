@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace DMK\T3rest\Middleware;
 
@@ -12,10 +13,8 @@ use Tx_T3rest_Utility_Config;
 use Tx_T3rest_Utility_Factory;
 
 /**
- * Class RestApiMiddleware
+ * Class RestApiMiddleware.
  *
- * @package    TYPO3
- * @subpackage DMK\T3rest
  * @author     Mario Seidel <mario.seidel@dmk-ebusiness.com>
  * @license    http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -27,6 +26,7 @@ class RestApiMiddleware implements MiddlewareInterface
      * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
+     *
      * @throws \Exception
      */
     public function process(
@@ -35,7 +35,7 @@ class RestApiMiddleware implements MiddlewareInterface
     ): ResponseInterface {
         // the hook is not enabled, proceed next middleware!
         if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
-             return $handler->handle($request);
+            return $handler->handle($request);
         }
 
         $this->getController()->execute();
@@ -47,6 +47,7 @@ class RestApiMiddleware implements MiddlewareInterface
      * Returns an instance of a api controller.
      *
      * @return Tx_T3rest_Controller_InterfaceController
+     *
      * @throws \Exception
      */
     public function getController()

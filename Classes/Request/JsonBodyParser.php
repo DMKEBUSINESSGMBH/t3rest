@@ -1,13 +1,12 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace DMK\T3rest\Request;
 
 /**
- * Class JsonBodyParser
+ * Class JsonBodyParser.
  *
- * @package    TYPO3
- * @subpackage DMK\T3rest
  * @author     Mario Seidel <mario.seidel@dmk-ebusiness.com>
  * @license    http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later

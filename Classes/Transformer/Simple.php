@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -25,18 +25,16 @@
 /**
  * simple item to supplier transformer.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implements Tx_T3rest_Transformer_InterfaceTransformer
 {
-
     /**
      *  transforms the item.
      *
      * @param Tx_Rnbase_Domain_Model_DataInterface $item
      * @param string $confId
+     *
      * @return Tx_T3rest_Model_Supplier
      */
     public function transform(
@@ -44,17 +42,18 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
         $confId = 'item.'
     ) {
         $this->prepareItem($item, $confId);
-        $this->wrapRecord($item, $confId . 'record.');
-        $this->prepareLinks($item, $confId . 'links.');
+        $this->wrapRecord($item, $confId.'record.');
+        $this->prepareLinks($item, $confId.'links.');
 
         return $this->buildSupplier($item, $confId);
     }
 
     /**
-     * prepares the item to transform
+     * prepares the item to transform.
      *
      * @param Tx_Rnbase_Domain_Model_DataInterface $item
      * @param string $confId
+     *
      * @return void
      */
     protected function prepareItem(
@@ -68,6 +67,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
      *
      * @param Tx_Rnbase_Domain_Model_DataInterface $item
      * @param string $confId
+     *
      * @return void
      */
     protected function wrapRecord(
@@ -81,8 +81,8 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
         if (is_array($config) && !empty($config)) {
             $keys = $this->getConfigurations()->getUniqueKeysNames($config);
             foreach ($keys as $key) {
-                if ($key{0} === 'd'
-                    && $key{0} === 'c'
+                if ('d' === $key[0]
+                    && 'c' === $key[0]
                     && !$item->hasProperty($key)
                 ) {
                     $item->setProperty($key, $config[$key]);
@@ -99,13 +99,13 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
                 $cObj->setCurrentVal($value);
                 $item->setProperty(
                     $colname,
-                    $cObj->cObjGetSingle($config[$colname], $config[$colname . '.'])
+                    $cObj->cObjGetSingle($config[$colname], $config[$colname.'.'])
                 );
                 $cObj->setCurrentVal(false);
-            } elseif (!empty($config[$colname . '.'])) {
+            } elseif (!empty($config[$colname.'.'])) {
                 $item->setProperty(
                     $colname,
-                    $cObj->stdWrap($value, $config[$colname . '.'])
+                    $cObj->stdWrap($value, $config[$colname.'.'])
                 );
             }
         }
@@ -118,6 +118,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
      *
      * @param Tx_Rnbase_Domain_Model_DataInterface $item
      * @param string $confId
+     *
      * @return void
      */
     protected function prepareLinks(
@@ -130,9 +131,9 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
 
         $linkIds = $this->getConfigurations()->getKeyNames($confId);
         foreach ($linkIds as $link) {
-            $linkId = $confId . $link . '.';
-            $params = array();
-            $paramMap = (array) $this->getConfig($linkId . '_cfg.params.');
+            $linkId = $confId.$link.'.';
+            $params = [];
+            $paramMap = (array) $this->getConfig($linkId.'_cfg.params.');
             foreach ($paramMap as $paramName => $colName) {
                 if (is_scalar($colName) && $item->hasProperty($colName)) {
                     $params[$paramName] = $item->getProperty($colName);
@@ -143,24 +144,25 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
             // Immer absolute URLs setzen!
             $linkObj->isAbsUrl() ?: $linkObj->setAbsUrl(true);
             $item->setProperty(
-                'link_' . $link,
+                'link_'.$link,
                 $linkObj->makeUrl(false)
             );
         }
     }
 
     /**
-     * creates an link object
+     * creates an link object.
      *
      * @param Tx_Rnbase_Domain_Model_DataInterface $item
      * @param string $confId
      * @param array $parameters
+     *
      * @return tx_rnbase_util_Link
      */
     protected function initLink(
         Tx_Rnbase_Domain_Model_DataInterface $item,
         $confId = 'item.links.show.',
-        array $parameters = array()
+        array $parameters = []
     ) {
         $linkObj = $this->getConfigurations()->createLink();
         $linkObj->initByTS($this->getConfigurations(), $confId, $parameters);
@@ -173,10 +175,11 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     }
 
     /**
-     * creates the supplier
+     * creates the supplier.
      *
      * @param Tx_Rnbase_Domain_Model_DataInterface $item
      * @param string $confId
+     *
      * @return Tx_T3rest_Model_Supplier
      */
     protected function buildSupplier(
@@ -184,7 +187,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
         $confId = 'item.'
     ) {
         return Tx_T3rest_Utility_Factory::getSupplier(
-            $this->getIgnoreFields($confId . 'record.')
+            $this->getIgnoreFields($confId.'record.')
         )
             ->add('_object', get_class($item))
             ->add($item);
@@ -194,6 +197,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
      * get ignorefields from ts.
      *
      * @param string $confId
+     *
      * @return Ambigous <multitype:, string, multitype:unknown >
      */
     protected function getIgnoreFields($confId = 'item.record.')
@@ -202,7 +206,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
 
         return tx_rnbase_util_Strings::trimExplode(
             ',',
-            $this->getConfig($confId . 'ignoreFields'),
+            $this->getConfig($confId.'ignoreFields'),
             true
         );
     }

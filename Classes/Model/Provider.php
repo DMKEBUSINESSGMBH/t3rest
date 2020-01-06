@@ -24,7 +24,7 @@
 tx_rnbase::load('tx_rnbase_model_base');
 
 /**
- * Frontcontroller for REST-API calls
+ * Frontcontroller for REST-API calls.
  *
  * @author Rene Nitzsche
  */
@@ -33,9 +33,9 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
     private $configurations = null;
 
     /**
-     * Gets the name of the database table
+     * Gets the name of the database table.
      *
-     * @return String Tabellenname
+     * @return string Tabellenname
      */
     public function getTableName()
     {
@@ -43,10 +43,12 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
     }
 
     /**
-     * set the provider config
+     * set the provider config.
      *
      * @param tx_rnbase_configurations $config
+     *
      * @deprecated only used for the old api
+     *
      * @return void
      */
     public function setConfigurations($config)
@@ -55,13 +57,13 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
     }
 
     /**
-     * the ts config for from the provider
+     * the ts config for from the provider.
      *
      * @return tx_rnbase_configurations
      */
     public function getConfigurations()
     {
-        if ($this->configurations === null) {
+        if (null === $this->configurations) {
             tx_rnbase::load('tx_rnbase_util_TS');
             $configArray = tx_rnbase_util_TS::parseTsConfig($this->getConfig());
             /* @var $configurations tx_rnbase_configurations */

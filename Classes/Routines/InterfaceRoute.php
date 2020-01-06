@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -25,17 +25,15 @@
 /**
  * interface for a rest route.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 interface Tx_T3rest_Routines_InterfaceRoute
 {
-
     /**
-     * add the before and after callbacks
+     * add the before and after callbacks.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     public function prepareRouter(
@@ -43,9 +41,10 @@ interface Tx_T3rest_Routines_InterfaceRoute
     );
 
     /**
-     * add the before and after callbacks
+     * add the before and after callbacks.
      *
      * @param mixed|\Respect\Rest\Routes\AbstractRoute $route
+     *
      * @return void
      */
     public function prepareRoute($route);

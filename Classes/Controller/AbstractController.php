@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,21 +21,17 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_T3rest_Controller_InterfaceController');
 
 /**
- * base controller
+ * base controller.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_InterfaceController
 {
-
     /**
-     * execute the request
+     * execute the request.
      *
      * @return void
      */
@@ -71,9 +67,10 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
     }
 
     /**
-     * find all providers
+     * find all providers.
      *
      * @TODO: add caching!
+     *
      * @return array:Tx_T3rest_Model_Provider
      */
     protected function getProviders()
@@ -87,6 +84,7 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
      * prepare the router.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     private function prepareRouter(
@@ -100,6 +98,7 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
      * prepare the router by providers.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     protected function prepareRouterByProviders(
@@ -121,6 +120,7 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
      * for data transformation to json.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     protected function prepareRoutines(
@@ -154,6 +154,6 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $apiSegment = Tx_T3rest_Utility_Config::getRestApiUriPath();
 
-        return strpos($requestUri, $apiSegment) === 0;
+        return 0 === strpos($requestUri, $apiSegment);
     }
 }

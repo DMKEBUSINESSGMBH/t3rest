@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,15 +21,12 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_T3rest_Model_ProviderHolder');
 tx_rnbase::load('Tx_T3rest_Provider_InterfaceProvider');
 
 /**
- * abstract provider
+ * abstract provider.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_ProviderHolder implements Tx_T3rest_Provider_InterfaceProvider
@@ -45,20 +42,18 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
     private $rawRequestBody = null;
 
     /**
-     *
      * @var Tx_T3rest_Routines_Auth_Ip
      */
     protected $ipAuthentication;
 
-
     /**
-     * a transformer instance
+     * a transformer instance.
      *
      * @return Tx_T3rest_Transformer_InterfaceTransformer
      */
     protected function getTransformer()
     {
-        if ($this->transformer === null) {
+        if (null === $this->transformer) {
             $this->transformer = Tx_T3rest_Utility_Factory::getTransformer(
                 $this->getTransformerClass()
             );
@@ -83,13 +78,13 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
     }
 
     /**
-     * a instance od the auth fe user routine
+     * a instance od the auth fe user routine.
      *
      * @return Tx_T3rest_Routines_Auth_FeUser
      */
     protected function getAuthFeUserRoutine()
     {
-        if ($this->auth === null) {
+        if (null === $this->auth) {
             $this->auth = tx_rnbase::makeInstance(
                 'Tx_T3rest_Routines_Auth_FeUser',
                 $this->getProvider()->getFeGroup()
@@ -100,13 +95,13 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
     }
 
     /**
-     * a instance od the auth IP routine
+     * a instance od the auth IP routine.
      *
      * @return Tx_T3rest_Routines_Auth_Ip
      */
     protected function getAuthIpRoutine()
     {
-        if ($this->ipAuthentication === null) {
+        if (null === $this->ipAuthentication) {
             $this->ipAuthentication = tx_rnbase::makeInstance(
                 'Tx_T3rest_Routines_Auth_Ip',
                 (array) $this->getProvider()->getConfigurations()->get('allowedIps.')
@@ -117,13 +112,13 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
     }
 
     /**
-     * returns the raw body of the request
+     * returns the raw body of the request.
      *
      * @return string
      */
     protected function getRawRequestBody()
     {
-        if ($this->rawRequestBody === null) {
+        if (null === $this->rawRequestBody) {
             $this->rawRequestBody = file_get_contents('php://input');
         }
 

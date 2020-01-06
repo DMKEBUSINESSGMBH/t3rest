@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
 
 /**
@@ -29,17 +28,15 @@ tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
  * after the router did its job, this routine was called
  * and its the return value will be transformed to json.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Routines_Through_Json implements Tx_T3rest_Routines_InterfaceRouter
 {
-
     /**
-     * add the before and after callbacks
+     * add the before and after callbacks.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     public function prepareRouter(
@@ -52,7 +49,7 @@ class Tx_T3rest_Routines_Through_Json implements Tx_T3rest_Routines_InterfaceRou
             $router->always(
                 'Through',
                 function () use ($through) {
-                    return array($through, 'throughRespect');
+                    return [$through, 'throughRespect'];
                 }
             );
         }
@@ -60,9 +57,10 @@ class Tx_T3rest_Routines_Through_Json implements Tx_T3rest_Routines_InterfaceRou
 
     /**
      * was called after provider returns his value.
-     * this method can be extended by child classes
+     * this method can be extended by child classes.
      *
      * @param mixed $data
+     *
      * @return string
      */
     public function throughRespect($data)

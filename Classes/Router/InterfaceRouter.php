@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -23,10 +23,8 @@
  */
 
 /**
- * router interface
+ * router interface.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 interface Tx_T3rest_Router_InterfaceRouter
@@ -46,12 +44,13 @@ interface Tx_T3rest_Router_InterfaceRouter
      * @param string $path
      * @param string $provider
      * @param array $arguments
+     *
      * @return object special route instance
      */
     public function addRoute(
         $method,
         $path,
         $provider,
-        array $arguments = array()
+        array $arguments = []
     );
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -23,20 +23,18 @@
  */
 
 /**
- * tsfe hooks
+ * tsfe hooks.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Hook_TsFe
 {
-
     /**
      * in this hook we check for an mobile redirect.
      *
      * @param array &$params
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe
+     *
      * @return void
      */
     public function checkAndRunRestApi(&$params, $tsfe)

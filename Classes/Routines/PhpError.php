@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,23 +21,20 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
 
 /**
- * error routine
+ * error routine.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
 {
-
     /**
-     * add the before and after callbacks
+     * add the before and after callbacks.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     public function prepareRouter(
@@ -46,15 +43,14 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
         // register post routine for Respect/Rest
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->errorRoute(
-                array($this, 'handle')
+                [$this, 'handle']
             );
         }
     }
 
     /**
-     *
-     *
      * @param array $err
+     *
      * @return string
      */
     public function handle(array $err)
@@ -78,6 +74,7 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
         \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
             \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500
         );
-        return 'Sorry, an error happened: ' . var_export($err, true);
+
+        return 'Sorry, an error happened: '.var_export($err, true);
     }
 }

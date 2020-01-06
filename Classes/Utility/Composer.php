@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,12 +22,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 /**
- * extension configs
+ * extension configs.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 final class Tx_T3rest_Utility_Composer
@@ -35,13 +32,13 @@ final class Tx_T3rest_Utility_Composer
     public static $loaded = false;
 
     /**
-     * preloads the
+     * preloads the.
      *
      * @return void
      */
     public static function autoload()
     {
-        if (self::$loaded === true) {
+        if (true === self::$loaded) {
             return;
         }
         require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(

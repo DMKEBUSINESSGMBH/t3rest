@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -23,15 +23,12 @@
  */
 
 /**
- * controler interface
+ * controler interface.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 interface Tx_T3rest_Controller_InterfaceController
 {
-
     /**
      * Entry point for REST calls.
      *

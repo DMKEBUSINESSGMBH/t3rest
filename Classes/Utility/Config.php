@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,12 +22,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 /**
- * extension configs
+ * extension configs.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 final class Tx_T3rest_Utility_Config
@@ -36,11 +33,12 @@ final class Tx_T3rest_Utility_Config
      * reads the extension config.
      *
      * @param string $key
+     *
      * @return mixed
      */
     private static function getExtConf($key)
     {
-        static $config = array();
+        static $config = [];
         if (!isset($config[$key])) {
             tx_rnbase::load('tx_rnbase_configurations');
             $config[$key] = tx_rnbase_configurations::getExtensionCfgValue(
@@ -59,12 +57,12 @@ final class Tx_T3rest_Utility_Config
      */
     public static function isRestHookEnabled()
     {
-        return (boolean) self::getExtConf('restEnableHook');
+        return (bool) self::getExtConf('restEnableHook');
     }
 
     /**
      * returns the rest api path segment with leading and trailing slash.
-     * default is /api/
+     * default is /api/.
      *
      * @return string
      */
@@ -72,7 +70,7 @@ final class Tx_T3rest_Utility_Config
     {
         $apiSegment = self::getExtConf('restApiUriPath') ?: 'api';
         $apiSegment = trim($apiSegment, '/');
-        $apiSegment = '/' . (empty($apiSegment) ? '' : $apiSegment . '/');
+        $apiSegment = '/'.(empty($apiSegment) ? '' : $apiSegment.'/');
 
         return $apiSegment;
     }
@@ -108,12 +106,12 @@ final class Tx_T3rest_Utility_Config
     }
 
     /**
-     * returns if Basic Auth header should be send
+     * returns if Basic Auth header should be send.
      *
      * @return bool
      */
     public static function isBasicAuthHeaderEnabled()
     {
-        return (bool)self::getExtConf('isBasicAuthHeaderEnabled');
+        return (bool) self::getExtConf('isBasicAuthHeaderEnabled');
     }
 }

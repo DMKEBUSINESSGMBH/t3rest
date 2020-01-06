@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace DMK\T3rest\Middleware;
 
@@ -13,10 +14,8 @@ use Tx_T3rest_Utility_Config;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Tx_T3rest_Middleware_AuthController
+ * Class Tx_T3rest_Middleware_AuthController.
  *
- * @package    TYPO3
- * @subpackage DMK\T3rest
  * @author     Mario Seidel <mario.seidel@dmk-ebusiness.com>
  * @license    http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -34,7 +33,6 @@ class AuthResolver implements MiddlewareInterface
         \Psr\Http\Message\ServerRequestInterface $request,
         \Psr\Http\Server\RequestHandlerInterface $handler
     ): \Psr\Http\Message\ResponseInterface {
-
         // if hook is not enabled or uri is not an api call, proceed with next handler!
         if (!Tx_T3rest_Utility_Config::isRestHookEnabled() || !$this->isApiCall($request)) {
             return $handler->handle($request);
@@ -62,7 +60,7 @@ class AuthResolver implements MiddlewareInterface
         $requestUri = ltrim($request->getUri()->getPath(), '/');
         $apiSegment = ltrim(Tx_T3rest_Utility_Config::getRestApiUriPath(), '/');
 
-        return strpos($requestUri, $apiSegment) === 0;
+        return 0 === strpos($requestUri, $apiSegment);
     }
 
     /**
@@ -87,7 +85,7 @@ class AuthResolver implements MiddlewareInterface
                 ),
                 't3rest',
                 [
-                    'exception' => $argumentException
+                    'exception' => $argumentException,
                 ]
             );
         }
@@ -106,7 +104,7 @@ class AuthResolver implements MiddlewareInterface
     {
         return $request->withParsedBody(
             array_merge($request->getParsedBody() ?: [], [
-                'pid' => Tx_T3rest_Utility_Config::getAuthUserStoragePid()
+                'pid' => Tx_T3rest_Utility_Config::getAuthUserStoragePid(),
             ])
         );
     }

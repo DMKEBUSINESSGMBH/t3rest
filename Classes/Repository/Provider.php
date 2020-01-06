@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,20 +21,17 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
 
 /**
- * repository to handle provider data
+ * repository to handle provider data.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_AbstractRepository
 {
     /**
-     * Liefert den Namen der Suchklasse
+     * Liefert den Namen der Suchklasse.
      *
      * @return  string
      */
@@ -54,16 +51,17 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
     }
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return array[tx_rnbase_model_base]
      */
     public function search(array $fields, array $options)
     {
         if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
-            $options['searchdef'] = array();
+            $options['searchdef'] = [];
         }
         tx_rnbase::load('tx_rnbase_util_Arrays');
         $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
@@ -88,7 +86,6 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
                 } else {
                     $bootstrap->loadExtensionTables();
                 }
-
             } else {
                 tx_rnbase::load('tx_rnbase_util_TCA');
                 tx_rnbase_util_TCA::loadTCA($options['basetable']);
@@ -107,16 +104,16 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
     {
         $table = $this->getEmptyModel()->getTableName();
 
-        return array(
+        return [
             'usealias' => '1',
             'basetable' => $table,
             'basetablealias' => 'PROVIDER',
             'wrapperclass' => $this->getWrapperClass(),
-            'alias' => array(
-                'PROVIDER' => array(
-                    'table' => $table
-                ),
-            )
-        );
+            'alias' => [
+                'PROVIDER' => [
+                    'table' => $table,
+                ],
+            ],
+        ];
     }
 }

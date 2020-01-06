@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,12 +22,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 /**
- * provider interface
+ * provider interface.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 interface Tx_T3rest_Provider_InterfaceProvider
@@ -36,6 +33,7 @@ interface Tx_T3rest_Provider_InterfaceProvider
      * initializes the router.
      *
      * @param Tx_T3rest_Router_InterfaceRouter $router
+     *
      * @return void
      */
     public function prepareRouter(Tx_T3rest_Router_InterfaceRouter $router);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -23,10 +23,8 @@
  */
 
 /**
- * transformer interface
+ * transformer interface.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 interface Tx_T3rest_Transformer_InterfaceTransformer
@@ -36,6 +34,7 @@ interface Tx_T3rest_Transformer_InterfaceTransformer
      *
      * @param Tx_Rnbase_Domain_Model_DataInterface $item
      * @param string $confId
+     *
      * @return Tx_T3rest_Model_Supplier
      */
     public function transform(

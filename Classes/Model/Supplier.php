@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -23,20 +23,16 @@
  */
 
 /**
- * supplier model
+ * supplier model.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 class Tx_T3rest_Model_Supplier extends stdClass
 {
-
     /**
-     *
      * @var unknown
      */
-    private $ignoreKeys = array(
+    private $ignoreKeys = [
         'ignoreKeys',
         'hidden',
         'deleted',
@@ -44,30 +40,32 @@ class Tx_T3rest_Model_Supplier extends stdClass
         'crdate',
         'cruser_id',
         'sorting',
-    );
+    ];
 
     /**
-     * constructor
+     * constructor.
      *
      * @param array $ignoreKeys
+     *
      * @return void
      */
     public function __construct(
-        array $ignoreKeys = array()
+        array $ignoreKeys = []
     ) {
         $this->ignoreKeys = array_flip(array_merge($ignoreKeys, $this->ignoreKeys));
     }
 
     /**
-     * add some values to supplier/stdClass
+     * add some values to supplier/stdClass.
      *
      * @param mixed $key
      * @param mixed $value
+     *
      * @return Tx_T3rest_Model_Supplier
      */
     public function add($key, $value = null)
     {
-        if (!is_scalar($key) && $value === null) {
+        if (!is_scalar($key) && null === $value) {
             $value = $key;
             $node = &$this;
         } else {

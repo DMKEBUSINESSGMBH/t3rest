@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,28 +21,24 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
 
 /**
- * interface for a auth routine
+ * interface for a auth routine.
  *
- * @package TYPO3
- * @subpackage Tx_T3rest
  * @author Michael Wagner
  */
 interface Tx_T3rest_Routines_Auth_InterfaceAuth
 {
-
     /**
-     * log in a user
+     * log in a user.
      *
      * @return void
      */
     public function initUser();
 
     /**
-     * check user access to a route
+     * check user access to a route.
      *
      * @return bool
      */
