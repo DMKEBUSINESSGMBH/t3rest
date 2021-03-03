@@ -26,6 +26,10 @@ class AuthResolverTest extends UnitTestCase
      */
     protected function setUp()
     {
+        if (!\Sys25\RnBase\Utility\TYPO3::isTYPO95OrHigher()) {
+            $this->markTestSkipped('No middleware support for typo3 8 or earlier');
+        }
+
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['t3rest'] = [
             'accesslogDirectory' => '',
