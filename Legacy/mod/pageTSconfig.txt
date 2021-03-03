@@ -8,7 +8,7 @@
 mod {
     t3rest {
         logs {
-            template = EXT:t3rest/mod/templates/module.html
+            template = EXT:t3rest/Legacy/mod/templates/module.html
         }
     }
 }

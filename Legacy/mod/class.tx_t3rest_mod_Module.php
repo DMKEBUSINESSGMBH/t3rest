@@ -37,7 +37,7 @@ class tx_t3rest_mod_Module extends tx_rnbase_mod_BaseModule
     public function init()
     {
         parent::init();
-        $GLOBALS['LANG']->includeLLFile('EXT:t3rest/mod/locallang.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:t3rest/Legacy/mod/locallang.xml');
         $GLOBALS['BE_USER']->modAccess($this->MCONF, 1);
     }
 

@@ -20,7 +20,7 @@ tx_rnbase_util_Extensions::addService(
         'quality' => 50,
         'os' => '',
         'exec' => '',
-        'classFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY, 'srv/class.tx_t3rest_srv_Logs.php'),
+        'classFile' => tx_rnbase_util_Extensions::extPath('t3rest', 'Legacy/srv/class.tx_t3rest_srv_Logs.php'),
         'className' => 'tx_t3rest_srv_Logs',
     ]
 );

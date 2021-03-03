@@ -48,18 +48,8 @@
             "DMK\\T3rest\\": "Classes"
         },
         "classmap": [
-            "cache/",
             "Classes/",
-            "exception/",
-            "controller/",
-            "decorator/",
-            "exception/",
-            "mod/",
-            "models/",
-            "provider/",
-            "search/",
-            "srv/",
-            "util/"
+            "Legacy/"
         ]
     },
     "autoload-dev": {

@@ -5,10 +5,10 @@ defined('TYPO3_MODE') || exit('Access denied.');
 require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 
 //tx_rnbase::load('tx_t3rest_controller_Base');
-$TYPO3_CONF_VARS['FE']['eID_include']['t3rest'] = 'EXT:t3rest/controller/class.tx_t3rest_controller_Base.php';
+$TYPO3_CONF_VARS['FE']['eID_include']['t3rest'] = 'EXT:t3rest/Legacy/controller/class.tx_t3rest_controller_Base.php';
 
 // Include services
-require_once tx_rnbase_util_Extensions::extPath('t3rest', 'srv/ext_localconf.php');
+require_once tx_rnbase_util_Extensions::extPath('t3rest', 'Legacy/srv/ext_localconf.php');
 
 if (!tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
     // was called after db initialisation, direktly after eID
