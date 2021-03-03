@@ -26,14 +26,14 @@ tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_t3rest_exception_DataNotFound');
 
 /**
- * Frontcontroller for REST-API calls
+ * Frontcontroller for REST-API calls.
  *
  * @author Rene Nitzsche
  */
 class tx_t3rest_controller_Base
 {
     /**
-     * Entry point for REST calls
+     * Entry point for REST calls.
      *
      * @return string JSON string
      */
@@ -49,14 +49,14 @@ class tx_t3rest_controller_Base
             return '';
         }
 
-        $data = array('100');
+        $data = ['100'];
         try {
             $providerData = $this->getProviderData();
             // Für den Cache sind die TS-Config des Providers und die Parameter der URL relevant
 
             $cacheHandler = $this->getCacheHandler($providerData->getConfigurations(), 'caching.');
             $data = $cacheHandler ? $cacheHandler->getOutput($providerData) : '';
-            if (! (is_object($data) || is_array($data))) {
+            if (!(is_object($data) || is_array($data))) {
                 $provider = $this->getProvider($providerData);
                 if ($provider) {
                     $data = $provider->execute($providerData);
@@ -69,7 +69,7 @@ class tx_t3rest_controller_Base
             $data = tx_rnbase::makeInstance('tx_t3rest_models_Error', $dnfe->getMessage(), $dnfe->getCode());
         } catch (Exception $e) {
             $data = tx_rnbase::makeInstance('tx_t3rest_models_Error', $e->getMessage(), $e->getCode());
-            tx_rnbase_util_Logger::fatal('Error for rest call!', 't3rest', array('Exception' => $e->getMessage));
+            tx_rnbase_util_Logger::fatal('Error for rest call!', 't3rest', ['Exception' => $e->getMessage]);
         }
 
         $response = $this->createResponse();
@@ -88,15 +88,16 @@ class tx_t3rest_controller_Base
         header('Content-type: application/json');
         echo json_encode($response);
     }
+
     private function logRequest($response, $time)
     {
         $dir = tx_rnbase_configurations::getExtensionCfgValue('t3rest', 'accesslogDirectory');
         if (!$dir) { // Ohne Verzeichnis wird nichts geloggt
             return;
         }
-        $filename =  strftime('access_%Y%m%d.log');
+        $filename = strftime('access_%Y%m%d.log');
         $file = $dir.$filename;
-        $data = array();
+        $data = [];
         $data[] = $_SERVER['REMOTE_ADDR'];
         $data[] = $_COOKIE['version'];
         $data[] = $_COOKIE['app'];
@@ -104,12 +105,12 @@ class tx_t3rest_controller_Base
         $data[] = $_SERVER['HTTP_HOST'];
         $data[] = '-';
         $data[] = date('[d/M/Y:H:i:s O]', $_SERVER['REQUEST_TIME']);
-        $data[] = '"'.$_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'].' '. $_SERVER['SERVER_PROTOCOL'].' '. $_SERVER['REDIRECT_STATUS'].'"';
+        $data[] = '"'.$_SERVER['REQUEST_METHOD'].' '.$_SERVER['REQUEST_URI'].' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REDIRECT_STATUS'].'"';
         $data[] = '"'.$_SERVER['HTTP_USER_AGENT'].'"';
         file_put_contents($file, implode("\t", $data)."\n", FILE_APPEND | LOCK_EX);
 
         // Nochmal in die DB
-        $data = array();
+        $data = [];
         $data['ip'] = $_SERVER['REMOTE_ADDR'];
         $data['version'] = $_COOKIE['version'];
         $data['app'] = $_COOKIE['app'];
@@ -122,14 +123,15 @@ class tx_t3rest_controller_Base
         $data['tstamp'] = date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
         $data['method'] = $_SERVER['REQUEST_METHOD'];
         $data['uri'] = $_SERVER['REQUEST_URI'];
-        $data['status'] =  $_SERVER['REDIRECT_STATUS'];
+        $data['status'] = $_SERVER['REDIRECT_STATUS'];
         $data['useragent'] = $_SERVER['HTTP_USER_AGENT'];
-        if ($data['os'] == 'IOS') {
+        if ('IOS' == $data['os']) {
             $this->correctIOS($data);
         }
 
         tx_rnbase_util_DB::doInsert('tx_t3rest_accesslog', $data);
     }
+
     /**
      * Korrektur der sinnlosen Daten vom IPhone...
      */
@@ -139,27 +141,29 @@ class tx_t3rest_controller_Base
             return;
         } // Vermutlich korrekte neue Version
         // Die OS Version setzen
-        $data['system'] = 'IOS ' . $data['version'];
+        $data['system'] = 'IOS '.$data['version'];
         // $data['sysver'] = ''; // Zur Hardware läßt sich nichts erkennen
         //Appversion setzen
         $data['version'] = '1.0';
     }
+
     private function getOS($system, $userAgent)
     {
         $os = '';
-        if (strpos(strtolower($system), 'android') !== false) {
+        if (false !== strpos(strtolower($system), 'android')) {
             $os = 'ANDROID';
-        } elseif (strpos(strtolower($userAgent), 'darwin') !== false) {
+        } elseif (false !== strpos(strtolower($userAgent), 'darwin')) {
             $os = 'IOS';
-        } elseif (strpos(strtolower($system), 'windows') !== false) {
+        } elseif (false !== strpos(strtolower($system), 'windows')) {
             $os = 'WINDOWS';
         }
 
         return $os;
     }
+
     /**
-     *
      * @param tx_t3rest_models_Provider $provData
+     *
      * @return tx_t3rest_provider_IProvider
      */
     protected function getProvider($provData)
@@ -170,6 +174,7 @@ class tx_t3rest_controller_Base
 
         return tx_rnbase::makeInstance($provData->getClassname());
     }
+
     /**
      * @return tx_t3rest_models_Provider
      */
@@ -181,21 +186,23 @@ class tx_t3rest_controller_Base
             throw new tx_t3rest_exception_ProviderNotFound('No provider given');
         }
 
-        $options = array();
+        $options = [];
         $options['wrapperclass'] = 'tx_t3rest_models_Provider';
-        $options['where'] = 'restkey = \'' . $GLOBALS['TYPO3_DB']->quoteStr($action, 'tx_t3rest_providers') . '\'';
+        $options['where'] = 'restkey = \''.$GLOBALS['TYPO3_DB']->quoteStr($action, 'tx_t3rest_providers').'\'';
         $ret = tx_rnbase_util_DB::doSelect('tx_t3rest_providers.*', 'tx_t3rest_providers', $options);
         if (empty($ret)) {
             tx_rnbase::load('tx_t3rest_exception_ProviderNotFound');
-            throw new tx_t3rest_exception_ProviderNotFound('Provider ' . htmlspecialchars($action) . ' not found');
+            throw new tx_t3rest_exception_ProviderNotFound('Provider '.htmlspecialchars($action).' not found');
         }
         $providerData = $ret[0];
         $this->initProviderData($providerData);
 
         return $providerData;
     }
+
     /**
-     * Configuration initialisieren
+     * Configuration initialisieren.
+     *
      * @param tx_t3rest_models_Provider $providerData
      */
     protected function initProviderData($providerData)
@@ -213,6 +220,7 @@ class tx_t3rest_controller_Base
         $config->setParameters($this->getParameters());
         $providerData->setConfigurations($config);
     }
+
     /**
      * @return tx_t3rest_models_Response
      */
@@ -220,6 +228,7 @@ class tx_t3rest_controller_Base
     {
         return tx_rnbase::makeInstance('tx_t3rest_models_Response');
     }
+
     protected function init()
     {
         tx_rnbase_util_TCA::loadTCA('');
@@ -239,29 +248,28 @@ class tx_t3rest_controller_Base
         return $this->parameters;
     }
 
-
     protected function isAllowed()
     {
         $disableCookie = tx_rnbase_configurations::getExtensionCfgValue('t3rest', 'disableCookie');
         if ($disableCookie || isset($_GET['test'])) {
             return true;
         }
-        if (!isset($_COOKIE['version']) || trim($_COOKIE['version']) == '') {
+        if (!isset($_COOKIE['version']) || '' == trim($_COOKIE['version'])) {
             return false;
         }
-        if (!isset($_COOKIE['app']) || trim($_COOKIE['app']) == '') {
+        if (!isset($_COOKIE['app']) || '' == trim($_COOKIE['app'])) {
             return false;
         }
 
         return true;
     }
 
-
     /**
      * Find a configured cache handler.
      *
      * @param tx_rnbase_configurations $configurations
      * @param string $confId
+     *
      * @return tx_t3rest_cache_CacheHandlerDefault
      */
     protected function getCacheHandler($configurations, $confId)
@@ -277,8 +285,7 @@ class tx_t3rest_controller_Base
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_controller_Base.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_controller_Base.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_controller_Base.php'];
 }
-
 
 tx_rnbase::makeInstance('tx_t3rest_controller_Base')->execute();

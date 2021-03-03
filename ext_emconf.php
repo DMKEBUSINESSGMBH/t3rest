@@ -10,7 +10,7 @@
 // "version" and "dependencies" must not be touched!
 //
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'REST for TYPO3',
     'description' => 'Provides a REST interface for TYPO3.',
     'category' => 'fe',
@@ -30,15 +30,15 @@ $EM_CONF[$_EXTKEY] = array(
     'modify_tables' => '',
     'clearCacheOnLoad' => 1,
     'lockType' => '',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '7.6.0-9.5.99',
             'rn_base' => '1.7.1-',
-        ),
-        'conflicts' => array(
-        ),
-        'suggests' => array(
-        ),
-    ),
+        ],
+        'conflicts' => [
+        ],
+        'suggests' => [
+        ],
+    ],
     '_md5_values_when_last_written' => 'a:8:{s:9:"ChangeLog";s:4:"690e";s:10:"README.txt";s:4:"ee2d";s:12:"ext_icon.gif";s:4:"1bdc";s:14:"ext_tables.php";s:4:"fc02";s:19:"doc/wizard_form.dat";s:4:"d0ae";s:20:"doc/wizard_form.html";s:4:"1048";s:23:"static/ts/constants.txt";s:4:"96ef";s:19:"static/ts/setup.txt";s:4:"f531";}',
-);
+];

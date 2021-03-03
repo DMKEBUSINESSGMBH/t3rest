@@ -53,7 +53,7 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
         // else ?
 
         // prevent typo3 rendering
-        die();
+        exit();
     }
 
     /**

@@ -23,60 +23,62 @@
  ***************************************************************/
 
 /**
- * Utilty methods for FAL
+ * Utilty methods for FAL.
  *
  * @author Rene Nitzsche
  */
 class tx_t3rest_util_FAL
 {
-
-    public static function getFalPictures($refUid, $refTable, $refField, $configurations, $confId, $fields = array())
+    public static function getFalPictures($refUid, $refTable, $refField, $configurations, $confId, $fields = [])
     {
         $picCfg = $configurations->getKeyNames($confId);
-        if (empty($fields))
-            $fields = array(
+        if (empty($fields)) {
+            $fields = [
                 'uid',
                 'title',
                 'file_hash',
-                'tstamp'
-            );
+                'tstamp',
+            ];
+        }
         tx_rnbase::load('tx_rnbase_util_TSFAL');
         $ret = [];
         $files = tx_rnbase_util_TSFAL::fetchFiles($refTable, $refUid, $refField);
         foreach ($files as $uid => $media) {
             $ret[] = self::convertFal2StdClass($media->getProperty(), $configurations, $confId, $picCfg, $fields);
         }
+
         return $ret;
     }
 
-    public static function convertFal2StdClass($record, $configurations, $confId, $picCfg, $fields = array())
+    public static function convertFal2StdClass($record, $configurations, $confId, $picCfg, $fields = [])
     {
-        if (empty($fields))
-            $fields = array(
+        if (empty($fields)) {
+            $fields = [
                 'uid',
                 'title',
                 'file_hash',
-                'tstamp'
-            );
+                'tstamp',
+            ];
+        }
         $data = new stdClass();
-        $filepath = $record['file_path'] . $record['file_name'];
+        $filepath = $record['file_path'].$record['file_name'];
         $data->filepath = $filepath;
         $server = Tx_Rnbase_Utility_T3General::getIndpEnv('TYPO3_SITE_URL');
-        $data->absFilepath = $server . $filepath;
+        $data->absFilepath = $server.$filepath;
         $record['file'] = $filepath;
         // Bild skalieren
         $cObj = $configurations->getCObj(1);
         $cObj->data = $record;
         foreach ($picCfg as $picName) {
-            $data->$picName = $cObj->cObjGetSingle($configurations->get($confId . $picName), $configurations->get($confId . $picName . '.'));
+            $data->$picName = $cObj->cObjGetSingle($configurations->get($confId.$picName), $configurations->get($confId.$picName.'.'));
             if ($data->$picName) {
-                $data->$picName = $server . $data->$picName;
+                $data->$picName = $server.$data->$picName;
             }
         }
         foreach ($fields as $fieldName) {
             $data->$fieldName = $record[$fieldName];
         }
+
         return $data;
     }
 }
-

@@ -1,103 +1,103 @@
 <?php
 
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:t3rest/locallang_db.xml:tx_t3rest_providers',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
-        ),
+        ],
         'iconfile' => 'EXT:t3rest/icon_table.gif',
-    ),
-    'interface' => array(
-        'showRecordFieldList' => 'hidden,starttime,fe_group,name'
-    ),
-    'feInterface' => array(
+    ],
+    'interface' => [
+        'showRecordFieldList' => 'hidden,starttime,fe_group,name',
+    ],
+    'feInterface' => [
         'fe_admin_fieldList' => 'hidden, name',
-    ),
-    'columns' => array(
-        'hidden' => array(
+    ],
+    'columns' => [
+        'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'default' => '0'
-            )
-        ),
+                'default' => '0',
+            ],
+        ],
 
-        'name' => array(
+        'name' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:t3rest/locallang_db.xml:tx_t3rest_providers_name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'required,trim',
-            )
-        ),
-        'restkey' => array(
+            ],
+        ],
+        'restkey' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:t3rest/locallang_db.xml:tx_t3rest_providers_restkey',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'trim',
-            )
-        ),
-        'classname' => array(
+            ],
+        ],
+        'classname' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:t3rest/locallang_db.xml:tx_t3rest_providers_classname',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'required,trim',
-            )
-        ),
-        'fe_group' => array(
+            ],
+        ],
+        'fe_group' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 7,
                 'maxitems' => 20,
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
-                        -1
-                    ),
-                    array(
+                        -1,
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
-                        -2
-                    ),
-                    array(
+                        -2,
+                    ],
+                    [
                         'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
-                        '--div--'
-                    )
-                ),
+                        '--div--',
+                    ],
+                ],
                 'exclusiveKeys' => '-1,-2',
                 'foreign_table' => 'fe_groups',
-                'foreign_table_where' => 'ORDER BY fe_groups.title'
-            )
-        ),
-        'config' => array(
+                'foreign_table_where' => 'ORDER BY fe_groups.title',
+            ],
+        ],
+        'config' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:t3rest/locallang_db.xml:tx_t3rest_providers_config',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'cols' => '30',
                 'rows' => '5',
                 'eval' => 'trim',
-            )
-        ),
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden;;1;;1-1-1,name,restkey,classname,fe_group,config')
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => '')
-    )
-);
+            ],
+        ],
+    ],
+    'types' => [
+        '0' => ['showitem' => 'hidden;;1;;1-1-1,name,restkey,classname,fe_group,config'],
+    ],
+    'palettes' => [
+        '1' => ['showitem' => ''],
+    ],
+];

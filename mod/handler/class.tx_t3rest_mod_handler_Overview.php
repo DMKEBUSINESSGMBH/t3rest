@@ -28,18 +28,20 @@ tx_rnbase::load('tx_rnbase_mod_Util');
 tx_rnbase::load('tx_rnbase_util_Dates');
 
 /**
- * Darstellung von Kennzahlen
+ * Darstellung von Kennzahlen.
+ *
  * @author digedag
  */
 class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
 {
-    private $data = array();
-    private $warnings = array();
+    private $data = [];
+    private $warnings = [];
 
     public function getSubID()
     {
         return 'overview';
     }
+
     public function getSubLabel()
     {
         return '###LABEL_TAB_OVERVIEW###';
@@ -52,9 +54,11 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
     {
         return tx_rnbase::makeInstance('tx_t3rest_mod_handler_LogList');
     }
+
     /**
      * Maximal 120 Zeichen plus $url
-     * Ohne URL maximal 140 Zeichen
+     * Ohne URL maximal 140 Zeichen.
+     *
      * @param tx_rnbase_mod_IModule $mod
      */
     public function handleRequest(tx_rnbase_mod_IModule $mod)
@@ -72,15 +76,14 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
         $this->data['timespan'] = unserialize(tx_rnbase_mod_Util::getModuleValue('timespan', $mod, $options));
     }
 
-
     public function showScreen($template, tx_rnbase_mod_IModule $mod, $options)
     {
         $formTool = $mod->getFormTool();
-        $options = array();
+        $options = [];
 
-        $markerArr = array();
-        $subpartArr = array();
-        $wrappedSubpartArr = array();
+        $markerArr = [];
+        $subpartArr = [];
+        $wrappedSubpartArr = [];
 
         if (!isset($this->data['timespan'])) {
             $this->data['timespan'] = unserialize(tx_rnbase_mod_Util::getModuleValue('timespan', $mod, $options));
@@ -96,9 +99,9 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
         $period = isset($this->data['timespan']['period']) ?
                     $this->data['timespan']['period'] : 0;
 
-        $periods = array('day', 'week', 'month', 'year');
+        $periods = ['day', 'week', 'month', 'year'];
 
-        $markerArr['###SELECT_PERIOD###'] = $formTool->createSelectSingleByArray('data[timespan][period]', $period, array('0' => 'Tag','1' => 'Woche', '2' => 'Monat', '3' => 'Year'));
+        $markerArr['###SELECT_PERIOD###'] = $formTool->createSelectSingleByArray('data[timespan][period]', $period, ['0' => 'Tag', '1' => 'Woche', '2' => 'Monat', '3' => 'Year']);
 
         $from = isset($this->data['timespan']['dfFrom']) ?
                     $this->data['timespan']['dfFrom'] : $this->getDefaultFrom();
@@ -118,17 +121,19 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
 
         return $out;
     }
+
     /**
-     * Sammelt die Requests im Zeitraum
+     * Sammelt die Requests im Zeitraum.
+     *
      * @param string $from MySQL-Datum
      * @param string $to
      */
     private function findRequestData($from, $to, $period)
     {
         $logSrv = tx_t3rest_util_ServiceRegistry::getLogsService();
-        $reqLogs = array();
+        $reqLogs = [];
         // Gesamt-Daten
-        $filter = array('system' => '', 'from' => $from, 'to' => $to);
+        $filter = ['system' => '', 'from' => $from, 'to' => $to];
         $filter['period'] = $period;
         $filter['system'] = 'OS_ALL';
         $logs = $logSrv->getStatsAccessByFilter($filter);
@@ -136,16 +141,18 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
 
         return $reqLogs;
     }
+
     /**
-     * Sammelt die unterschiedlichen Devices im Zeitraum
+     * Sammelt die unterschiedlichen Devices im Zeitraum.
+     *
      * @param string $from MySQL-Datum
      * @param string $to
      */
     private function findInstallsData($from, $to, $period)
     {
         $logSrv = tx_t3rest_util_ServiceRegistry::getLogsService();
-        $reqLogs = array();
-        $filter = array('system' => '', 'from' => $from, 'to' => $to);
+        $reqLogs = [];
+        $filter = ['system' => '', 'from' => $from, 'to' => $to];
         $filter['period'] = $period;
 
         // Gesamt-Daten
@@ -155,9 +162,10 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
 
         return $reqLogs;
     }
+
     private function addSeries(&$reqLogs, $logs, $name)
     {
-        for ($i = 0, $cnt = count($logs); $i < $cnt; $i++) {
+        for ($i = 0, $cnt = count($logs); $i < $cnt; ++$i) {
             $reqLogs[$i]['day'] = $logs[$i]['day'];
             $reqLogs[$i][$name] = intval($logs[$i]['value']);
         }
@@ -165,7 +173,8 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
 
     /**
      * Zielformat für Flot:
-     *      { label: "Android",  data: [[1427410800000,4],[1427497200000,3],[1427587200000,10]]},
+     *      { label: "Android",  data: [[1427410800000,4],[1427497200000,3],[1427587200000,10]]},.
+     *
      * @param array $reqLogs
      * @param array $logs
      */
@@ -174,28 +183,28 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
         $dayIdx = -1;
         $lastDay = '';
         $daySum = 0;
-//tx_rnbase_util_Debug::debug($logs,__FILE__.':'.__LINE__); // TODO: remove me
-        $reqLogs['SUM'] = array('label' => 'Gesamt','data' => array());
-        for ($i = 0, $cnt = count($logs); $i < $cnt; $i++) {
+        //tx_rnbase_util_Debug::debug($logs,__FILE__.':'.__LINE__); // TODO: remove me
+        $reqLogs['SUM'] = ['label' => 'Gesamt', 'data' => []];
+        for ($i = 0, $cnt = count($logs); $i < $cnt; ++$i) {
             $os = $logs[$i]['os'];
             $day = $logs[$i]['day'];
             if (!array_key_exists($os, $reqLogs)) {
-                $reqLogs[$os] = array('label' => $os, 'data' => array());
+                $reqLogs[$os] = ['label' => $os, 'data' => []];
             }
             // Daten für das OS eintragen
-            $reqLogs[$os]['data'][] = array(
+            $reqLogs[$os]['data'][] = [
                 tx_rnbase_util_Dates::date_mysql2tstamp($day) * 1000,
-                intval($logs[$i]['value'])
-            );
-//tx_rnbase_util_Debug::debug(['day'=>$day, 'lastDay'=>$lastDay, 'Summe'=>$daySum, 'data'=>$reqLogs], 'Wechsel: ' . ($day != $lastDay ? 'Ja' : 'Nein') .' - ' . $i.' - ' . __FUNCTION__.':'.__LINE__); // TODO: remove me
+                intval($logs[$i]['value']),
+            ];
+            //tx_rnbase_util_Debug::debug(['day'=>$day, 'lastDay'=>$lastDay, 'Summe'=>$daySum, 'data'=>$reqLogs], 'Wechsel: ' . ($day != $lastDay ? 'Ja' : 'Nein') .' - ' . $i.' - ' . __FUNCTION__.':'.__LINE__); // TODO: remove me
             // Tageswechsel für Summe prüfen
-            if (($day != $lastDay && $lastDay != '') || $i + 1 == $cnt) {
+            if (($day != $lastDay && '' != $lastDay) || $i + 1 == $cnt) {
                 // Ein neuer Tag beginnt
                 // Summe setzen
-                $reqLogs['SUM']['data'][] = array(
+                $reqLogs['SUM']['data'][] = [
                         tx_rnbase_util_Dates::date_mysql2tstamp($lastDay) * 1000,
-                        $daySum
-                );
+                        $daySum,
+                ];
                 $daySum = 0;
             } else {
                 // das ist noch der selbe Tag
@@ -209,14 +218,15 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
     {
         return tx_rnbase_util_Dates::date_tstamp2mysql(strtotime($date));
     }
+
     private function getDefaultFrom()
     {
         $datum = tx_rnbase_util_Dates::date_addIntDays(tx_rnbase_util_Dates::getTodayDateString('Ymd'), -7);
 
-        return  substr($datum, 6, 2). '.'. substr($datum, 4, 2) .'.'.substr($datum, 0, 4);
+        return substr($datum, 6, 2).'.'.substr($datum, 4, 2).'.'.substr($datum, 0, 4);
     }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_Overview.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_Overview.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_Overview.php'];
 }

@@ -24,7 +24,7 @@
 tx_rnbase::load('tx_t3rest_util_Objects');
 
 /**
- * Sammelt zusätzliche Daten
+ * Sammelt zusätzliche Daten.
  *
  * @author Rene Nitzsche
  */
@@ -44,13 +44,14 @@ abstract class tx_t3rest_decorator_Base
 
         return $data;
     }
+
     protected function prepareLinks($item, $configurations, $confId)
     {
         $linkIds = $configurations->getKeyNames($confId.'_links.');
-        for ($i = 0, $cnt = count($linkIds); $i < $cnt; $i++) {
+        for ($i = 0, $cnt = count($linkIds); $i < $cnt; ++$i) {
             $linkId = $linkIds[$i];
             // Die Parameter erzeugen
-            $params = array();
+            $params = [];
             $paramMap = (array) $configurations->get($confId.'_links.'.$linkId.'._cfg.params.');
             foreach ($paramMap as $paramName => $colName) {
                 if (is_scalar($colName) && array_key_exists($colName, $item->record)) {
@@ -62,6 +63,7 @@ abstract class tx_t3rest_decorator_Base
             $this->initLink($item, $configurations, $confId, $linkId, $params);
         }
     }
+
     protected function initLink($item, $configurations, $confId, $linkId, $parameterArr)
     {
         $linkObj = $configurations->createLink();
@@ -76,7 +78,6 @@ abstract class tx_t3rest_decorator_Base
     }
 
     /**
-     *
      * @param Tx_Rnbase_Domain_Model_Base $item
      * @param tx_rnbase_configurations $configurations
      * @param string $confId
@@ -109,8 +110,9 @@ abstract class tx_t3rest_decorator_Base
             }
         }
     }
+
     /**
-     * Daten aus anderen Tabellen nachladen
+     * Daten aus anderen Tabellen nachladen.
      *
      * @param array $item
      * @param tx_rnbase_configurations $configurations
@@ -121,7 +123,7 @@ abstract class tx_t3rest_decorator_Base
         $known = $this->getExternals();
         // TODO: Das sollte abschaltbar sein...
         $paramExternals = $configurations->getParameters()->get('externals');
-        $externals = array();
+        $externals = [];
         if (is_array($paramExternals) && array_key_exists($this->getDecoratorId(), $paramExternals)) {
             $externals = Tx_Rnbase_Utility_Strings::trimExplode(',', $paramExternals[$this->getDecoratorId()]);
         }
@@ -135,34 +137,41 @@ abstract class tx_t3rest_decorator_Base
                 $this->$methodName($item, $configurations, $confId.'record.externals.'.$external.'.');
             } else {
                 if (!in_array($methodName, self::$warned)) {
-                    tx_rnbase_util_Logger::warn('Method not found: ' . $methodName, 't3srest');
+                    tx_rnbase_util_Logger::warn('Method not found: '.$methodName, 't3srest');
                     self::$warned[] = $methodName;
                 }
             }
         }
     }
-    private static $warned = array();
+
+    private static $warned = [];
 
     protected function handleItemBefore($item, $configurations, $confId)
     {
     }
+
     protected function handleItemAfter($items, $configurations, $confId)
     {
     }
+
     protected function getIgnoreFields($configurations, $confId)
     {
         $ignoreFields = $configurations->get($confId.'record.ignoreFields');
-        $ignoreFields = $ignoreFields ? Tx_Rnbase_Utility_Strings::trimExplode(',', $ignoreFields) : array();
+        $ignoreFields = $ignoreFields ? Tx_Rnbase_Utility_Strings::trimExplode(',', $ignoreFields) : [];
 
         return array_merge($ignoreFields, tx_t3rest_util_Objects::getIgnoreFields());
     }
+
     /**
      * Return the known externals. Each external must have an implementing method!
+     *
      * @return array
      */
     abstract protected function getExternals();
+
     /**
-     * Return the the id string of a concrete decorator
+     * Return the the id string of a concrete decorator.
+     *
      * @return string
      */
     abstract protected function getDecoratorId();

@@ -22,17 +22,18 @@
  ***************************************************************/
 
 /**
- * REST response class
+ * REST response class.
  *
  * @author Rene Nitzsche
  */
 class tx_t3rest_models_Response
 {
-    public $info = array();
+    public $info = [];
     public $data;
 
     /**
-     * Add request info
+     * Add request info.
+     *
      * @param string $key
      * @param mixed $value
      */
@@ -40,6 +41,7 @@ class tx_t3rest_models_Response
     {
         $this->info[$key] = $value;
     }
+
     public function setData($data)
     {
         $this->data = $data;
@@ -47,5 +49,5 @@ class tx_t3rest_models_Response
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Provider.php'];
 }

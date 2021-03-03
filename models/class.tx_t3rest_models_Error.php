@@ -24,7 +24,7 @@
 tx_rnbase::load('tx_rnbase_model_base');
 
 /**
- * A simple object to return error messages
+ * A simple object to return error messages.
  *
  * @author Rene Nitzsche
  */
@@ -33,10 +33,12 @@ class tx_t3rest_models_Error
     public $error = 1;
     public $message;
     public $code;
+
     public function __construct($message = '', $code = 1)
     {
         $this->setError($message, $code);
     }
+
     public function setError($message, $code = 1)
     {
         $this->message = $message;
@@ -45,5 +47,5 @@ class tx_t3rest_models_Error
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Error.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Error.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Error.php'];
 }

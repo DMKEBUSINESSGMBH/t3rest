@@ -24,7 +24,8 @@
 tx_rnbase::load('tx_rnbase_model_base');
 
 /**
- * A generic model class
+ * A generic model class.
+ *
  * @author Rene Nitzsche
  */
 class tx_t3rest_models_Generic extends tx_rnbase_model_base
@@ -32,5 +33,5 @@ class tx_t3rest_models_Generic extends tx_rnbase_model_base
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Generic.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Generic.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_models_Generic.php'];
 }

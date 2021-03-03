@@ -24,19 +24,16 @@
 tx_rnbase::load('tx_rnbase_action_ICacheHandler');
 tx_rnbase::load('tx_rnbase_cache_Manager');
 
-
-
-
 /**
  * A default CacheHandler.
  * This cache has the same rules as the default TYPO3 page cache. The only difference is seperate
  * expire time for the plugin. It can be set by Typoscript:
- * plugints._caching.expires = 60 # time in seconds
+ * plugints._caching.expires = 60 # time in seconds.
  */
 class tx_t3rest_cache_CacheHandlerDefault
 {
     private $cacheConfId;
-    /** @var tx_rnbase_configurations $configurations */
+    /** @var tx_rnbase_configurations */
     private $configurations;
     private $cacheName;
 
@@ -46,16 +43,19 @@ class tx_t3rest_cache_CacheHandlerDefault
         $this->cacheConfId = $confId;
         $this->cacheName = $this->getConfigValue('name', 't3rest');
     }
+
     protected function getConfigValue($confId, $altValue = '')
     {
-        $ret = $this->getConfigurations()->get($this->getCacheConfId() . $confId);
+        $ret = $this->getConfigurations()->get($this->getCacheConfId().$confId);
 
         return isset($ret) ? $ret : $altValue;
     }
+
     protected function getCacheName()
     {
         return $this->cacheName;
     }
+
     /**
      * @return tx_rnbase_configurations
      */
@@ -63,6 +63,7 @@ class tx_t3rest_cache_CacheHandlerDefault
     {
         return $this->configurations;
     }
+
     /**
      * @return string
      */
@@ -70,9 +71,12 @@ class tx_t3rest_cache_CacheHandlerDefault
     {
         return $this->cacheConfId;
     }
+
     /**
      * Generate a key used to store data to cache.
+     *
      * @param tx_t3rest_models_Provider $providerData
+     *
      * @return string
      */
     protected function generateKey($providerData)
@@ -82,9 +86,9 @@ class tx_t3rest_cache_CacheHandlerDefault
         $parameters = $providerData->getConfigurations()->getParameters()->getAll();
         $parameters = is_array($parameters) ? implode('', $parameters) : '';
         $key = $providerData->getClassname().'_';
-        $key .= md5($providerData->getConfig(). ($parameters));
+        $key .= md5($providerData->getConfig().($parameters));
 
-        return 'ac_p'. $key;
+        return 'ac_p'.$key;
     }
 
     protected function getTimeout()
@@ -93,8 +97,10 @@ class tx_t3rest_cache_CacheHandlerDefault
 
         return $timeout ? $timeout : 60; // default timeout 1 minute
     }
+
     /**
-     * Save output data to cache
+     * Save output data to cache.
+     *
      * @param string $output
      * @param tx_rnbase_configurations $configurations
      * @param string $confId
@@ -106,8 +112,10 @@ class tx_t3rest_cache_CacheHandlerDefault
     }
 
     /**
-     * Get output data from cache
+     * Get output data from cache.
+     *
      * @param tx_t3rest_models_Provider $providerData
+     *
      * @return string the output string
      */
     public function getOutput($providerData)
@@ -121,5 +129,5 @@ class tx_t3rest_cache_CacheHandlerDefault
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerDefault.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerDefault.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerDefault.php'];
 }

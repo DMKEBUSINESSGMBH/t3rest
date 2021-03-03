@@ -27,7 +27,7 @@ tx_rnbase::load('tx_t3rest_models_Provider');
 tx_rnbase::load('tx_t3rest_provider_IProvider');
 
 /**
- * This is a sample REST provider for tt_news
+ * This is a sample REST provider for tt_news.
  *
  * @author Rene Nitzsche
  */
@@ -37,7 +37,7 @@ class tx_t3rest_provider_News extends tx_t3rest_provider_AbstractBase
     {
         if ($itemUid = $configurations->getParameters()->get('get')) {
             $confId = $confId.'get.';
-            $item = $this->getItem($itemUid, $configurations, $confId, array(tx_cfcleague_util_ServiceRegistry::getMatchService(),'search'));
+            $item = $this->getItem($itemUid, $configurations, $confId, [tx_cfcleague_util_ServiceRegistry::getMatchService(), 'search']);
             $decorator = tx_rnbase::makeInstance('tx_t3rest_decorator_News');
             $data = $decorator->prepareItem($item, $configurations, $confId);
         } elseif ($searchType = $configurations->getParameters()->get('search')) {
@@ -53,33 +53,35 @@ class tx_t3rest_provider_News extends tx_t3rest_provider_AbstractBase
         $searcher = tx_rnbase_util_SearchBase::getInstance('tx_t3rest_search_News');
         $filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, null, $confId.'defined.'.$searchType.'.filter.');
         //$filter = tx_rnbase_filter_BaseFilter::createFilter($configurations->getParameters(), $configurations, null, $confId.'filter.');
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         //suche initialisieren
         $filter->init($fields, $options);
         $options['forcewrapper'] = 1;
 
         $prov = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
-        $searchCallback = array($searcher, 'search');
+        $searchCallback = [$searcher, 'search'];
         $prov->initBySearch($searchCallback, $fields, $options);
 
         $this->configurations = $configurations;
         $this->confId = $confId;
         $this->decorator = tx_rnbase::makeInstance('tx_t3rest_decorator_News');
-        $prov->iterateAll(array($this, 'loadItem'));
+        $prov->iterateAll([$this, 'loadItem']);
 
         return $this->items;
     }
+
     public function loadItem($item)
     {
-        //
         $data = $this->decorator->prepareItem($item, $this->configurations, $this->confId);
         $this->items[] = $data;
     }
+
     protected function getBaseClass()
     {
         return 'tx_t3rest_models_Generic';
     }
+
     protected function getConfId()
     {
         return 'news.';

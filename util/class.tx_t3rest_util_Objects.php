@@ -24,7 +24,7 @@
 tx_rnbase::load('tx_rnbase_util_Logger');
 
 /**
- * Utilty methods for DAM
+ * Utilty methods for DAM.
  *
  * @author Rene Nitzsche
  */
@@ -35,9 +35,10 @@ class tx_t3rest_util_Objects
      *
      * @param tx_rnbase_model_base $record
      * @param array $ignore
+     *
      * @return stdClass
      */
-    public static function record2StdClass($item, $ignore = array())
+    public static function record2StdClass($item, $ignore = [])
     {
         if (empty($ignore)) {
             $ignore = self::getIgnoreFields();
@@ -57,7 +58,7 @@ class tx_t3rest_util_Objects
             if (!$fieldName || array_key_exists($fieldName, $ignore)) {
                 continue;
             }
-            if ($fieldName == 'record') {
+            if ('record' == $fieldName) {
                 continue;
             }
             $ret->$fieldName = $value;
@@ -65,12 +66,14 @@ class tx_t3rest_util_Objects
 
         return $ret;
     }
+
     /**
-     * Liefert TYPO3 Felder, die man eigentlich nicht benötigt
+     * Liefert TYPO3 Felder, die man eigentlich nicht benötigt.
+     *
      * @return array
      */
     public static function getIgnoreFields()
     {
-        return array('hidden', 'deleted', 'pid','crdate','cruser_id','sorting');
+        return ['hidden', 'deleted', 'pid', 'crdate', 'cruser_id', 'sorting'];
     }
 }

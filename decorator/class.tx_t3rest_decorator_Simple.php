@@ -24,13 +24,13 @@
 tx_rnbase::load('tx_t3rest_decorator_Base');
 
 /**
- *
  * @author Rene Nitzsche
  */
 class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base
 {
-    protected static $externals = array();
+    protected static $externals = [];
     private static $instance = null;
+
     /**
      * @overwrite
      */
@@ -38,6 +38,7 @@ class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base
     {
         return self::$externals;
     }
+
     protected function getDecoratorId()
     {
         return 'simple';
@@ -57,5 +58,5 @@ class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/decorator/class.tx_t3rest_decorator_Simple.php'];
 }

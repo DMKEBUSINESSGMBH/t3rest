@@ -25,12 +25,12 @@
 tx_rnbase::load('tx_rnbase_util_Exception');
 
 /**
- * Default exception class
+ * Default exception class.
  */
 class tx_t3rest_exception_DataNotFound extends tx_rnbase_util_Exception
 {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/exception/class.tx_t3rest_exception_DataNotFound.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/exception/class.tx_t3rest_exception_DataNotFound.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/exception/class.tx_t3rest_exception_DataNotFound.php'];
 }

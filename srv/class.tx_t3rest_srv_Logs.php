@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_sv1_Base');
 
 /**
- * Service for accessing logs
+ * Service for accessing logs.
  *
  * @author Rene Nitzsche
  */
@@ -35,27 +35,28 @@ class tx_t3rest_srv_Logs extends tx_rnbase_sv1_Base
     {
         return 'tx_t3rest_search_Logs';
     }
+
     /**
-     * Liefert die Anzhal von Installationen
+     * Liefert die Anzhal von Installationen.
      */
     public function getStatsApps($filter = '')
     {
         //SELECT count(distinct app) FROM `tx_t3rest_accesslog` WHERE app != ''
-        $options = array();
+        $options = [];
         $options['enablefieldsoff'] = 1;
         $options['where'] = "app != ''";
         $options['where'] .= $this->addSystemWhere($filter);
         $what = 'count(distinct app) As cnt';
-        if ($filter == 'OS_ALL') {
+        if ('OS_ALL' == $filter) {
             $what .= ', os';
             $options['where'] .= " AND os != ''";
             $options['groupby'] = 'os';
         }
 
         $rows = tx_rnbase_util_DB::doSelect($what, 'tx_t3rest_accesslog', $options);
-        if ($filter == 'OS_ALL') {
+        if ('OS_ALL' == $filter) {
             // Daten zusammenpacken
-            $ret = array();
+            $ret = [];
             $sum = 0;
             foreach ($rows as $row) {
                 $ret[$row['os']] = $row['cnt'];
@@ -66,8 +67,9 @@ class tx_t3rest_srv_Logs extends tx_rnbase_sv1_Base
             $ret = $rows[0]['cnt'];
         }
 
-        return  $ret;
+        return $ret;
     }
+
     public function getStatsAccessByFilter($filter)
     {
         $sys = $filter['system'];
@@ -75,17 +77,17 @@ class tx_t3rest_srv_Logs extends tx_rnbase_sv1_Base
         $to = $filter['to'];
         $period = $filter['period'];
 
-        $dateGroup = $period == 'day' ? 'DATE(tstamp)' :
-            ($period == 'week' ? 'YEARWEEK(tstamp, 1)' :
-                    ($period == 'month' ? 'MONTH(tstamp)' : 'YEAR(tstamp)'));
+        $dateGroup = 'day' == $period ? 'DATE(tstamp)' :
+            ('week' == $period ? 'YEARWEEK(tstamp, 1)' :
+                    ('month' == $period ? 'MONTH(tstamp)' : 'YEAR(tstamp)'));
         $options['enablefieldsoff'] = 1;
         $options['where'] = "app != ''";
         $options['where'] .= $this->addTimeWhere($from, $to);
         $options['where'] .= $this->addSystemWhere($sys);
 
         $options['groupby'] = $dateGroup;
-        if ($sys == 'OS_ALL') {
-            $dateGroup = 'os, ' .$dateGroup;
+        if ('OS_ALL' == $sys) {
+            $dateGroup = 'os, '.$dateGroup;
             $options['groupby'] .= ', os';
         }
         $options['orderby'] = 'tstamp asc';
@@ -95,7 +97,7 @@ class tx_t3rest_srv_Logs extends tx_rnbase_sv1_Base
     }
 
     /**
-     * Zugriffe pro Tag
+     * Zugriffe pro Tag.
      */
     public function getStatsAccessByDay($sys = '', $from = '', $to = '')
     {
@@ -107,8 +109,9 @@ tstamp > '2012-10-01' AND tstamp < '2012-10-10'
 GROUP BY DATE(tstamp)
 ORDER BY tstamp desc
 */
-        return $this->getStatsAccessByFilter(array('system' => $sys, 'from' => $from, 'to' => $to, 'period' => 'day'));
+        return $this->getStatsAccessByFilter(['system' => $sys, 'from' => $from, 'to' => $to, 'period' => 'day']);
     }
+
     private function addTimeWhere($from, $to)
     {
         $ret = '';
@@ -124,17 +127,18 @@ ORDER BY tstamp desc
 
     private function addSystemWhere($system)
     {
-        if (!$system || $system == 'OS_ALL') {
+        if (!$system || 'OS_ALL' == $system) {
             return '';
         }
 
-        return ' AND os = \'' . strtoupper($system) . '\'';
-        if ($system == 'ios') {
+        return ' AND os = \''.strtoupper($system).'\'';
+        if ('ios' == $system) {
             return ' AND useragent like \'%Darwin%\'';
         }
 
-        return ' AND system like \'%' . $system . '%\'';
+        return ' AND system like \'%'.$system.'%\'';
     }
+
     public function getStatsInstallsByFilter($filter)
     {
         $sys = $filter['system'];
@@ -142,9 +146,9 @@ ORDER BY tstamp desc
         $to = $filter['to'];
         $period = $filter['period'];
 
-        $dateGroup = $period == 'day' ? 'DATE(tstamp)' :
-        ($period == 'week' ? 'YEARWEEK(tstamp, 1)' :
-                ($period == 'month' ? 'MONTH(tstamp)' : 'YEAR(tstamp)'));
+        $dateGroup = 'day' == $period ? 'DATE(tstamp)' :
+        ('week' == $period ? 'YEARWEEK(tstamp, 1)' :
+                ('month' == $period ? 'MONTH(tstamp)' : 'YEAR(tstamp)'));
 
         $options['enablefieldsoff'] = 1;
         $options['where'] = "app != ''";
@@ -152,8 +156,8 @@ ORDER BY tstamp desc
         $options['where'] .= $this->addSystemWhere($sys);
 
         $options['groupby'] = $dateGroup;
-        if ($sys == 'OS_ALL') {
-            $dateGroup = 'os, ' .$dateGroup;
+        if ('OS_ALL' == $sys) {
+            $dateGroup = 'os, '.$dateGroup;
             $options['groupby'] .= ', os';
         }
 
@@ -162,8 +166,9 @@ ORDER BY tstamp desc
 
         return $rows;
     }
+
     /**
-     * Unterschiedliche Nutzer pro Tag
+     * Unterschiedliche Nutzer pro Tag.
      */
     public function getStatsInstallsByDay($sys = '', $from = '', $to = '')
     {
@@ -176,7 +181,7 @@ tstamp > '2012-10-01' AND tstamp < '2012-10-10'
 GROUP BY DATE(tstamp)
 ORDER BY tstamp desc
 */
-        return $this->getStatsInstallsByFilter(array('system' => $sys, 'from' => $from, 'to' => $to, 'period' => 'day'));
+        return $this->getStatsInstallsByFilter(['system' => $sys, 'from' => $from, 'to' => $to, 'period' => 'day']);
         $options['enablefieldsoff'] = 1;
         $options['where'] = "app != ''";
         $options['where'] .= $this->addTimeWhere($from, $to);
@@ -190,7 +195,6 @@ ORDER BY tstamp desc
     }
 }
 
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/srv/class.tx_t3rest_srv_Logs.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/srv/class.tx_t3rest_srv_Logs.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/srv/class.tx_t3rest_srv_Logs.php'];
 }

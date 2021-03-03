@@ -25,7 +25,7 @@ tx_rnbase::load('tx_t3rest_models_Provider');
 tx_rnbase::load('tx_t3rest_provider_IProvider');
 
 /**
- * REST provider for tt_news
+ * REST provider for tt_news.
  *
  * @author Rene Nitzsche
  */
@@ -42,7 +42,7 @@ class tx_t3rest_search_News extends tx_rnbase_util_SearchBase
         tx_rnbase_util_Misc::callHook(
             't3rest',
             'search_news_getTableMapping_hook',
-            array('tableMapping' => &$tableMapping),
+            ['tableMapping' => &$tableMapping],
             $this
         );
 
@@ -88,7 +88,7 @@ class tx_t3rest_search_News extends tx_rnbase_util_SearchBase
         tx_rnbase_util_Misc::callHook(
             't3rest',
             'search_news_getJoins_hook',
-            array('join' => &$join, 'tableAliases' => $tableAliases),
+            ['join' => &$join, 'tableAliases' => $tableAliases],
             $this
         );
 
@@ -97,5 +97,5 @@ class tx_t3rest_search_News extends tx_rnbase_util_SearchBase
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_News.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_News.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/search/class.tx_t3rest_search_News.php'];
 }

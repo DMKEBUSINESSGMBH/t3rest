@@ -1,6 +1,7 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
+    exit('Access denied.');
 }
 if (TYPO3_MODE == 'BE') {
     // Einbindung einer PageTSConfig
@@ -11,13 +12,13 @@ if (TYPO3_MODE == 'BE') {
         'user',
         'M1',
         'bottom',
-        array(),
-        array(
+        [],
+        [
             'access' => 'user,group',
             'routeTarget' => 'tx_t3rest_mod_Module',
             'icon' => 'EXT:t3rest/mod/moduleicon.gif',
             'labels' => 'LLL:EXT:t3rest/mod/locallang.xml',
-        )
+        ]
     );
 
     tx_rnbase_util_Extensions::insertModuleFunction(

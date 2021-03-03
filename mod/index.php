@@ -1,7 +1,6 @@
 <?php
 /**
- *
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2012 René Nitzsche <rene@system25.de>
  *  All rights reserved

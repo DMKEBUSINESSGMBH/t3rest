@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2012 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -21,19 +21,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_rnbase_mod_base_Lister');
 tx_rnbase::load('tx_rnbase_mod_IModule');
 
 /**
- *
  * @author René Nitzsche
  */
 class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister
 {
-
     /**
-     * Liefert die Funktions-Id
+     * Liefert die Funktions-Id.
      */
     public function getSearcherId()
     {
@@ -50,70 +47,74 @@ class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister
         return tx_t3rest_util_ServiceRegistry::getLogsService();
     }
 
-
     /**
      * Liefert die Spalten für den Decorator.
+     *
      * @return  array
      */
     protected function getColumns($defaultDecorator)
     {
-        return array(
-            'uid' => array(
+        return [
+            'uid' => [
                 'title' => '###LABEL_CLUBID###',
-                'width' => 90
-            ),
-            'tstamp' => array(
+                'width' => 90,
+            ],
+            'tstamp' => [
                 'title' => '###LABEL_TSTAMP###',
-                'decorator' => $defaultDecorator
-            ),
-            'runtime' => array(
+                'decorator' => $defaultDecorator,
+            ],
+            'runtime' => [
                 'title' => '###LABEL_RUNTIME###',
-                'decorator' => $defaultDecorator
-            ),
-            'version' => array(
+                'decorator' => $defaultDecorator,
+            ],
+            'version' => [
                 'title' => '###LABEL_VERSION###',
-                'decorator' => $defaultDecorator
-            ),
-            'system' => array(
+                'decorator' => $defaultDecorator,
+            ],
+            'system' => [
                 'title' => '###LABEL_SYSTEM###',
-                'decorator' => $defaultDecorator
-            ),
-            'sysver' => array(
+                'decorator' => $defaultDecorator,
+            ],
+            'sysver' => [
                 'title' => '###LABEL_SYSVER###',
-                'decorator' => $defaultDecorator
-            ),
-            'app' => array(
+                'decorator' => $defaultDecorator,
+            ],
+            'app' => [
                 'title' => '###LABEL_APP###',
-                'decorator' => $defaultDecorator
-            ),
-            'uri' => array(
+                'decorator' => $defaultDecorator,
+            ],
+            'uri' => [
                 'title' => '###LABEL_URI###',
-                'decorator' => $defaultDecorator
-            ),
-            'useragent' => array(
+                'decorator' => $defaultDecorator,
+            ],
+            'useragent' => [
                 'title' => '###LABEL_USERAGENT###',
-                'decorator' => $defaultDecorator
-            ),
-            'linker' => array($this)
-        );
+                'decorator' => $defaultDecorator,
+            ],
+            'linker' => [$this],
+        ];
     }
+
     public function makeLink($item, $formTool, $currentPid, $options)
     {
         return $ret;
     }
+
     protected function createDefaultDecorator()
     {
         return tx_rnbase::makeInstance('tx_t3rest_mod_decorator_Logs', $this->getModule());
     }
+
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_mod_base_Searcher::getSearchColumns()
      */
     protected function getSearchColumns()
     {
-        return array(
-            'LOGS.UID', 'LOGS.VERSION', 'LOGS.SYSTEM', 'LOGS.APP'
-        );
+        return [
+            'LOGS.UID', 'LOGS.VERSION', 'LOGS.SYSTEM', 'LOGS.APP',
+        ];
     }
 
     protected function prepareFieldsAndOptions(array &$fields, array &$options)
@@ -127,5 +128,5 @@ class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/searcher/class.tx_t3rest_mod_searcher_Logs.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/searcher/class.tx_t3rest_mod1_searcher_Logs.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/searcher/class.tx_t3rest_mod1_searcher_Logs.php'];
 }

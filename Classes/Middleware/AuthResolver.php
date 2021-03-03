@@ -30,7 +30,7 @@ class AuthResolver implements MiddlewareInterface
      * request handler to do so.
      */
     public function process(
-        \Psr\Http\Message\ServerRequestInterface $request,
+        ServerRequestInterface $request,
         \Psr\Http\Server\RequestHandlerInterface $handler
     ): \Psr\Http\Message\ResponseInterface {
         // if hook is not enabled or uri is not an api call, proceed with next handler!

@@ -27,13 +27,14 @@ tx_rnbase::load('tx_rnbase_util_DB');
 
 class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
 {
-    private $data = array();
-    private $warnings = array();
+    private $data = [];
+    private $warnings = [];
 
     public function getSubID()
     {
         return 'loglist';
     }
+
     public function getSubLabel()
     {
         return '###LABEL_TAB_LOGLIST###';
@@ -46,9 +47,11 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
     {
         return tx_rnbase::makeInstance('tx_t3rest_mod_handler_LogList');
     }
+
     /**
      * Maximal 120 Zeichen plus $url
-     * Ohne URL maximal 140 Zeichen
+     * Ohne URL maximal 140 Zeichen.
+     *
      * @param tx_rnbase_mod_IModule $mod
      */
     public function handleRequest(tx_rnbase_mod_IModule $mod)
@@ -63,15 +66,14 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
         $mod->addMessage('###LABEL_MESSAGE_SENT###', 'Hinweis', 0);
     }
 
-
     public function showScreen($template, tx_rnbase_mod_IModule $mod, $options)
     {
         $formTool = $mod->getFormTool();
-        $options = array();
+        $options = [];
 
-        $markerArr = array();
-        $subpartArr = array();
-        $wrappedSubpartArr = array();
+        $markerArr = [];
+        $subpartArr = [];
+        $wrappedSubpartArr = [];
 
         $searcher = tx_rnbase::makeInstance('tx_t3rest_mod_lister_Logs', $mod, $options);
         $markerArr['###SEARCHFORM###'] = $searcher->getSearchForm();
@@ -88,5 +90,5 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_LogList.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_LogList.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod/handler/class.tx_t3rest_mod_handler_LogList.php'];
 }

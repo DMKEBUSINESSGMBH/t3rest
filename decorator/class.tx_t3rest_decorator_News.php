@@ -26,13 +26,13 @@ tx_rnbase::load('tx_t3rest_util_FAL');
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 /**
- * Sammelt zusätzliche Daten
+ * Sammelt zusätzliche Daten.
  *
  * @author Rene Nitzsche
  */
 class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base
 {
-    protected static $externals = array('dampictures', 'categories');
+    protected static $externals = ['dampictures', 'categories'];
 
     protected function addDampictures($item, $configurations, $confId)
     {
@@ -42,9 +42,9 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base
 
     protected function addCategories($item)
     {
-        $from = array('tt_news_cat As NEWSCAT JOIN tt_news_cat_mm AS NEWSCATMM ON NEWSCATMM.uid_foreign = NEWSCAT.UID',
-                'tt_news_cat', 'NEWSCAT');
-        $options['where'] = 'NEWSCATMM.uid_local = '. $item->getUid();
+        $from = ['tt_news_cat As NEWSCAT JOIN tt_news_cat_mm AS NEWSCATMM ON NEWSCATMM.uid_foreign = NEWSCAT.UID',
+                'tt_news_cat', 'NEWSCAT', ];
+        $options['where'] = 'NEWSCATMM.uid_local = '.$item->getUid();
         $item->setProperty(
             'categories',
             Tx_Rnbase_Database_Connection::getInstance()->doSelect('uid,title,image', $from, $options)
@@ -58,13 +58,16 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base
     {
         return self::$externals;
     }
+
     protected function getDecoratorId()
     {
         return 'news';
     }
+
     protected function handleItemBefore($item, $configurations, $confId)
     {
     }
+
     protected function handleItemAfter($item, $configurations, $confId)
     {
     }

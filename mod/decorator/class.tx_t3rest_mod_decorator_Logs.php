@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2012 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -21,11 +21,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_rnbase_mod_IModule');
 
 /**
- *
  * @author René Nitzsche
  */
 class tx_t3rest_mod_decorator_Logs
@@ -40,16 +38,16 @@ class tx_t3rest_mod_decorator_Logs
         $ret = $value;
         switch ($columnName) {
             case 'actions':
-                $ret = $this->getActions($item, array('edit' => '','hide' => '','remove' => '',));
+                $ret = $this->getActions($item, ['edit' => '', 'hide' => '', 'remove' => '']);
                 break;
             case 'address':
                 $ret = $record['street'];
                 break;
             case 'city':
-                $ret = $record['zip'] . ' ' .$record['city'];
+                $ret = $record['zip'].' '.$record['city'];
                 break;
             case 'lastname':
-                $ret = $record['lastname'] . ', ' . $record['firstname'];
+                $ret = $record['lastname'].', '.$record['firstname'];
                 if ($record['honorary']) {
                     $ret .= ' <a href="javascript:void(0);" title="###LABEL_HONORARY###">*</a>';
                 }
@@ -68,6 +66,7 @@ class tx_t3rest_mod_decorator_Logs
      *
      * @param   tx_rnbase_model_base    $item
      * @param   array                   $options
+     *
      * @return  string
      */
     protected function getActions(tx_rnbase_model_base $item, array $options)
@@ -86,7 +85,7 @@ class tx_t3rest_mod_decorator_Logs
                     //in der BE-Modul locallang.xml der jeweiligen Extension im Schlüssel
                     //'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein
                     //Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
-                    $ret .= $this->getFormTool()->createDeleteLink($item->getTableName(), $item->getUid(), $bTitle, array('confirm' => $GLOBALS['LANG']->getLL('msg_confirmation_deletion')));
+                    $ret .= $this->getFormTool()->createDeleteLink($item->getTableName(), $item->getUid(), $bTitle, ['confirm' => $GLOBALS['LANG']->getLL('msg_confirmation_deletion')]);
                     break;
                 default:
                     break;
@@ -97,13 +96,15 @@ class tx_t3rest_mod_decorator_Logs
     }
 
     /**
-     * Returns the module
+     * Returns the module.
+     *
      * @return tx_rnbase_mod_IModule
      */
     private function getModule()
     {
         return $this->mod;
     }
+
     private function getFormTool()
     {
         return $this->getModule()->getFormTool();
@@ -111,5 +112,5 @@ class tx_t3rest_mod_decorator_Logs
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/decorator/class.tx_t3rest_mod1_decorator_Logs.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/decorator/class.tx_t3rest_mod1_decorator_Logs.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/decorator/class.tx_t3rest_mod1_decorator_Logs.php'];
 }

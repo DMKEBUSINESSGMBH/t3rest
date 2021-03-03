@@ -16,6 +16,6 @@ return [
             'before' => [
                 'typo3/cms-frontend/site',
             ],
-        ]
-    ]
+        ],
+    ],
 ];

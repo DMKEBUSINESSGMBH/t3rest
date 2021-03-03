@@ -24,7 +24,7 @@
 tx_rnbase::load('Tx_T3rest_Model_Provider');
 
 /**
- * Frontcontroller for REST-API calls
+ * Frontcontroller for REST-API calls.
  *
  * @author Rene Nitzsche
  */

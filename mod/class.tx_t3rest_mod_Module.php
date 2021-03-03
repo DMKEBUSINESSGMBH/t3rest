@@ -1,7 +1,6 @@
 <?php
 /**
- *
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2012 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -24,15 +23,12 @@
  */
 
 /**
- * Backend Modul für t3rest
+ * Backend Modul für t3rest.
  *
  * @author René Nitzsche
- * @package tx_t3rest
- * @subpackage tx_t3rest_mod1
  */
 class tx_t3rest_mod_Module extends tx_rnbase_mod_BaseModule
 {
-
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
      *
@@ -46,7 +42,7 @@ class tx_t3rest_mod_Module extends tx_rnbase_mod_BaseModule
     }
 
     /**
-     * Method to get the extension key
+     * Method to get the extension key.
      *
      * @return string Extension key
      */
@@ -57,7 +53,7 @@ class tx_t3rest_mod_Module extends tx_rnbase_mod_BaseModule
 
     /**
      * Method to set the tabs for the mainmenu
-     * Umstellung von SelectBox auf Menu
+     * Umstellung von SelectBox auf Menu.
      */
     protected function getFuncMenu()
     {
