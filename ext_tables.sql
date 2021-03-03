@@ -1,6 +1,5 @@
-
 #
-# Table structure for table 'tx_t3sportstats_players'
+# Table structure for table 'tx_t3rest_providers'
 # Statistic data of player per match
 #
 CREATE TABLE tx_t3rest_providers (
@@ -22,6 +21,8 @@ CREATE TABLE tx_t3rest_providers (
     KEY parent (restkey,hidden,deleted)
 );
 
+
+# /* @deprecated legacy code, will be removed for 10.x or later */
 CREATE TABLE tx_t3rest_accesslog (
     uid int(11) NOT NULL auto_increment,
     tstamp datetime DEFAULT '0000-00-00 00:00:00',
@@ -44,7 +45,7 @@ CREATE TABLE tx_t3rest_accesslog (
 );
 
 #
-# Table for mkforms session cache
+# Table for t3rest session cache
 #
 CREATE TABLE tx_t3rest_cache (
     id int(11) NOT NULL auto_increment,
