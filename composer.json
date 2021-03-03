@@ -1,7 +1,6 @@
 {
     "name": "dmk/t3rest",
     "description": "Provides a REST interface for TYPO3.",
-    "version": "9.0.0",
     "type": "typo3-cms-extension",
     "keywords": [
         "TYPO3 CMS",
@@ -9,7 +8,7 @@
         "router"
     ],
     "homepage": "http://www.dmk-ebusiness.de/",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "René Nitzsche",
@@ -23,17 +22,26 @@
         }
     ],
     "support": {
-        "email": "dev@dmk-ebusiness.de"
-    },
-    "require": {
-        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5",
-        "digedag/rn-base" : ">=1.7.1"
+        "email": "dev@dmk-ebusiness.de",
+        "source": "https://github.com/DMKEBUSINESSGMBH/t3rest",
+        "issues": "https://github.com/DMKEBUSINESSGMBH/t3rest/issues"
     },
     "replace": {
         "typo3-ter/t3rest": "*"
     },
+    "require": {
+        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5",
+        "digedag/rn-base" : "^1.7.1"
+    },
     "require-dev": {
-        "nimut/testing-framework": "*"
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "sebastian/phpcpd": "^4.0 || ^5.0",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpmd/phpmd": "^2.9",
+        "phpstan/phpstan": "^0.12.8",
+        "phpstan/extension-installer": "^1.0",
+        "saschaegerer/phpstan-typo3": "^0.13",
+        "nimut/testing-framework": "^4.0 || ^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -59,9 +67,50 @@
             "DMK\\T3rest\\Tests\\": "Tests"
         }
     },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "preferred-install": {
+            "typo3/cms": "source"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/Web/typo3conf/ext/",
+            "[ -L .Build/Web/typo3conf/ext/t3rest ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/t3rest"
+        ],
+        "lint:php": [
+            "[ -e .Build/bin/parallel-lint ] || composer update",
+            ".Build/bin/parallel-lint ./Classes"
+        ],
+        "lint": [
+            "@lint:php"
+        ],
+        "test:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update --ansi",
+            ".Build/bin/php-cs-fixer fix -v --dry-run --diff --diff-format udiff --ansi"
+        ],
+        "test:phpunit": [
+            "[ -e .Build/bin/phpunit ] || composer update --ansi",
+            "export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit -c phpunit.xml.dist --colors=always"
+        ],
+        "test": [
+            "@test:phpcs",
+            "@test:phpunit"
+        ],
+        "fix:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update --ansi",
+            ".Build/bin/php-cs-fixer fix -v"
+        ],
+        "fix": [
+            "@fix:phpcs"
+        ]
+    },
     "extra": {
         "typo3/cms": {
-            "extension-key": "t3rest"
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "extension-key": "t3rest",
+            "web-dir": ".Build/Web"
         }
     }
 }

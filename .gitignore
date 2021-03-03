@@ -1,5 +1,4 @@
-.project
-.buildpath
-.settings
-
-.php_cs.cache
+/.Build
+/var
+/.php_cs.cache
+/composer.lock
