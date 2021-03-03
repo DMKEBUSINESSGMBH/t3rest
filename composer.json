@@ -97,6 +97,9 @@
         ]
     },
     "extra": {
+        "branch-alias" : {
+            "dev-10.4": "10.0.x-dev"
+        },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "extension-key": "t3rest",
