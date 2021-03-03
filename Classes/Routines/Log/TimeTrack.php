@@ -61,7 +61,7 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
     ) {
         $through = $this;
 
-        $this->add('start', $GLOBALS['TYPO3_MISC']['microtime_start'])->add('init');
+        $this->add('start')->add('init');
 
         // register post routine for Respect/Rest
         if ($router instanceof Tx_T3rest_Router_Respect) {
@@ -109,7 +109,7 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
 
         $times = Tx_T3rest_Utility_Factory::getSupplier();
 
-        $last = $GLOBALS['TYPO3_MISC']['microtime_start'];
+        $last = reset($this->times);
         foreach ($this->times as $key => $value) {
             $times->add(
                 $key,
