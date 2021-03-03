@@ -30,8 +30,8 @@
         "typo3-ter/t3rest": "*"
     },
     "require": {
-        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5",
-        "digedag/rn-base" : "^1.7.1"
+        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || 10.4",
+        "digedag/rn-base" : "^1.12"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
