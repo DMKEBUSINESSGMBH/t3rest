@@ -115,24 +115,45 @@ jobs:
                     -
                         typo3-version: "^8.7"
                         php-version: "7.1"
+                        allow-failure: false
                     -
                         typo3-version: "^8.7"
                         php-version: "7.2"
+                        allow-failure: false
                     -
                         typo3-version: "^8.7"
                         php-version: "7.3"
+                        allow-failure: false
                     -
                         typo3-version: "^8.7"
                         php-version: "7.4"
+                        allow-failure: false
                     -
                         typo3-version: "^9.5"
                         php-version: "7.2"
+                        allow-failure: false
                     -
                         typo3-version: "^9.5"
                         php-version: "7.3"
+                        allow-failure: false
                     -
                         typo3-version: "^9.5"
                         php-version: "7.4"
+                        allow-failure: false
+                    -
+                        typo3-version: "^10.4"
+                        php-version: "7.2"
+                        allow-failure: true
+                    -
+                        typo3-version: "^10.4"
+                        php-version: "7.3"
+                        allow-failure: true
+                    -
+                        typo3-version: "^10.4"
+                        php-version: "7.4"
+                        allow-failure: true
+
+        continue-on-error: ${{ matrix.allow-failure }}
 
         steps:
             -
