@@ -77,11 +77,14 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
             // not when the connectToDB Hook is executed. That's why load the TCA ourselves.
             // In TYPO3 9 could be changes which would make this workaround obsolete.
             // @todo check when updating to TYPO3 9
-            if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            if (Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
+                \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca();
+                \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables();
+            } elseif (Sys25\RnBase\Utility\TYPO3::isTYPO80OrHigher()) {
                 $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
                 $bootstrap->loadBaseTca();
 
-                if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+                if (Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher()) {
                     $bootstrap::loadExtTables();
                 } else {
                     $bootstrap->loadExtensionTables();
