@@ -29,6 +29,9 @@ tx_rnbase::load('Tx_T3rest_Routines_Auth_InterfaceAuth');
  * this routine authenticates an fe user
  * by session cookie or basioc auth.
  *
+ * @TODO: migrate to context aspects!
+ * GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user')
+ *
  * @author Michael Wagner
  */
 class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRouter, Tx_T3rest_Routines_InterfaceRoute, Tx_T3rest_Routines_Auth_InterfaceAuth
@@ -163,7 +166,17 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
 
         // init fe user
         if (!is_object($tsFe->fe_user)) {
-            $tsFe->initFEuser();
+            if (\Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
+                $tsFe->fe_user = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                    \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
+                );
+                if (Tx_T3rest_Utility_Config::getAuthUserStoragePid()) {
+                    $tsFe->fe_user->checkPid_value = Tx_T3rest_Utility_Config::getAuthUserStoragePid();
+                }
+                $tsFe->fe_user->start();
+            } else {
+                $tsFe->initFEuser();
+            }
         }
 
         // init groups, if required
