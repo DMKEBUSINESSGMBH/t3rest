@@ -37,11 +37,6 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
      */
     public function execute()
     {
-        //TODO: in T3 >= 9 this should be checked in the middleware
-        if (!$this->isApiCall()) {
-            return;
-        }
-
         $router = $this->getRouter();
         $this->prepareRouter($router);
 
@@ -141,19 +136,5 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
         /* @var $memTrack Tx_T3rest_Routines_Log_MemTrack */
         $memTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
         $memTrack->prepareRouter($router);
-    }
-
-    /**
-     * is there are a api call?
-     *
-     * @return bool
-     */
-    protected function isApiCall()
-    {
-        // check the request uri for the api uri segment
-        $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $apiSegment = Tx_T3rest_Utility_Config::getRestApiUriPath();
-
-        return 0 === strpos($requestUri, $apiSegment);
     }
 }

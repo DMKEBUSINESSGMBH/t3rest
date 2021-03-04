@@ -40,11 +40,25 @@ class Tx_T3rest_Hook_TsFe
     public function checkAndRunRestApi(&$params, $tsfe)
     {
         // the hook is not enabled, skip!
-        if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
+        if (!Tx_T3rest_Utility_Config::isRestHookEnabled() || !$this->isApiCall()) {
             return;
         }
 
         $this->getController()->execute();
+    }
+
+    /**
+     * is there are a api call?
+     *
+     * @return bool
+     */
+    protected function isApiCall()
+    {
+        // check the request uri for the api uri segment
+        $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $apiSegment = Tx_T3rest_Utility_Config::getRestApiUriPath();
+
+        return 0 === strpos($requestUri, $apiSegment);
     }
 
     /**

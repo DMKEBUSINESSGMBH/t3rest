@@ -9,7 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Tx_T3rest_Controller_InterfaceController;
-use Tx_T3rest_Utility_Config;
 use Tx_T3rest_Utility_Factory;
 
 /**
@@ -19,7 +18,7 @@ use Tx_T3rest_Utility_Factory;
  * @license    http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class RestApiMiddleware implements MiddlewareInterface
+class RestApiMiddleware extends AbstractMiddleware implements MiddlewareInterface
 {
     /**
      * @param ServerRequestInterface  $request
@@ -29,15 +28,10 @@ class RestApiMiddleware implements MiddlewareInterface
      *
      * @throws \Exception
      */
-    public function process(
+    public function processRestRequest(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        // the hook is not enabled, proceed next middleware!
-        if (!Tx_T3rest_Utility_Config::isRestHookEnabled()) {
-            return $handler->handle($request);
-        }
-
         $this->getController()->execute();
 
         return $handler->handle($request);

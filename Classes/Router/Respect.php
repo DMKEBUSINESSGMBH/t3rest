@@ -55,7 +55,7 @@ class Tx_T3rest_Router_Respect extends \Respect\Rest\Router implements Tx_T3rest
         $class,
         array $arguments = []
     ) {
-        $baseUri = Tx_T3rest_Utility_Config::getRestApiUriPath();
+        $baseUri = Tx_T3rest_Utility_Config::getRestApiUriPathForSiteLanguage();
 
         return $this->$method(
             $baseUri.ltrim($path, '/'),

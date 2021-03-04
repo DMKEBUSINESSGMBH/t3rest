@@ -10,6 +10,9 @@ isBasicAuthHeaderEnabled = 1
   # cat=restapi//10; type=string; label= API URL segment: The URL segment for the REST-API. This Segment should be the first part of the REQUEST_URI. Leave empty to skip this chek an use restApiServerName only.
 restApiUriPath = t3rest
 
+  # cat=restapi//10; type=string; label= Respect Current Site Language: The URL segment for the REST-API respects the current site language from the site configuration.
+restApiRespectLanguage = 0
+
 # cat=restapi//10; type=string; label= User Storage: The pid of the storage where the users can be found.
 restAuthUserStoragePid = 0
 

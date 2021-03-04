@@ -76,6 +76,36 @@ final class Tx_T3rest_Utility_Config
     }
 
     /**
+     * Should the language from the site config be respected?
+     *
+     * @return bool
+     */
+    private static function getRestApiRespectLanguage()
+    {
+        return (bool) self::getExtConf('restApiRespectLanguage') ?: false;
+    }
+
+    /**
+     * For typo3 9 or later the language is not given by get parameter `L` anymore.
+     * We has to add the language base url to the rest aoi uri!
+     *
+     * @return string
+     */
+    public static function getRestApiUriPathForSiteLanguage()
+    {
+        $baseUri = self::getRestApiUriPath();
+
+        if (self::getRestApiRespectLanguage()) {
+            $language = Tx_T3rest_Utility_Factory::getCurrentSiteLanguage();
+            if (null !== $language) {
+                $baseUri = rtrim($language->getBase()->getPath(), '/').$baseUri;
+            }
+        }
+
+        return $baseUri;
+    }
+
+    /**
      * returns the pid of the storage with the fe users.
      *
      * @return int
