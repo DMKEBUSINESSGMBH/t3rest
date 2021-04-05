@@ -21,8 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_mod_base_Lister');
-tx_rnbase::load('tx_rnbase_mod_IModule');
 
 /**
  * @author René Nitzsche
@@ -40,7 +38,7 @@ class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister
     /**
      * Liefert den Service.
      *
-     * @return tx_rnbase_sv1_Base
+     * @return tx_t3rest_srv_Logs
      */
     protected function getService()
     {
@@ -125,8 +123,4 @@ class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister
         $options['enablefieldsoff'] = 1;
         $options['orderby']['LOGS.UID'] = 'desc';
     }
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/searcher/class.tx_t3rest_mod_searcher_Logs.php']) {
-    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/mod1/searcher/class.tx_t3rest_mod1_searcher_Logs.php'];
 }
