@@ -1,6 +1,7 @@
 <?php
-use Sys25\RnBase\Typo3Wrapper\Service\AbstractService;
+
 use Sys25\RnBase\Search\SearchBase;
+use Sys25\RnBase\Typo3Wrapper\Service\AbstractService;
 
 /***************************************************************
 *  Copyright notice
@@ -205,4 +206,3 @@ ORDER BY tstamp desc
         return $rows;
     }
 }
-
