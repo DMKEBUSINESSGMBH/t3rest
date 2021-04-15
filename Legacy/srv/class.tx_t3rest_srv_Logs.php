@@ -1,4 +1,8 @@
 <?php
+
+use Sys25\RnBase\Search\SearchBase;
+use Sys25\RnBase\Typo3Wrapper\Service\AbstractService;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,18 +26,26 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_sv1_Base');
-
 /**
  * Service for accessing logs.
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_srv_Logs extends tx_rnbase_sv1_Base
+class tx_t3rest_srv_Logs extends AbstractService
 {
-    public function getSearchClass()
+    /**
+     * Search database for networks.
+     *
+     * @param array $fields
+     * @param array $options
+     *
+     * @return array of tx_t3socials_models_Network
+     */
+    public function search($fields, $options)
     {
-        return 'tx_t3rest_search_Logs';
+        $searcher = SearchBase::getInstance('tx_t3rest_search_Logs');
+
+        return $searcher->search($fields, $options);
     }
 
     /**
@@ -193,8 +205,4 @@ ORDER BY tstamp desc
 
         return $rows;
     }
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/srv/class.tx_t3rest_srv_Logs.php']) {
-    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/srv/class.tx_t3rest_srv_Logs.php'];
 }

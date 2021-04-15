@@ -4,9 +4,6 @@ if (!defined('TYPO3_MODE')) {
     exit('Access denied.');
 }
 
-require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
-tx_rnbase::load('tx_t3rest_util_ServiceRegistry');
-
 tx_rnbase_util_Extensions::addService(
     't3rest',
     't3rest',
