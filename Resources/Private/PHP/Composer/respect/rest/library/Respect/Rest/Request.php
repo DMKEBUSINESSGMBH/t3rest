@@ -83,7 +83,10 @@ class Request
             if ($sideRoute instanceof Routes\Error) {
                 return set_error_handler(
                     function () use ($sideRoute) {
-                        $sideRoute->errors[] = func_get_args();
+                        // Don't do anything if error_reporting is disabled by an @ sign
+                        if (error_reporting() !== 0) {
+                            $sideRoute->errors[] = func_get_args();
+                        }
                     }
                 );
             }

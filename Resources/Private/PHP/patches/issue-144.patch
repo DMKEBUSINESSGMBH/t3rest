@@ -1,0 +1,31 @@
+From 796b2970d7dba627195655ad02c5b2a1c4064f49 Mon Sep 17 00:00:00 2001
+From: Hannes Bochmann <hannes.bochmann@dmk-ebusiness.com>
+Date: Fri, 11 Mar 2022 12:14:14 +0100
+Subject: [PATCH] Bugfix respect suppressed errors
+
+Don't do anything if error_reporting is disabled by an @ sign.
+
+fixes #144
+---
+ library/Respect/Rest/Request.php | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/library/Respect/Rest/Request.php b/library/Respect/Rest/Request.php
+index e9cf0fa..84b0688 100644
+--- a/library/Respect/Rest/Request.php
++++ b/library/Respect/Rest/Request.php
+@@ -83,7 +83,10 @@ class Request
+             if ($sideRoute instanceof Routes\Error) {
+                 return set_error_handler(
+                     function () use ($sideRoute) {
+-                        $sideRoute->errors[] = func_get_args();
++                        // Don't do anything if error_reporting is disabled by an @ sign
++                        if (error_reporting() !== 0) {
++                            $sideRoute->errors[] = func_get_args();
++                        }
+                     }
+                 );
+             }
+-- 
+2.20.1
+
