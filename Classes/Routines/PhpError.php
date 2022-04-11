@@ -74,7 +74,12 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
         \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
             \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500
         );
+        \Sys25\RnBase\Utility\Logger::fatal(
+            'An error occurred during a t3rest request',
+            't3rest',
+            ['error' => var_export($err, true)]
+        );
 
-        return 'Sorry, an error happened: '.var_export($err, true);
+        return 'Sorry, an error happened.';
     }
 }
