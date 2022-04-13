@@ -21,9 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_t3rest_models_Provider');
-tx_rnbase::load('tx_t3rest_provider_IProvider');
-
 /**
  * This is a sample REST provider for tt_news.
  *
@@ -48,24 +45,22 @@ abstract class tx_t3rest_provider_AbstractBase implements tx_t3rest_provider_IPr
      * Identifier. Letzterer muss dann in der Config als Filter konfiguriert sein.
      *
      * @param mixed $itemUid int oder string-Identifier
-     * @param tx_rnbase_configurations $configurations
+     * @param \Sys25\RnBase\Configuration\Processor $configurations
      * @param string $confId wird bei defined angepaßt
      *
-     * @return tx_rnbase_models_base
+     * @return \Sys25\RnBase\Domain\Model\BaseModel
      */
     public function getItem($itemUid, $configurations, &$confId, $searchCallback)
     {
         if (intval($itemUid)) {
-            $item = tx_rnbase::makeInstance($this->getBaseClass(), intval($itemUid));
+            $item = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getBaseClass(), intval($itemUid));
         } else {
             // Prüfen, ob der Dienst konfiguriert ist
             $defined = $configurations->getKeyNames($confId.'defined.');
             if (in_array($itemUid, $defined)) {
                 $confId = $confId.'defined.'.$itemUid.'.';
                 // Item per Config laden
-                tx_rnbase::load('tx_rnbase_filter_BaseFilter');
                 $filter = tx_rnbase_filter_BaseFilter::createFilter($configurations->getParameters(), $configurations, null, $confId.'filter.');
-                //$filter = tx_rnbase_filter_BaseFilter::createFilter($configurations->getParameters(), $configurations, null, $confId.'defined.'.$itemUid.'.filter.');
                 $fields = [];
                 $options = [];
                 //suche initialisieren
@@ -78,7 +73,7 @@ abstract class tx_t3rest_provider_AbstractBase implements tx_t3rest_provider_IPr
         }
 
         if (!$item || !$item->isValid()) {
-            throw tx_rnbase::makeInstance('tx_t3rest_exception_DataNotFound', 'Item not valid', 100);
+            throw \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_exception_DataNotFound', 'Item not valid', 100);
         }
 
         return $item;

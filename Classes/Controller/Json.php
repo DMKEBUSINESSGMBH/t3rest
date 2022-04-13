@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_T3rest_Controller_AbstractController');
 
 /**
  * tsfe hooks.
@@ -43,7 +42,7 @@ class Tx_T3rest_Controller_Json extends Tx_T3rest_Controller_AbstractController
         parent::prepareRoutines($router);
 
         /* @var $throughJson Tx_T3rest_Routines_Through_Json */
-        $throughJson = tx_rnbase::makeInstance('Tx_T3rest_Routines_Through_Json');
+        $throughJson = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Through_Json');
         $throughJson->prepareRouter($router);
     }
 }

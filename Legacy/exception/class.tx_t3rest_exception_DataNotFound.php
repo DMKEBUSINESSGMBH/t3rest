@@ -22,12 +22,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Exception');
-
 /**
  * Default exception class.
  */
-class tx_t3rest_exception_DataNotFound extends tx_rnbase_util_Exception
+class tx_t3rest_exception_DataNotFound extends \Sys25\RnBase\Exception\AdditionalException
 {
 }
 

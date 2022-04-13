@@ -65,7 +65,7 @@ class tx_t3rest_srv_Logs extends AbstractService
             $options['groupby'] = 'os';
         }
 
-        $rows = tx_rnbase_util_DB::doSelect($what, 'tx_t3rest_accesslog', $options);
+        $rows = \Sys25\RnBase\Database\Connection::getInstance()->doSelect($what, 'tx_t3rest_accesslog', $options);
         if ('OS_ALL' == $filter) {
             // Daten zusammenpacken
             $ret = [];
@@ -103,7 +103,7 @@ class tx_t3rest_srv_Logs extends AbstractService
             $options['groupby'] .= ', os';
         }
         $options['orderby'] = 'tstamp asc';
-        $rows = tx_rnbase_util_DB::doSelect($dateGroup.' AS day, count(uid) As value', 'tx_t3rest_accesslog', $options);
+        $rows = \Sys25\RnBase\Database\Connection::getInstance()->doSelect($dateGroup.' AS day, count(uid) As value', 'tx_t3rest_accesslog', $options);
 
         return $rows;
     }
@@ -174,7 +174,7 @@ ORDER BY tstamp desc
         }
 
         $options['orderby'] = 'tstamp asc';
-        $rows = tx_rnbase_util_DB::doSelect($dateGroup.' AS day, count(distinct app) As value', 'tx_t3rest_accesslog', $options);
+        $rows = \Sys25\RnBase\Database\Connection::getInstance()->doSelect($dateGroup.' AS day, count(distinct app) As value', 'tx_t3rest_accesslog', $options);
 
         return $rows;
     }
@@ -201,7 +201,7 @@ ORDER BY tstamp desc
 
         $options['groupby'] = 'DATE(tstamp)';
         $options['orderby'] = 'tstamp asc';
-        $rows = tx_rnbase_util_DB::doSelect('DATE(tstamp) AS day, count(distinct app) As value', 'tx_t3rest_accesslog', $options);
+        $rows = \Sys25\RnBase\Database\Connection::getInstance()->doSelect('DATE(tstamp) AS day, count(distinct app) As value', 'tx_t3rest_accesslog', $options);
 
         return $rows;
     }

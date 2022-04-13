@@ -21,8 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_t3rest_decorator_Base');
-
 /**
  * @author Rene Nitzsche
  */
@@ -50,7 +48,7 @@ class tx_t3rest_decorator_Simple extends tx_t3rest_decorator_Base
     public static function getInstance()
     {
         if (is_object(self::$instance)) {
-            self::$instance == tx_rnbase::makeInstance('tx_t3rest_decorator_Simple');
+            self::$instance == \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_decorator_Simple');
         }
 
         return self::$instance;

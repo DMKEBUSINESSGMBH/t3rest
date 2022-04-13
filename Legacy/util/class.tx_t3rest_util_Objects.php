@@ -21,8 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Logger');
-
 /**
  * Utilty methods for DAM.
  *
@@ -33,7 +31,7 @@ class tx_t3rest_util_Objects
     /**
      * Wandelt ein record-Array in ein stdObject um.
      *
-     * @param tx_rnbase_model_base $record
+     * @param \Sys25\RnBase\Domain\Model\BaseModel $record
      * @param array $ignore
      *
      * @return stdClass

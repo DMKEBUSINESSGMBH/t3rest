@@ -32,13 +32,13 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      *  transforms the item.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return Tx_T3rest_Model_Supplier
      */
     public function transform(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
+        Sys25\RnBase\Domain\Model\DataInterface $item,
         $confId = 'item.'
     ) {
         $this->prepareItem($item, $confId);
@@ -51,13 +51,13 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * prepares the item to transform.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
      */
     protected function prepareItem(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
+        Sys25\RnBase\Domain\Model\DataInterface $item,
         $confId = 'item.'
     ) {
     }
@@ -65,13 +65,13 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * wraps the record using stdwrap.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
      */
     protected function wrapRecord(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
+        Sys25\RnBase\Domain\Model\DataInterface $item,
         $confId = 'item.record.'
     ) {
         $cObj = $this->getConfigurations()->getCObj();
@@ -116,18 +116,17 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates the links.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
      */
     protected function prepareLinks(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
+        Sys25\RnBase\Domain\Model\DataInterface $item,
         $confId = 'item.links.'
     ) {
         // prepare the tsfe for link creation (config,sys_page and tmpl are required)
-        tx_rnbase::load('tx_rnbase_util_Misc');
-        tx_rnbase_util_Misc::prepareTSFE();
+        \Sys25\RnBase\Utility\Misc::prepareTSFE();
 
         $linkIds = $this->getConfigurations()->getKeyNames($confId);
         foreach ($linkIds as $link) {
@@ -153,14 +152,14 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates an link object.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      * @param array $parameters
      *
-     * @return tx_rnbase_util_Link
+     * @return \Sys25\RnBase\Utility\Link
      */
     protected function initLink(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
+        Sys25\RnBase\Domain\Model\DataInterface $item,
         $confId = 'item.links.show.',
         array $parameters = []
     ) {
@@ -177,13 +176,13 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates the supplier.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return Tx_T3rest_Model_Supplier
      */
     protected function buildSupplier(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
+        Sys25\RnBase\Domain\Model\DataInterface $item,
         $confId = 'item.'
     ) {
         return Tx_T3rest_Utility_Factory::getSupplier(
@@ -202,9 +201,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
      */
     protected function getIgnoreFields($confId = 'item.record.')
     {
-        tx_rnbase::load('tx_rnbase_util_Strings');
-
-        return tx_rnbase_util_Strings::trimExplode(
+        return \Sys25\RnBase\Utility\Strings::trimExplode(
             ',',
             $this->getConfig($confId.'ignoreFields'),
             true

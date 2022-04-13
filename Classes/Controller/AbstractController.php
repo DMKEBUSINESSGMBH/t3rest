@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_T3rest_Controller_InterfaceController');
 
 /**
  * base controller.
@@ -122,19 +121,19 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
         Tx_T3rest_Router_InterfaceRouter $router
     ) {
         /* @var $exceptions Tx_T3rest_Routines_Exception */
-        $exceptions = tx_rnbase::makeInstance('Tx_T3rest_Routines_Exception');
+        $exceptions = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Exception');
         $exceptions->prepareRouter($router);
 
         /* @var $error Tx_T3rest_Routines_PhpError */
-        $error = tx_rnbase::makeInstance('Tx_T3rest_Routines_PhpError');
+        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_PhpError');
         $error->prepareRouter($router);
 
         /* @var $timeTrack Tx_T3rest_Routines_Log_TimeTrack */
-        $timeTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
+        $timeTrack = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
         $timeTrack->prepareRouter($router);
 
         /* @var $memTrack Tx_T3rest_Routines_Log_MemTrack */
-        $memTrack = tx_rnbase::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
+        $memTrack = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
         $memTrack->prepareRouter($router);
     }
 }

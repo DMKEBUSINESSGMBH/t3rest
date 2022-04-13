@@ -21,8 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('Tx_T3rest_Model_Provider');
-
 /**
  * Frontcontroller for REST-API calls.
  *

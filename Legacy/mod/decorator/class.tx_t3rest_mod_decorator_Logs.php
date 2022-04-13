@@ -21,14 +21,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_mod_IModule');
-
 /**
  * @author René Nitzsche
  */
 class tx_t3rest_mod_decorator_Logs
 {
-    public function __construct(tx_rnbase_mod_IModule $mod)
+    public function __construct(Sys25\RnBase\Backend\Module\IModule $mod)
     {
         $this->mod = $mod;
     }
@@ -64,12 +62,12 @@ class tx_t3rest_mod_decorator_Logs
      * @TODO: Das alles über die Linker realisieren!!
      * $options = array('hide'=>'ausblenden,'edit'=>'bearbeiten,'remove'=>'löschen','history'='history','info'=>'info','move'=>'verschieben');
      *
-     * @param   tx_rnbase_model_base    $item
+     * @param   \Sys25\RnBase\Domain\Model\BaseModel    $item
      * @param   array                   $options
      *
      * @return  string
      */
-    protected function getActions(tx_rnbase_model_base $item, array $options)
+    protected function getActions(Sys25\RnBase\Domain\Model\BaseModel $item, array $options)
     {
         $ret = '';
         foreach ($options as $sLinkId => $bTitle) {
@@ -78,7 +76,7 @@ class tx_t3rest_mod_decorator_Logs
                     $ret .= $this->getFormTool()->createEditLink($item->getTableName(), $item->getUid(), $bTitle);
                     break;
                 case 'hide':
-                    $ret .= $this->getFormTool()->createHideLink($item->getTableName(), $item->getUid(), $item->record['hidden']);
+                    $ret .= $this->getFormTool()->createHideLink($item->getTableName(), $item->getUid(), $item->getProperty('hidden'));
                     break;
                 case 'remove':
                     //Es wird immer ein Bestätigungsdialog ausgegeben!!! Dieser steht
@@ -98,7 +96,7 @@ class tx_t3rest_mod_decorator_Logs
     /**
      * Returns the module.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     private function getModule()
     {

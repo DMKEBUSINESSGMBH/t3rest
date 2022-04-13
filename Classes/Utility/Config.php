@@ -40,8 +40,7 @@ final class Tx_T3rest_Utility_Config
     {
         static $config = [];
         if (!isset($config[$key])) {
-            tx_rnbase::load('tx_rnbase_configurations');
-            $config[$key] = tx_rnbase_configurations::getExtensionCfgValue(
+            $config[$key] = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
                 't3rest',
                 $key
             );

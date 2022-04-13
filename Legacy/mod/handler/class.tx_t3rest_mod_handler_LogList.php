@@ -22,10 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_IModHandler');
-tx_rnbase::load('tx_rnbase_util_DB');
-
-class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
+class tx_t3rest_mod_handler_LogList implements \Sys25\RnBase\Backend\Module\IModHandler
 {
     private $data = [];
     private $warnings = [];
@@ -45,28 +42,28 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
      */
     public static function getInstance()
     {
-        return tx_rnbase::makeInstance('tx_t3rest_mod_handler_LogList');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_mod_handler_LogList');
     }
 
     /**
      * Maximal 120 Zeichen plus $url
      * Ohne URL maximal 140 Zeichen.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      */
-    public function handleRequest(tx_rnbase_mod_IModule $mod)
+    public function handleRequest(Sys25\RnBase\Backend\Module\IModule $mod)
     {
-        $submitted = tx_rnbase_parameters::getPostOrGetParameter('sendmsg');
+        $submitted = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sendmsg');
         if (!$submitted) {
             return '';
         }
 
-        $this->data = tx_rnbase_parameters::getPostOrGetParameter('data');
+        $this->data = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('data');
 
         $mod->addMessage('###LABEL_MESSAGE_SENT###', 'Hinweis', 0);
     }
 
-    public function showScreen($template, tx_rnbase_mod_IModule $mod, $options)
+    public function showScreen($template, Sys25\RnBase\Backend\Module\IModule $mod, $options)
     {
         $formTool = $mod->getFormTool();
         $options = [];
@@ -75,7 +72,7 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
         $subpartArr = [];
         $wrappedSubpartArr = [];
 
-        $searcher = tx_rnbase::makeInstance('tx_t3rest_mod_lister_Logs', $mod, $options);
+        $searcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_mod_lister_Logs', $mod, $options);
         $markerArr['###SEARCHFORM###'] = $searcher->getSearchForm();
         $list = $searcher->getResultList();
 
@@ -83,7 +80,7 @@ class tx_t3rest_mod_handler_LogList implements tx_rnbase_mod_IModHandler
         $markerArr['###PAGER###'] = $list['pager'];
         $markerArr['###TOTALSIZE###'] = $list['totalsize'];
 
-        $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArr, $subpartArr, $wrappedSubpartArr);
+        $out = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArr, $subpartArr, $wrappedSubpartArr);
 
         return $out;
     }

@@ -27,7 +27,7 @@
  *
  * @author René Nitzsche
  */
-class tx_t3rest_mod_Module extends tx_rnbase_mod_BaseModule
+class tx_t3rest_mod_Module extends \Sys25\RnBase\Backend\Module\BaseModule
 {
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.

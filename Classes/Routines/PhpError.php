@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
 
 /**
  * error routine.

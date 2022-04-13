@@ -21,8 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_T3rest_Model_ProviderHolder');
-tx_rnbase::load('Tx_T3rest_Provider_InterfaceProvider');
 
 /**
  * abstract provider.
@@ -85,7 +83,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
     protected function getAuthFeUserRoutine()
     {
         if (null === $this->auth) {
-            $this->auth = tx_rnbase::makeInstance(
+            $this->auth = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'Tx_T3rest_Routines_Auth_FeUser',
                 $this->getProvider()->getFeGroup()
             );
@@ -102,7 +100,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
     protected function getAuthIpRoutine()
     {
         if (null === $this->ipAuthentication) {
-            $this->ipAuthentication = tx_rnbase::makeInstance(
+            $this->ipAuthentication = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'Tx_T3rest_Routines_Auth_Ip',
                 (array) $this->getProvider()->getConfigurations()->get('allowedIps.')
             );

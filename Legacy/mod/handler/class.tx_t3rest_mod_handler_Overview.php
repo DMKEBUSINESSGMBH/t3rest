@@ -22,17 +22,12 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_IModHandler');
-tx_rnbase::load('tx_rnbase_util_DB');
-tx_rnbase::load('tx_rnbase_mod_Util');
-tx_rnbase::load('tx_rnbase_util_Dates');
-
 /**
  * Darstellung von Kennzahlen.
  *
  * @author digedag
  */
-class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
+class tx_t3rest_mod_handler_Overview implements \Sys25\RnBase\Backend\Module\IModHandler
 {
     private $data = [];
     private $warnings = [];
@@ -52,31 +47,31 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
      */
     public static function getInstance()
     {
-        return tx_rnbase::makeInstance('tx_t3rest_mod_handler_LogList');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_mod_handler_LogList');
     }
 
     /**
      * Maximal 120 Zeichen plus $url
      * Ohne URL maximal 140 Zeichen.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      */
-    public function handleRequest(tx_rnbase_mod_IModule $mod)
+    public function handleRequest(Sys25\RnBase\Backend\Module\IModule $mod)
     {
-        $submitted = tx_rnbase_parameters::getPostOrGetParameter('change');
+        $submitted = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('change');
         if (!$submitted) {
             return '';
         }
 
-        $this->data = tx_rnbase_parameters::getPostOrGetParameter('data');
+        $this->data = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('data');
 
         // Daten übernehmen
         $options['type'] = 'ses';
         $options['changed']['timespan'] = $this->data['timespan'];
-        $this->data['timespan'] = unserialize(tx_rnbase_mod_Util::getModuleValue('timespan', $mod, $options));
+        $this->data['timespan'] = unserialize(\Sys25\RnBase\Backend\Utility\ModuleUtility::getModuleValue('timespan', $mod, $options));
     }
 
-    public function showScreen($template, tx_rnbase_mod_IModule $mod, $options)
+    public function showScreen($template, Sys25\RnBase\Backend\Module\IModule $mod, $options)
     {
         $formTool = $mod->getFormTool();
         $options = [];
@@ -86,7 +81,7 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
         $wrappedSubpartArr = [];
 
         if (!isset($this->data['timespan'])) {
-            $this->data['timespan'] = unserialize(tx_rnbase_mod_Util::getModuleValue('timespan', $mod, $options));
+            $this->data['timespan'] = unserialize(\Sys25\RnBase\Backend\Utility\ModuleUtility::getModuleValue('timespan', $mod, $options));
         }
 
         $logSrv = tx_t3rest_util_ServiceRegistry::getLogsService();
@@ -107,7 +102,7 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
                     $this->data['timespan']['dfFrom'] : $this->getDefaultFrom();
         $to = isset($this->data['timespan']['dfTo']) ?
                     $this->data['timespan']['dfTo'] :
-                    tx_rnbase_util_Dates::getTodayDateString('d.m.Y');
+                    \Sys25\RnBase\Utility\Dates::getTodayDateString('d.m.Y');
         $markerArr['###DATE_FROM###'] = $from;
         $markerArr['###DATE_TO###'] = $to;
         // Jetzt die Logs holen
@@ -117,7 +112,7 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
         $markerArr['###LOGS_REQUESTS###'] = json_encode(array_values($this->findRequestData($from, $to, $periods[$period])));
         $markerArr['###LOGS_INSTALLS###'] = json_encode(array_values($this->findInstallsData($from, $to, $periods[$period])));
 
-        $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArr, $subpartArr, $wrappedSubpartArr);
+        $out = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArr, $subpartArr, $wrappedSubpartArr);
 
         return $out;
     }
@@ -183,7 +178,6 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
         $dayIdx = -1;
         $lastDay = '';
         $daySum = 0;
-        //tx_rnbase_util_Debug::debug($logs,__FILE__.':'.__LINE__); // TODO: remove me
         $reqLogs['SUM'] = ['label' => 'Gesamt', 'data' => []];
         for ($i = 0, $cnt = count($logs); $i < $cnt; ++$i) {
             $os = $logs[$i]['os'];
@@ -193,16 +187,15 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
             }
             // Daten für das OS eintragen
             $reqLogs[$os]['data'][] = [
-                tx_rnbase_util_Dates::date_mysql2tstamp($day) * 1000,
+                \Sys25\RnBase\Utility\Dates::date_mysql2tstamp($day) * 1000,
                 intval($logs[$i]['value']),
             ];
-            //tx_rnbase_util_Debug::debug(['day'=>$day, 'lastDay'=>$lastDay, 'Summe'=>$daySum, 'data'=>$reqLogs], 'Wechsel: ' . ($day != $lastDay ? 'Ja' : 'Nein') .' - ' . $i.' - ' . __FUNCTION__.':'.__LINE__); // TODO: remove me
             // Tageswechsel für Summe prüfen
             if (($day != $lastDay && '' != $lastDay) || $i + 1 == $cnt) {
                 // Ein neuer Tag beginnt
                 // Summe setzen
                 $reqLogs['SUM']['data'][] = [
-                        tx_rnbase_util_Dates::date_mysql2tstamp($lastDay) * 1000,
+                        \Sys25\RnBase\Utility\Dates::date_mysql2tstamp($lastDay) * 1000,
                         $daySum,
                 ];
                 $daySum = 0;
@@ -216,12 +209,12 @@ class tx_t3rest_mod_handler_Overview implements tx_rnbase_mod_IModHandler
 
     private function str2Mysql($date)
     {
-        return tx_rnbase_util_Dates::date_tstamp2mysql(strtotime($date));
+        return \Sys25\RnBase\Utility\Dates::date_tstamp2mysql(strtotime($date));
     }
 
     private function getDefaultFrom()
     {
-        $datum = tx_rnbase_util_Dates::date_addIntDays(tx_rnbase_util_Dates::getTodayDateString('Ymd'), -7);
+        $datum = \Sys25\RnBase\Utility\Dates::date_addIntDays(\Sys25\RnBase\Utility\Dates::getTodayDateString('Ymd'), -7);
 
         return substr($datum, 6, 2).'.'.substr($datum, 4, 2).'.'.substr($datum, 0, 4);
     }

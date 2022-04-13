@@ -40,9 +40,8 @@ class tx_t3rest_util_FAL
                 'tstamp',
             ];
         }
-        tx_rnbase::load('tx_rnbase_util_TSFAL');
         $ret = [];
-        $files = tx_rnbase_util_TSFAL::fetchFiles($refTable, $refUid, $refField);
+        $files = \Sys25\RnBase\Utility\TSFAL::fetchFiles($refTable, $refUid, $refField);
         foreach ($files as $uid => $media) {
             $ret[] = self::convertFal2StdClass($media->getProperty(), $configurations, $confId, $picCfg, $fields);
         }
@@ -63,7 +62,7 @@ class tx_t3rest_util_FAL
         $data = new stdClass();
         $filepath = $record['file_path'].$record['file_name'];
         $data->filepath = $filepath;
-        $server = Tx_Rnbase_Utility_T3General::getIndpEnv('TYPO3_SITE_URL');
+        $server = \Sys25\RnBase\Utility\T3General::getIndpEnv('TYPO3_SITE_URL');
         $data->absFilepath = $server.$filepath;
         $record['file'] = $filepath;
         // Bild skalieren

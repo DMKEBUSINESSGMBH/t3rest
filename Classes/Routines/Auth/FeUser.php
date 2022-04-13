@@ -21,9 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_T3rest_Routines_InterfaceRouter');
-tx_rnbase::load('Tx_T3rest_Routines_InterfaceRoute');
-tx_rnbase::load('Tx_T3rest_Routines_Auth_InterfaceAuth');
 
 /**
  * this routine authenticates an fe user
@@ -143,7 +140,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
         // there is already a user, skip multiple init calls.
         if (is_object($tsFe->fe_user) && is_array($tsFe->fe_user->user) && $tsFe->fe_user->user['uid']) {
             //In TYPO3 9 the groups for fe users are not initialized yet.
-            if (tx_rnbase_util_TYPO3::isTYPO90OrHigher() && empty($tsFe->fe_user->groupData['uid'])) {
+            if (\Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher() && empty($tsFe->fe_user->groupData['uid'])) {
                 $tsFe->initUserGroups();
             }
 
@@ -181,7 +178,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
 
         // init groups, if required
         if ($this->feGroups && !$tsFe->gr_list ||
-            (tx_rnbase_util_TYPO3::isTYPO90OrHigher() && empty($tsFe->fe_user->groupData['uid']))
+            (\Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher() && empty($tsFe->fe_user->groupData['uid']))
         ) {
             $tsFe->initUserGroups();
         }

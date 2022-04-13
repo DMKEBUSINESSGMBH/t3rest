@@ -21,14 +21,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_model_base');
-
 /**
  * Frontcontroller for REST-API calls.
  *
  * @author Rene Nitzsche
  */
-class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
+class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
 {
     private $configurations = null;
 
@@ -45,7 +43,7 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
     /**
      * set the provider config.
      *
-     * @param tx_rnbase_configurations $config
+     * @param \Sys25\RnBase\Configuration\Processor $config
      *
      * @deprecated only used for the old api
      *
@@ -59,15 +57,14 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
     /**
      * the ts config for from the provider.
      *
-     * @return tx_rnbase_configurations
+     * @return \Sys25\RnBase\Configuration\Processor
      */
     public function getConfigurations()
     {
         if (null === $this->configurations) {
-            tx_rnbase::load('tx_rnbase_util_TS');
-            $configArray = tx_rnbase_util_TS::parseTsConfig($this->getConfig());
-            /* @var $configurations tx_rnbase_configurations */
-            $this->configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+            $configArray = \Sys25\RnBase\Utility\TypoScript::parseTsConfig($this->getConfig());
+            /* @var $configurations \Sys25\RnBase\Configuration\Processor */
+            $this->configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
             $this->configurations->init($configArray, false, 't3rest', 't3rest');
         }
 
@@ -92,8 +89,7 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
     public function getProviderInstance()
     {
         if (!class_exists($this->getProviderClassName())) {
-            tx_rnbase::load('tx_rnbase_util_Logger');
-            tx_rnbase_util_Logger::warn(
+            \Sys25\RnBase\Utility\Logger::warn(
                 sprintf(
                     'Providerclass "%3$s" for Provider "%2$s (%1$s)" could not be loaded',
                     $this->getUid(),
@@ -106,7 +102,7 @@ class Tx_T3rest_Model_Provider extends tx_rnbase_model_base
             return null;
         }
 
-        $instance = tx_rnbase::makeInstance($this->getProviderClassName());
+        $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getProviderClassName());
         if ($instance instanceof Tx_T3rest_Model_ProviderHolder) {
             $instance->setProvider($this);
         }

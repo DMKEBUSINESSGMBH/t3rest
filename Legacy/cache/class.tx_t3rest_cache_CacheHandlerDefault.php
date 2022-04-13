@@ -21,9 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_action_ICacheHandler');
-tx_rnbase::load('tx_rnbase_cache_Manager');
-
 /**
  * A default CacheHandler.
  * This cache has the same rules as the default TYPO3 page cache. The only difference is seperate
@@ -33,7 +30,7 @@ tx_rnbase::load('tx_rnbase_cache_Manager');
 class tx_t3rest_cache_CacheHandlerDefault
 {
     private $cacheConfId;
-    /** @var tx_rnbase_configurations */
+    /** @var \Sys25\RnBase\Configuration\Processor */
     private $configurations;
     private $cacheName;
 
@@ -57,7 +54,7 @@ class tx_t3rest_cache_CacheHandlerDefault
     }
 
     /**
-     * @return tx_rnbase_configurations
+     * @return \Sys25\RnBase\Configuration\Processor
      */
     protected function getConfigurations()
     {
@@ -102,12 +99,12 @@ class tx_t3rest_cache_CacheHandlerDefault
      * Save output data to cache.
      *
      * @param string $output
-     * @param tx_rnbase_configurations $configurations
+     * @param \Sys25\RnBase\Configuration\Processor $configurations
      * @param string $confId
      */
     public function setOutput($output, $providerData)
     {
-        $cache = tx_rnbase_cache_Manager::getCache($this->getCacheName());
+        $cache = \Sys25\RnBase\Cache\CacheManager::getCache($this->getCacheName());
         $cache->set($this->generateKey($providerData), $output, $this->getTimeout());
     }
 
@@ -120,7 +117,7 @@ class tx_t3rest_cache_CacheHandlerDefault
      */
     public function getOutput($providerData)
     {
-        $cache = tx_rnbase_cache_Manager::getCache($this->getCacheName());
+        $cache = \Sys25\RnBase\Cache\CacheManager::getCache($this->getCacheName());
         $key = $this->generateKey($providerData);
         $out = $cache->get($key);
 

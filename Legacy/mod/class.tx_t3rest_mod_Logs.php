@@ -1,14 +1,12 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_mod_ExtendedModFunc');
-
 /**
  * Backend Modul für Auswertung der Logs
  * Sinnvolle Submodule wären die Listenansicht und dann vermutlich paar Statistiken.
  *
  * @author René Nitzsche
  */
-class tx_t3rest_mod_Logs extends tx_rnbase_mod_ExtendedModFunc
+class tx_t3rest_mod_Logs extends \Sys25\RnBase\Backend\Module\ExtendedModFunc
 {
     /**
      * Method getFuncId.
@@ -28,9 +26,9 @@ class tx_t3rest_mod_Logs extends tx_rnbase_mod_ExtendedModFunc
     protected function getSubMenuItems()
     {
         $menuItems = [];
-        $menuItems[] = tx_rnbase::makeInstance('tx_t3rest_mod_handler_Overview');
-        $menuItems[] = tx_rnbase::makeInstance('tx_t3rest_mod_handler_LogList');
-        tx_rnbase_util_Misc::callHook(
+        $menuItems[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_mod_handler_Overview');
+        $menuItems[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_mod_handler_LogList');
+        \Sys25\RnBase\Utility\Misc::callHook(
             't3rest',
             'modLogs_tabItems',
             ['tabItems' => &$menuItems],

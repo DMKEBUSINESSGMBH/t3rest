@@ -25,7 +25,7 @@
 /**
  * @author René Nitzsche
  */
-class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister
+class tx_t3rest_mod_lister_Logs extends \Sys25\RnBase\Backend\Utility\BaseLister
 {
     /**
      * Liefert die Funktions-Id.
@@ -100,13 +100,13 @@ class tx_t3rest_mod_lister_Logs extends tx_rnbase_mod_base_Lister
 
     protected function createDefaultDecorator()
     {
-        return tx_rnbase::makeInstance('tx_t3rest_mod_decorator_Logs', $this->getModule());
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_mod_decorator_Logs', $this->getModule());
     }
 
     /**
      * (non-PHPdoc).
      *
-     * @see tx_rnbase_mod_base_Searcher::getSearchColumns()
+     * @see \Sys25\RnBase\Backend\Utility\BaseLister::getSearchColumns()
      */
     protected function getSearchColumns()
     {

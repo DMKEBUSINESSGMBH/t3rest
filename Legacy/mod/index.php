@@ -23,8 +23,7 @@
  */
 
 // @todo this file can be removed when support for TYPO3 6.2 is dropped
-if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-    tx_rnbase::load('tx_t3rest_mod_Module');
-    $SOBE = tx_rnbase::makeInstance('tx_t3rest_mod_Module');
+if (!\Sys25\RnBase\Utility\TYPO3::isTYPO70OrHigher()) {
+    $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_mod_Module');
     $SOBE->__invoke();
 }

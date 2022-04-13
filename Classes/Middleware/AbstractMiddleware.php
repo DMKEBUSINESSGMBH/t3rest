@@ -10,8 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use tx_rnbase;
-use tx_rnbase_util_Logger;
 use Tx_T3rest_Utility_Config;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -77,8 +75,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
         try {
             $result = $this->getBodyParser()->parseBody($request);
         } catch (\InvalidArgumentException $argumentException) {
-            tx_rnbase::load('tx_rnbase_util_Logger');
-            tx_rnbase_util_Logger::warn(
+            \Sys25\RnBase\Utility\Logger::warn(
                 sprintf(
                     '%s: could not parse body as JSON: %s',
                     __CLASS__,

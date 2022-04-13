@@ -21,8 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_t3rest_util_Objects');
-
 /**
  * Sammelt zusätzliche Daten.
  *
@@ -54,8 +52,8 @@ abstract class tx_t3rest_decorator_Base
             $params = [];
             $paramMap = (array) $configurations->get($confId.'_links.'.$linkId.'._cfg.params.');
             foreach ($paramMap as $paramName => $colName) {
-                if (is_scalar($colName) && array_key_exists($colName, $item->record)) {
-                    $params[$paramName] = $item->record[$colName];
+                if (is_scalar($colName) && array_key_exists($colName, $item->getProperty())) {
+                    $params[$paramName] = $item->getProperty($colName);
                 } elseif (is_array($colName)) {
                     // Derzeit nicht unterstützt
                 }
@@ -73,13 +71,13 @@ abstract class tx_t3rest_decorator_Base
             if (!$linkObj->isAbsUrl()) { // Immer absolute URLs setzen
                 $linkObj->setAbsUrl(true);
             }
-            $item->record['link_'.$linkId] = $linkObj->makeUrl(false);
+            $item->setProperty('link_'.$linkId, $linkObj->makeUrl(false));
         }
     }
 
     /**
-     * @param Tx_Rnbase_Domain_Model_Base $item
-     * @param tx_rnbase_configurations $configurations
+     * @param \Sys25\RnBase\Domain\Model\BaseModel $item
+     * @param \Sys25\RnBase\Configuration\Processor $configurations
      * @param string $confId
      */
     protected function wrapRecord($item, $configurations, $confId)
@@ -92,7 +90,7 @@ abstract class tx_t3rest_decorator_Base
             // Add dynamic columns
             $keys = $configurations->getUniqueKeysNames($conf);
             foreach ($keys as $key) {
-                if (Tx_Rnbase_Utility_Strings::isFirstPartOfStr($key, 'dc') && !isset($record[$key])) {
+                if (\Sys25\RnBase\Utility\Strings::isFirstPartOfStr($key, 'dc') && !isset($record[$key])) {
                     $item->setProperty($key, $conf[$key]);
                 }
             }
@@ -115,7 +113,7 @@ abstract class tx_t3rest_decorator_Base
      * Daten aus anderen Tabellen nachladen.
      *
      * @param array $item
-     * @param tx_rnbase_configurations $configurations
+     * @param \Sys25\RnBase\Configuration\Processor $configurations
      * @param string $confId
      */
     public function loadExternal($item, $configurations, $confId)
@@ -125,9 +123,9 @@ abstract class tx_t3rest_decorator_Base
         $paramExternals = $configurations->getParameters()->get('externals');
         $externals = [];
         if (is_array($paramExternals) && array_key_exists($this->getDecoratorId(), $paramExternals)) {
-            $externals = Tx_Rnbase_Utility_Strings::trimExplode(',', $paramExternals[$this->getDecoratorId()]);
+            $externals = \Sys25\RnBase\Utility\Strings::trimExplode(',', $paramExternals[$this->getDecoratorId()]);
         }
-        $externals = array_unique(array_merge($externals, Tx_Rnbase_Utility_Strings::trimExplode(',', $configurations->get($confId.'record.externals'))));
+        $externals = array_unique(array_merge($externals, \Sys25\RnBase\Utility\Strings::trimExplode(',', $configurations->get($confId.'record.externals'))));
         foreach ($externals as $external) {
             if (!in_array($external, $known)) {
                 continue;
@@ -137,7 +135,7 @@ abstract class tx_t3rest_decorator_Base
                 $this->$methodName($item, $configurations, $confId.'record.externals.'.$external.'.');
             } else {
                 if (!in_array($methodName, self::$warned)) {
-                    tx_rnbase_util_Logger::warn('Method not found: '.$methodName, 't3srest');
+                    \Sys25\RnBase\Utility\Logger::warn('Method not found: '.$methodName, 't3srest');
                     self::$warned[] = $methodName;
                 }
             }
@@ -157,7 +155,7 @@ abstract class tx_t3rest_decorator_Base
     protected function getIgnoreFields($configurations, $confId)
     {
         $ignoreFields = $configurations->get($confId.'record.ignoreFields');
-        $ignoreFields = $ignoreFields ? Tx_Rnbase_Utility_Strings::trimExplode(',', $ignoreFields) : [];
+        $ignoreFields = $ignoreFields ? \Sys25\RnBase\Utility\Strings::trimExplode(',', $ignoreFields) : [];
 
         return array_merge($ignoreFields, tx_t3rest_util_Objects::getIgnoreFields());
     }

@@ -21,15 +21,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_t3rest_models_Provider');
-tx_rnbase::load('tx_t3rest_provider_IProvider');
-
 /**
  * REST provider for tt_news.
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_search_News extends tx_rnbase_util_SearchBase
+class tx_t3rest_search_News extends \Sys25\RnBase\Search\SearchBase
 {
     protected function getTableMappings()
     {
@@ -39,7 +36,7 @@ class tx_t3rest_search_News extends tx_rnbase_util_SearchBase
         $tableMapping['NEWSCATMM'] = 'tt_news_cat_mm';
 
         // Hook to append other tables
-        tx_rnbase_util_Misc::callHook(
+        \Sys25\RnBase\Utility\Misc::callHook(
             't3rest',
             'search_news_getTableMapping_hook',
             ['tableMapping' => &$tableMapping],
@@ -85,7 +82,7 @@ class tx_t3rest_search_News extends tx_rnbase_util_SearchBase
         }
 
         // Hook to append other tables
-        tx_rnbase_util_Misc::callHook(
+        \Sys25\RnBase\Utility\Misc::callHook(
             't3rest',
             'search_news_getJoins_hook',
             ['join' => &$join, 'tableAliases' => $tableAliases],

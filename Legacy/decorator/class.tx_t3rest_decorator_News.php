@@ -21,10 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_t3rest_decorator_Base');
-tx_rnbase::load('tx_t3rest_util_FAL');
-tx_rnbase::load('Tx_Rnbase_Database_Connection');
-
 /**
  * Sammelt zusätzliche Daten.
  *
@@ -47,7 +43,7 @@ class tx_t3rest_decorator_News extends tx_t3rest_decorator_Base
         $options['where'] = 'NEWSCATMM.uid_local = '.$item->getUid();
         $item->setProperty(
             'categories',
-            Tx_Rnbase_Database_Connection::getInstance()->doSelect('uid,title,image', $from, $options)
+            \Sys25\RnBase\Database\Connection::getInstance()->doSelect('uid,title,image', $from, $options)
         );
     }
 

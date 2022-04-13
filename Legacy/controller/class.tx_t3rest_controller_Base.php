@@ -21,10 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Logger');
-tx_rnbase::load('tx_rnbase_util_DB');
-tx_rnbase::load('tx_t3rest_exception_DataNotFound');
-
 /**
  * Frontcontroller for REST-API calls.
  *
@@ -66,10 +62,10 @@ class tx_t3rest_controller_Base
                 }
             }
         } catch (tx_t3rest_exception_DataNotFound $dnfe) {
-            $data = tx_rnbase::makeInstance('tx_t3rest_models_Error', $dnfe->getMessage(), $dnfe->getCode());
+            $data = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_models_Error', $dnfe->getMessage(), $dnfe->getCode());
         } catch (Exception $e) {
-            $data = tx_rnbase::makeInstance('tx_t3rest_models_Error', $e->getMessage(), $e->getCode());
-            tx_rnbase_util_Logger::fatal('Error for rest call!', 't3rest', ['Exception' => $e->getMessage]);
+            $data = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_models_Error', $e->getMessage(), $e->getCode());
+            \Sys25\RnBase\Utility\Logger::fatal('Error for rest call!', 't3rest', ['Exception' => $e->getMessage]);
         }
 
         $response = $this->createResponse();
@@ -91,7 +87,7 @@ class tx_t3rest_controller_Base
 
     private function logRequest($response, $time)
     {
-        $dir = tx_rnbase_configurations::getExtensionCfgValue('t3rest', 'accesslogDirectory');
+        $dir = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('t3rest', 'accesslogDirectory');
         if (!$dir) { // Ohne Verzeichnis wird nichts geloggt
             return;
         }
@@ -129,7 +125,7 @@ class tx_t3rest_controller_Base
             $this->correctIOS($data);
         }
 
-        tx_rnbase_util_DB::doInsert('tx_t3rest_accesslog', $data);
+        \Sys25\RnBase\Database\Connection::getInstance()->doInsert('tx_t3rest_accesslog', $data);
     }
 
     /**
@@ -172,7 +168,7 @@ class tx_t3rest_controller_Base
             return null;
         }
 
-        return tx_rnbase::makeInstance($provData->getClassname());
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($provData->getClassname());
     }
 
     /**
@@ -182,16 +178,14 @@ class tx_t3rest_controller_Base
     {
         $action = $this->getParameters()->get('action');
         if (!$action) {
-            tx_rnbase::load('tx_t3rest_exception_ProviderNotFound');
             throw new tx_t3rest_exception_ProviderNotFound('No provider given');
         }
 
         $options = [];
         $options['wrapperclass'] = 'tx_t3rest_models_Provider';
         $options['where'] = 'restkey = \''.$GLOBALS['TYPO3_DB']->quoteStr($action, 'tx_t3rest_providers').'\'';
-        $ret = tx_rnbase_util_DB::doSelect('tx_t3rest_providers.*', 'tx_t3rest_providers', $options);
+        $ret = \Sys25\RnBase\Database\Connection::getInstance()->doSelect('tx_t3rest_providers.*', 'tx_t3rest_providers', $options);
         if (empty($ret)) {
-            tx_rnbase::load('tx_t3rest_exception_ProviderNotFound');
             throw new tx_t3rest_exception_ProviderNotFound('Provider '.htmlspecialchars($action).' not found');
         }
         $providerData = $ret[0];
@@ -209,13 +203,12 @@ class tx_t3rest_controller_Base
     {
         $ts = $providerData->getConfig();
         // This handles ts setup from flexform
-        $tsParser = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
+        $tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Utility\TYPO3Classes::getTypoScriptParserClass());
         // Man muss vorher selbst nach Includes suchen. Typisch TYPO3... :-/
         $ts = $tsParser->checkIncludeLines($ts);
         $tsParser->parse($ts);
         $configArr = $tsParser->setup;
-        tx_rnbase::load('tx_rnbase_configurations');
-        $config = new tx_rnbase_configurations();
+        $config = new \Sys25\RnBase\Configuration\Processor();
         $config->init($configArr, false, 't3rest', 't3rest');
         $config->setParameters($this->getParameters());
         $providerData->setConfigurations($config);
@@ -226,22 +219,22 @@ class tx_t3rest_controller_Base
      */
     protected function createResponse()
     {
-        return tx_rnbase::makeInstance('tx_t3rest_models_Response');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_models_Response');
     }
 
     protected function init()
     {
-        tx_rnbase_util_TCA::loadTCA('');
-        tx_rnbase_util_Misc::prepareTSFE();
+        \Sys25\RnBase\Backend\Utility\TCA::loadTCA('');
+        \Sys25\RnBase\Utility\Misc::prepareTSFE();
     }
 
     /**
-     * @return tx_rnbase_IParameters
+     * @return \Sys25\RnBase\Frontend\Request\ParametersInterface
      */
     protected function getParameters()
     {
         if (!is_object($this->parameters)) {
-            $this->parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+            $this->parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
             $this->parameters->init('t3rest');
         }
 
@@ -250,7 +243,7 @@ class tx_t3rest_controller_Base
 
     protected function isAllowed()
     {
-        $disableCookie = tx_rnbase_configurations::getExtensionCfgValue('t3rest', 'disableCookie');
+        $disableCookie = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('t3rest', 'disableCookie');
         if ($disableCookie || isset($_GET['test'])) {
             return true;
         }
@@ -267,7 +260,7 @@ class tx_t3rest_controller_Base
     /**
      * Find a configured cache handler.
      *
-     * @param tx_rnbase_configurations $configurations
+     * @param \Sys25\RnBase\Configuration\Processor $configurations
      * @param string $confId
      *
      * @return tx_t3rest_cache_CacheHandlerDefault
@@ -278,7 +271,7 @@ class tx_t3rest_controller_Base
         if (!$clazz) {
             return false;
         }
-        $handler = tx_rnbase::makeInstance('tx_t3rest_cache_CacheHandlerDefault', $configurations, $confId);
+        $handler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_cache_CacheHandlerDefault', $configurations, $confId);
 
         return $handler;
     }
@@ -288,4 +281,4 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/
     include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/controller/class.tx_t3rest_controller_Base.php'];
 }
 
-tx_rnbase::makeInstance('tx_t3rest_controller_Base')->execute();
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_t3rest_controller_Base')->execute();

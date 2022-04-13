@@ -21,14 +21,13 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
 
 /**
  * repository to handle provider data.
  *
  * @author Michael Wagner
  */
-class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_AbstractRepository
+class Tx_T3rest_Repository_Provider extends \Sys25\RnBase\Domain\Repository\AbstractRepository
 {
     /**
      * Liefert den Namen der Suchklasse.
@@ -37,7 +36,7 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
      */
     protected function getSearchClass()
     {
-        return 'tx_rnbase_util_SearchGeneric';
+        return \Sys25\RnBase\Search\SearchGeneric::class;
     }
 
     /**
@@ -56,15 +55,14 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
      * @param array $fields
      * @param array $options
      *
-     * @return array[tx_rnbase_model_base]
+     * @return array[\Sys25\RnBase\Domain\Model\BaseModel]
      */
     public function search(array $fields, array $options)
     {
         if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
             $options['searchdef'] = [];
         }
-        tx_rnbase::load('tx_rnbase_util_Arrays');
-        $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+        $options['searchdef'] = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
             // default sercher config
             $this->getSearchdef(),
             // searcher config overrides
@@ -90,8 +88,7 @@ class Tx_T3rest_Repository_Provider extends Tx_Rnbase_Domain_Repository_Abstract
                     $bootstrap->loadExtensionTables();
                 }
             } else {
-                tx_rnbase::load('tx_rnbase_util_TCA');
-                tx_rnbase_util_TCA::loadTCA($options['basetable']);
+                \Sys25\RnBase\Backend\Utility\TCA::loadTCA($options['basetable']);
             }
         }
 

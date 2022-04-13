@@ -86,8 +86,8 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
      */
     public function checkRemoteIp()
     {
-        $hasAccess = tx_rnbase_util_Network::cmpIP(
-            tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'),
+        $hasAccess = \Sys25\RnBase\Utility\Network::cmpIP(
+            \Sys25\RnBase\Utility\Misc::getIndpEnv('REMOTE_ADDR'),
             join(',', $this->allowedIps)
         );
 

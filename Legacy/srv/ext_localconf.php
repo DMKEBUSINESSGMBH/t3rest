@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
     exit('Access denied.');
 }
 
-tx_rnbase_util_Extensions::addService(
+\Sys25\RnBase\Utility\Extensions::addService(
     't3rest',
     't3rest',
     'tx_t3rest_srv_Logs',
@@ -17,7 +17,7 @@ tx_rnbase_util_Extensions::addService(
         'quality' => 50,
         'os' => '',
         'exec' => '',
-        'classFile' => tx_rnbase_util_Extensions::extPath('t3rest', 'Legacy/srv/class.tx_t3rest_srv_Logs.php'),
+        'classFile' => \Sys25\RnBase\Utility\Extensions::extPath('t3rest', 'Legacy/srv/class.tx_t3rest_srv_Logs.php'),
         'className' => 'tx_t3rest_srv_Logs',
     ]
 );

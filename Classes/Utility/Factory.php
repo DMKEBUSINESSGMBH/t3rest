@@ -37,7 +37,7 @@ final class Tx_T3rest_Utility_Factory
     public static function getRestApiController()
     {
         $class = Tx_T3rest_Utility_Config::getRestApiController();
-        $instance = tx_rnbase::makeInstance($class);
+        $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
         if (!$instance instanceof Tx_T3rest_Controller_InterfaceController) {
             throw new Exception(sprintf('Controller "%1$s" has to implement the interface "Tx_T3rest_Controller_InterfaceController".', get_class($instance)));
         }
@@ -53,7 +53,7 @@ final class Tx_T3rest_Utility_Factory
     public static function getRespectRestRouter()
     {
         $class = Tx_T3rest_Utility_Config::getRestApiRouter();
-        $instance = tx_rnbase::makeInstance($class);
+        $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
         if (!$instance instanceof Tx_T3rest_Router_InterfaceRouter) {
             throw new Exception(sprintf('Router "%1$s" has to implement the interface "Tx_T3rest_Router_InterfaceRouter".', get_class($instance)));
         }
@@ -68,7 +68,7 @@ final class Tx_T3rest_Utility_Factory
      */
     public static function getProviderRepository()
     {
-        return tx_rnbase::makeInstance('Tx_T3rest_Repository_Provider');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Repository_Provider');
     }
 
     /**
@@ -79,7 +79,7 @@ final class Tx_T3rest_Utility_Factory
     public static function getTransformer($class = null)
     {
         $class = empty($class) ? 'Tx_T3rest_Transformer_Simple' : $class;
-        $instance = tx_rnbase::makeInstance($class);
+        $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
         if (!$instance instanceof Tx_T3rest_Transformer_InterfaceTransformer) {
             throw new Exception(sprintf('Transformer "%1$s" has to implement the interface "Tx_T3rest_Transformer_InterfaceTransformer".', get_class($instance)));
         }
@@ -95,7 +95,7 @@ final class Tx_T3rest_Utility_Factory
      */
     public static function getSupplier(array $ignoreKeys = [])
     {
-        return tx_rnbase::makeInstance(
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'Tx_T3rest_Model_Supplier',
             $ignoreKeys
         );

@@ -21,22 +21,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_t3rest_models_Provider');
-tx_rnbase::load('tx_t3rest_provider_IProvider');
-
 /**
  * Search logs.
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_search_Logs extends tx_rnbase_util_SearchBase
+class tx_t3rest_search_Logs extends \Sys25\RnBase\Search\SearchBase
 {
     protected function getTableMappings()
     {
         $tableMapping['LOGS'] = 'tx_t3rest_accesslog';
 
         // Hook to append other tables
-        tx_rnbase_util_Misc::callHook(
+        \Sys25\RnBase\Utility\Misc::callHook(
             't3rest',
             'search_logs_getTableMapping_hook',
             ['tableMapping' => &$tableMapping],
@@ -71,7 +68,7 @@ class tx_t3rest_search_Logs extends tx_rnbase_util_SearchBase
         $join = '';
 
         // Hook to append other tables
-        tx_rnbase_util_Misc::callHook(
+        \Sys25\RnBase\Utility\Misc::callHook(
             't3rest',
             'search_logs_getJoins_hook',
             ['join' => &$join, 'tableAliases' => $tableAliases],

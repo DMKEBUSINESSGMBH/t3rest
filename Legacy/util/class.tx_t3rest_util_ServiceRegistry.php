@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-
 class tx_t3rest_util_ServiceRegistry
 {
     /**
@@ -33,7 +31,7 @@ class tx_t3rest_util_ServiceRegistry
      */
     public static function getLogsService()
     {
-        return tx_rnbase_util_Misc::getService('t3rest', 'logs');
+        return \Sys25\RnBase\Utility\Misc::getService('t3rest', 'logs');
     }
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3rest/util/class.tx_t3rest_util_ServiceRegistry.php']) {

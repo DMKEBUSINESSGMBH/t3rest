@@ -21,14 +21,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_model_base');
-
 /**
  * A generic model class.
  *
  * @author Rene Nitzsche
  */
-class tx_t3rest_models_Generic extends tx_rnbase_model_base
+class tx_t3rest_models_Generic extends \Sys25\RnBase\Domain\Model\BaseModel
 {
 }
 
