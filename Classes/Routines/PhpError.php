@@ -76,7 +76,7 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
         \Sys25\RnBase\Utility\Logger::fatal(
             'An error occurred during a t3rest request',
             't3rest',
-            ['error' => var_export($err, true)]
+            ['error' => $err]
         );
 
         return 'Sorry, an error happened.';
