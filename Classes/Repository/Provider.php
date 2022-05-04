@@ -69,12 +69,6 @@ class Tx_T3rest_Repository_Provider extends \Sys25\RnBase\Domain\Repository\Abst
             $options['searchdef']
         );
 
-        // load the tca
-        if (empty($GLOBALS['TCA']) || empty($GLOBALS['TCA'][$options['basetable']])) {
-            \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca();
-            \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables();
-        }
-
         return parent::search($fields, $options);
     }
 

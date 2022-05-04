@@ -22,6 +22,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * this routine authenticates an fe user
  * by session cookie or basioc auth.
@@ -98,8 +101,6 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
      */
     public function byInitUserRespect()
     {
-        $this->initUser();
-
         return true;
     }
 
@@ -110,8 +111,6 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
      */
     public function byLoginRespect()
     {
-        $this->initUser();
-
         // all right, grant access!
         if ($this->checkAccess()) {
             return true;
@@ -129,68 +128,15 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
     }
 
     /**
-     * Log in a user.
-     *
-     * @return void
-     */
-    public function initUser()
-    {
-        $tsFe = $this->getFrontendController();
-
-        // there is already a user, skip multiple init calls.
-        if (is_object($tsFe->fe_user) && is_array($tsFe->fe_user->user) && $tsFe->fe_user->user['uid']) {
-            if (empty($tsFe->fe_user->groupData['uid'])) {
-                $tsFe->initUserGroups();
-            }
-
-            return;
-        }
-
-        // auth nach redirect herstellen
-        if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
-                explode(':', base64_decode(substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)));
-        }
-
-        // there are user and pwd, so we has to reauth by this data
-        if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
-            $_POST['user'] = $_SERVER['PHP_AUTH_USER'];
-            $_POST['pass'] = $_SERVER['PHP_AUTH_PW'];
-            $_POST['logintype'] = 'login';
-            $_POST['pid'] = Tx_T3rest_Utility_Config::getAuthUserStoragePid();
-        }
-
-        // init fe user
-        if (!is_object($tsFe->fe_user)) {
-            $tsFe->fe_user = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
-            );
-            if (Tx_T3rest_Utility_Config::getAuthUserStoragePid()) {
-                $tsFe->fe_user->checkPid_value = Tx_T3rest_Utility_Config::getAuthUserStoragePid();
-            }
-            $tsFe->fe_user->start();
-        }
-
-        // init groups, if required
-        if ($this->feGroups && !$tsFe->gr_list || empty($tsFe->fe_user->groupData['uid'])
-        ) {
-            $tsFe->initUserGroups();
-        }
-    }
-
-    /**
      * Check user access to a route.
      *
      * @return bool
      */
     public function checkAccess()
     {
-        $tsFe = $this->getFrontendController();
-
-        // check if fe user auth has failed and that an user exists.
-        $hasAccess = (true !== $tsFe->fe_user->loginFailure && null !== $tsFe->fe_user->user);
+        $hasAccess = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user')->get('isLoggedIn');
         if ($this->feGroups) {
-            $hasAccess = $tsFe->checkPageGroupAccess(
+            $hasAccess = $this->getFrontendController()->checkPageGroupAccess(
                 ['fe_group' => $this->feGroups]
             );
         }
@@ -205,4 +151,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
     {
         return $GLOBALS['TSFE'];
     }
+
+    public function initUser(): void
+    {}
 }

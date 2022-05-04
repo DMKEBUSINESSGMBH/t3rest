@@ -28,13 +28,26 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         \Psr\Http\Server\RequestHandlerInterface $handler
     ): \Psr\Http\Message\ResponseInterface {
-        $requestBody = $this->getParsedBody($request);
+        // auth nach redirect herstellen
+        if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
+                explode(':', base64_decode(substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)));
+        }
 
-        // TODO: If T3 would use the request object in fe user auth,
-        //      we would not need to change POST here.
-        $_POST['user'] = $requestBody['user'];
-        $_POST['pass'] = $requestBody['pass'];
-        $_POST['logintype'] = $requestBody['logintype'];
+        // there are user and pwd, so we have to reauth by this data
+        if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
+            $_POST['user'] = $_SERVER['PHP_AUTH_USER'];
+            $_POST['pass'] = $_SERVER['PHP_AUTH_PW'];
+            $_POST['logintype'] = 'login';
+        } else {
+            $requestBody = $this->getParsedBody($request);
+
+            // TODO: If T3 would use the request object in fe user auth,
+            //      we would not need to change POST here.
+            $_POST['user'] = $requestBody['user'] ?? '';
+            $_POST['pass'] = $requestBody['pass'] ?? '';
+            $_POST['logintype'] = $requestBody['logintype'] ?? '';
+        }
 
         return $handler->handle($this->addFeUserPid($request));
     }

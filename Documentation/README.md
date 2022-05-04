@@ -147,6 +147,12 @@ könnte das Ergebnis dann so aussehen:
 ### POST Daten abfragen
 Um in einem Provider die gesamten POST Daten abzufragen, kann die Methode $this->getRawRequestBody() genutzt werden.
 
+### HelloWorld-Provider
+Es gibt den Dummyprovider DMK\T3rest\Example\HelloWorldProvider, welcher für 
+Testzwecke genutzt werden kann. Dieser hat eine FE-User- und IP-Auth integriert (s.u. 
+was diesbzgl. im Providerdatensatz konfiguriert werden muss). Der URL Pfad lautet
+/hello-world.
+
 ## Transformer
 
 Ein Transformer ist dafür zuständig die Rohdaten der Provider
@@ -203,7 +209,7 @@ Die möglichen Authentifizierungs-Routinen können auch kombiniert werden.
 ### über FE Nutzer
 Dafür werden FE-User-Datensätze genutzt.
 Im Providerdatensatz kann eine Gruppe hinterlegt werden,
-welche zugriff auf die API erhalten soll.
+welche Zugriff auf die API erhalten soll.
 
 ```php
     /**
