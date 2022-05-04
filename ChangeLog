@@ -5,6 +5,7 @@ Changelog
 v11.0.0 (??.??.2022)
  * Unterstützung nur für TYPO3 Version 10.4 und 11.5
  * kompletten Legacy Code entfernt
+ * Cleanup
 
 v9.0.0 (06.01.2020)
  * Unterstützung für TYPO3 Version 9.5 durch Nutzung der Middleware
