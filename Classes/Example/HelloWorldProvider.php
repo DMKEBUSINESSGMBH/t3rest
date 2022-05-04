@@ -2,9 +2,6 @@
 
 namespace DMK\T3rest\Example;
 
-use DMK\Mkunileipzig\AppApi\Transformer\CountryTransformer;
-use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -47,6 +44,7 @@ class HelloWorldProvider extends \Tx_T3rest_Provider_AbstractProvider
     public function sayHello(): \Tx_T3rest_Model_Supplier
     {
         $return = \Tx_T3rest_Utility_Factory::getSupplier();
-            return $return->add('greeting', 'Hello World!');
+
+        return $return->add('greeting', 'Hello World!');
     }
 }

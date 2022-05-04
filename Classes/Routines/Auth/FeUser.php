@@ -153,5 +153,6 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
     }
 
     public function initUser(): void
-    {}
+    {
+    }
 }
