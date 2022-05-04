@@ -71,25 +71,8 @@ class Tx_T3rest_Repository_Provider extends \Sys25\RnBase\Domain\Repository\Abst
 
         // load the tca
         if (empty($GLOBALS['TCA']) || empty($GLOBALS['TCA'][$options['basetable']])) {
-            // normally the TCA will be loaded in TYPO3 8 automatically but not
-            // not when the connectToDB Hook is executed. That's why load the TCA ourselves.
-            // In TYPO3 9 could be changes which would make this workaround obsolete.
-            // @todo check when updating to TYPO3 9
-            if (Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
-                \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca();
-                \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables();
-            } elseif (Sys25\RnBase\Utility\TYPO3::isTYPO80OrHigher()) {
-                $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
-                $bootstrap->loadBaseTca();
-
-                if (Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher()) {
-                    $bootstrap::loadExtTables();
-                } else {
-                    $bootstrap->loadExtensionTables();
-                }
-            } else {
-                \Sys25\RnBase\Backend\Utility\TCA::loadTCA($options['basetable']);
-            }
+            \TYPO3\CMS\Core\Core\Bootstrap::loadBaseTca();
+            \TYPO3\CMS\Core\Core\Bootstrap::loadExtTables();
         }
 
         return parent::search($fields, $options);

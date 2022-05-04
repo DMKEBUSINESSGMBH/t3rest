@@ -29,13 +29,13 @@
  */
 interface Tx_T3rest_Router_InterfaceRouter
 {
-    const METHOD_GET = 'get';
-    const METHOD_POST = 'post';
-    const METHOD_PUT = 'put';
-    const METHOD_DELETE = 'delete';
-    const METHOD_HEAD = 'head';
-    const METHOD_OPTIONS = 'options';
-    const METHOD_ANY = 'any';
+    public const METHOD_GET = 'get';
+    public const METHOD_POST = 'post';
+    public const METHOD_PUT = 'put';
+    public const METHOD_DELETE = 'delete';
+    public const METHOD_HEAD = 'head';
+    public const METHOD_OPTIONS = 'options';
+    public const METHOD_ANY = 'any';
 
     /**
      * register an route.

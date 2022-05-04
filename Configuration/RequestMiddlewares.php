@@ -14,9 +14,7 @@ return [
                 'typo3/cms-frontend/authentication',
             ],
             'before' => [
-                Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher() ?
-                    'typo3/cms-frontend/base-redirect-resolver' :
-                    'typo3/cms-frontend/site',
+                'typo3/cms-frontend/base-redirect-resolver',
             ],
         ],
     ],

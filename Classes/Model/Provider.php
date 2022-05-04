@@ -41,20 +41,6 @@ class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
     }
 
     /**
-     * set the provider config.
-     *
-     * @param \Sys25\RnBase\Configuration\Processor $config
-     *
-     * @deprecated only used for the old api
-     *
-     * @return void
-     */
-    public function setConfigurations($config)
-    {
-        $this->configurations = $config;
-    }
-
-    /**
      * the ts config for from the provider.
      *
      * @return \Sys25\RnBase\Configuration\Processor

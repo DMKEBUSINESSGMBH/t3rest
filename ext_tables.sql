@@ -21,29 +21,6 @@ CREATE TABLE tx_t3rest_providers (
     KEY parent (restkey,hidden,deleted)
 );
 
-
-# /* @deprecated legacy code, will be removed for 10.x or later */
-CREATE TABLE tx_t3rest_accesslog (
-    uid int(11) NOT NULL auto_increment,
-    tstamp datetime DEFAULT '0000-00-00 00:00:00',
-    ip varchar(40) DEFAULT '' NOT NULL,
-    os varchar(10) DEFAULT '' NOT NULL,
-    system varchar(40) DEFAULT '' NOT NULL,
-    sysver varchar(40) DEFAULT '' NOT NULL,
-    version varchar(40) DEFAULT '' NOT NULL,
-    app varchar(40) DEFAULT '' NOT NULL,
-    runtime float(7,4) DEFAULT '0.0000' NOT NULL,
-    host varchar(255) DEFAULT '' NOT NULL,
-    method varchar(10) DEFAULT '' NOT NULL,
-    uri mediumtext,
-    status smallint(6) DEFAULT '0' NOT NULL,
-    useragent varchar(255) DEFAULT '' NOT NULL,
-
-    PRIMARY KEY (uid),
-    KEY idx (version,app),
-    KEY idx_dateos (tstamp,os)
-);
-
 #
 # Table for t3rest session cache
 #

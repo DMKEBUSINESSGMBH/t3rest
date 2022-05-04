@@ -21,18 +21,10 @@ use TYPO3\CMS\Core\Http\ServerRequest;
  */
 class AuthResolverTest extends UnitTestCase
 {
-    /**
-     * setup.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
-        if (!\Sys25\RnBase\Utility\TYPO3::isTYPO95OrHigher()) {
-            $this->markTestSkipped('No middleware support for typo3 8 or earlier');
-        }
-
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['t3rest'] = [
-            'accesslogDirectory' => '',
             'disableCookie' => '0',
             'restApiController' => 'Tx_T3rest_Controller_Json',
             'restApiRouter' => 'Tx_T3rest_Router_Respect',

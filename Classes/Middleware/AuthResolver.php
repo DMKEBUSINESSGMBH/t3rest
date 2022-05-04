@@ -30,7 +30,7 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
     ): \Psr\Http\Message\ResponseInterface {
         $requestBody = $this->getParsedBody($request);
 
-        //TODO: If T3 would use the request object in fe user auth,
+        // TODO: If T3 would use the request object in fe user auth,
         //      we would not need to change POST here.
         $_POST['user'] = $requestBody['user'];
         $_POST['pass'] = $requestBody['pass'];

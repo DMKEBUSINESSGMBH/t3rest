@@ -22,8 +22,5 @@ restApiController = Tx_T3rest_Controller_Json
   # cat=restapi//10; type=string; label= Router: The Router for the REST-API. Has to implement the Tx_T3rest_Router_InterfaceRouter interface. Currently are only Respect build in.
 restApiRouter = Tx_T3rest_Router_Respect
 
-  # cat=basic//10; type=string; label= Directory for access log
-accesslogDirectory =
-
   # cat=basic//10; type=boolean; label= Disable cookie access. If checked the server will response to any requests without cookie
 disableCookie = 0
