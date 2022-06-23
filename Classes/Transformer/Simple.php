@@ -94,7 +94,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
         $cObjTempData = $cObj->data;
         $cObj->data = $item->getProperty();
         foreach ($cObj->data as $colname => $value) {
-            if ($config[$colname]) {
+            if ($config[$colname] ?? null) {
                 // Get value using cObjGetSingle
                 $cObj->setCurrentVal($value);
                 $item->setProperty(
@@ -102,7 +102,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
                     $cObj->cObjGetSingle($config[$colname], $config[$colname.'.'])
                 );
                 $cObj->setCurrentVal(false);
-            } elseif (!empty($config[$colname.'.'])) {
+            } elseif (!empty($config[$colname.'.'] ?? null)) {
                 $item->setProperty(
                     $colname,
                     $cObj->stdWrap($value, $config[$colname.'.'])
