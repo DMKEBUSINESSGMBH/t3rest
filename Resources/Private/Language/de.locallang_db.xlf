@@ -3,22 +3,6 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-05-04T10:49:50Z" product-name="t3rest">
 		<header/>
 		<body>
-			<trans-unit id="tx_t3rest_providers" resname="tx_t3rest_providers"  approved="yes">
-				<source>T3rest provider</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="tx_t3rest_providers_name" resname="tx_t3rest_providers_name"  approved="yes">
-				<source>Name</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="tx_t3rest_providers_classname" resname="tx_t3rest_providers_classname"  approved="yes">
-				<source>PHP Class name of provider</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="tx_t3rest_providers_config" resname="tx_t3rest_providers_config"  approved="yes">
-				<source>Configuration</source>
-				<target/>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>
