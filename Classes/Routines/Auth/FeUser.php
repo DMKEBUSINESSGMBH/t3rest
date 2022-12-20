@@ -161,7 +161,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
             $_POST['user'] = $_SERVER['PHP_AUTH_USER'];
             $_POST['pass'] = $_SERVER['PHP_AUTH_PW'];
             $_POST['logintype'] = 'login';
-            $_POST['pid'] = Tx_T3rest_Utility_Config::getAuthUserStoragePid();
+            $_POST['pid'] = Tx_T3rest_Utility_Config::getSignedAuthUserStoragePid();
         }
 
         // init fe user
