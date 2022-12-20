@@ -78,7 +78,7 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
     {
         return $request->withParsedBody(
             array_merge($request->getParsedBody() ?: [], [
-                'pid' => Tx_T3rest_Utility_Config::getAuthUserStoragePid(),
+                'pid' => Tx_T3rest_Utility_Config::getSignedAuthUserStoragePid(),
             ])
         );
     }

@@ -115,6 +115,23 @@ final class Tx_T3rest_Utility_Config
     }
 
     /**
+     * returns the signed pid of the storage with the fe users.
+     *
+     * @return string
+     */
+    public static function getSignedAuthUserStoragePid()
+    {
+        return sprintf(
+            '%s@%s',
+            self::getAuthUserStoragePid(),
+            \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
+                self::getAuthUserStoragePid(),
+                \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
+            )
+        );
+    }
+
+    /**
      * returns the controller class.
      *
      * @return string

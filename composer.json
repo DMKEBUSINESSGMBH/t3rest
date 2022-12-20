@@ -31,7 +31,7 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "typo3/cms-core": "^10.4.25 || ^11.5.7",
+        "typo3/cms-core": "^10.4.34 || ^11.5.21",
         "digedag/rn-base": "^11@dev"
     },
     "require-dev": {
