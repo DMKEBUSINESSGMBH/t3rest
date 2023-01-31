@@ -2,7 +2,7 @@
 Changelog
 ----------
 
-v11.0.0 (??.??.2022)
+v11.0.0 (31.01.2023)
  * Unterstützung nur für TYPO3 Version 10.4 und 11.5
  * kompletten Legacy Code entfernt
  * Cleanup

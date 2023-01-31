@@ -18,7 +18,7 @@ $EM_CONF['t3rest'] = [
     'author_email' => 'dev@dmk-ebusiness.de',
     'author_company' => 'DMK E-BUSINESS GmbH',
     'shy' => '',
-    'version' => '10.1.0',
+    'version' => '11.0.0',
     'dependencies' => '',
     'conflicts' => '',
     'priority' => '',
@@ -32,8 +32,8 @@ $EM_CONF['t3rest'] = [
     'lockType' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.0-10.4.99',
-            'rn_base' => '1.15.0-',
+            'typo3' => '10.4.0-11.5.99',
+            'rn_base' => '1.16.0-',
         ],
         'conflicts' => [
         ],
