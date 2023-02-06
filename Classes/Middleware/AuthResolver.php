@@ -6,7 +6,6 @@ namespace DMK\T3rest\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use Tx_T3rest_Utility_Config;
 
 /**
  * Class Tx_T3rest_Middleware_AuthController.
@@ -62,7 +61,7 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
     protected function isApiCall(ServerRequestInterface $request)
     {
         $requestUri = ltrim($request->getUri()->getPath(), '/');
-        $apiSegment = ltrim(Tx_T3rest_Utility_Config::getRestApiUriPath(), '/');
+        $apiSegment = ltrim(\Tx_T3rest_Utility_Config::getRestApiUriPath(), '/');
 
         return 0 === strpos($requestUri, $apiSegment);
     }
@@ -78,7 +77,7 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
     {
         return $request->withParsedBody(
             array_merge($request->getParsedBody() ?: [], [
-                'pid' => Tx_T3rest_Utility_Config::getSignedAuthUserStoragePid(),
+                'pid' => \Tx_T3rest_Utility_Config::getSignedAuthUserStoragePid(),
             ])
         );
     }

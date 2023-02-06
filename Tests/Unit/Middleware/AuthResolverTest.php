@@ -58,7 +58,7 @@ class AuthResolverTest extends UnitTestCase
         };
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
-        $this->assertSame('{"body":{"pid":4}}', $response->getBody()->getContents());
+        $this->assertSame('{"body":{"pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}', $response->getBody()->getContents());
         $this->assertSame('foo', $_POST['user']);
         $this->assertSame('bar', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);

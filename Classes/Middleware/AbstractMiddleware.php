@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Tx_T3rest_Utility_Config;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,7 +36,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
         RequestHandlerInterface $handler
     ): ResponseInterface {
         // if hook is not enabled or uri is not an api call, proceed with next handler!
-        if (Tx_T3rest_Utility_Config::isRestHookEnabled()) {
+        if (\Tx_T3rest_Utility_Config::isRestHookEnabled()) {
             $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST'] ?? $request;
             if ($this->isApiCall($request)) {
                 return $this->processRestRequest($request, $handler);
@@ -57,7 +56,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
     protected function isApiCall(ServerRequestInterface $request)
     {
         $requestUri = ltrim($request->getUri()->getPath(), '/');
-        $apiSegment = ltrim(Tx_T3rest_Utility_Config::getRestApiUriPathForSiteLanguage(), '/');
+        $apiSegment = ltrim(\Tx_T3rest_Utility_Config::getRestApiUriPathForSiteLanguage(), '/');
 
         return 0 === strpos($requestUri, $apiSegment);
     }

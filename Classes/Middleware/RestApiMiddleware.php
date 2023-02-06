@@ -8,8 +8,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Tx_T3rest_Controller_InterfaceController;
-use Tx_T3rest_Utility_Factory;
 
 /**
  * Class RestApiMiddleware.
@@ -40,12 +38,12 @@ class RestApiMiddleware extends AbstractMiddleware implements MiddlewareInterfac
     /**
      * Returns an instance of a api controller.
      *
-     * @return Tx_T3rest_Controller_InterfaceController
+     * @return \Tx_T3rest_Controller_InterfaceController
      *
      * @throws \Exception
      */
     public function getController()
     {
-        return Tx_T3rest_Utility_Factory::getRestApiController();
+        return \Tx_T3rest_Utility_Factory::getRestApiController();
     }
 }
