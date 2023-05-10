@@ -15,6 +15,7 @@ use Respect\Rest\Routines\Routinable;
 use Respect\Rest\Routines\ProxyableBy;
 use Respect\Rest\Routines\ProxyableThrough;
 use Respect\Rest\Routines\ParamSynced;
+use Sys25\RnBase\Utility\Debug;
 
 /** A routed HTTP Request */
 class Request
@@ -84,7 +85,7 @@ class Request
                 return set_error_handler(
                     function () use ($sideRoute) {
                         // Don't do anything if error_reporting is disabled by an @ sign
-                        if (error_reporting() !== 0) {
+                        if ((PHP_VERSION[0] > 7 && error_reporting() !== 4437) || (PHP_VERSION[0] < 8 && error_reporting() !== 0)) {
                             $sideRoute->errors[] = func_get_args();
                         }
                     }
