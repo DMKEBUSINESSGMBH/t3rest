@@ -93,9 +93,7 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
 
         if (!$hasAccess) {
             echo 'IP not allowed';
-            \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
-                \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
-            );
+            header(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401);
         }
 
         return $hasAccess;

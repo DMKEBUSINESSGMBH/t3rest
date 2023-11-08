@@ -56,9 +56,7 @@ class Tx_T3rest_Routines_Exception implements Tx_T3rest_Routines_InterfaceRouter
     public function handle(Exception $e)
     {
         // @todo make configurable
-        \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
-            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500
-        );
+        header(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500);
 
         return sprintf(
             'Sorry, error "%1$s" happened: "%2$s"',

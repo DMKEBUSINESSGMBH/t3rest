@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-Tx_T3rest_Utility_Composer::autoload();
 
 /**
  * the Respect/Rest router.

@@ -28,7 +28,7 @@
  */
 class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
 {
-    private $configurations = null;
+    private $configurations;
 
     /**
      * Gets the name of the database table.
@@ -48,7 +48,7 @@ class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
     public function getConfigurations()
     {
         if (null === $this->configurations) {
-            $configArray = \Sys25\RnBase\Utility\TypoScript::parseTsConfig($this->getConfig());
+            $configArray = \Sys25\RnBase\Utility\TypoScript::parseTsConfig($this->getProperty('config'));
             /* @var $configurations \Sys25\RnBase\Configuration\Processor */
             $this->configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
             $this->configurations->init($configArray, false, 't3rest', 't3rest');
@@ -79,7 +79,7 @@ class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
                 sprintf(
                     'Providerclass "%3$s" for Provider "%2$s (%1$s)" could not be loaded',
                     $this->getUid(),
-                    $this->getName(),
+                    $this->getProperty('name'),
                     $this->getProviderClassName()
                 ),
                 't3rest'

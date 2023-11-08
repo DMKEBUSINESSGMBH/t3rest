@@ -30,6 +30,7 @@ class RestApiMiddleware extends AbstractMiddleware implements MiddlewareInterfac
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->getController()->execute();
 
         return $handler->handle($request);

@@ -33,7 +33,7 @@ abstract class Tx_T3rest_Model_ProviderHolder
     /**
      * @var Tx_T3rest_Model_Provider
      */
-    private $provider = null;
+    private $provider;
 
     /**
      * injects the provider model.

@@ -125,7 +125,7 @@ final class Tx_T3rest_Utility_Config
             '%s@%s',
             self::getAuthUserStoragePid(),
             \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
-                self::getAuthUserStoragePid(),
+                (string) self::getAuthUserStoragePid(),
                 \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
             )
         );

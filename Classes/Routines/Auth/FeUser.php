@@ -120,9 +120,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
         if (Tx_T3rest_Utility_Config::isBasicAuthHeaderEnabled()) {
             header('WWW-Authenticate: Basic realm="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'"');
         }
-        \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
-            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
-        );
+        header(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401);
 
         return false;
     }
@@ -136,9 +134,9 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
     {
         $hasAccess = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user')->get('isLoggedIn');
         if ($this->feGroups) {
-            $hasAccess = $this->getFrontendController()->checkPageGroupAccess(
-                ['fe_group' => $this->feGroups]
-            );
+            $userAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
+            $pageGroupList = explode(',', $this->feGroups ?: 0);
+            $hasAccess = count(array_intersect($userAspect->getGroupIds(), $pageGroupList)) > 0;
         }
 
         return $hasAccess;

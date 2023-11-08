@@ -6,6 +6,10 @@ namespace DMK\T3rest\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Security\RequestToken;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Tx_T3rest_Middleware_AuthController.
@@ -38,6 +42,12 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
             $_POST['user'] = $_SERVER['PHP_AUTH_USER'];
             $_POST['pass'] = $_SERVER['PHP_AUTH_PW'];
             $_POST['logintype'] = 'login';
+            $request = $request->withParsedBody(
+                array_merge(
+                    $request->getParsedBody() ?: [],
+                    $_POST
+                )
+            );
         } else {
             $requestBody = $this->getParsedBody($request);
 
@@ -46,6 +56,16 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
             $_POST['user'] = $requestBody['user'] ?? '';
             $_POST['pass'] = $requestBody['pass'] ?? '';
             $_POST['logintype'] = $requestBody['logintype'] ?? '';
+        }
+
+        if (TYPO3::isTYPO121OrHigher()) {
+            GeneralUtility::makeInstance(Context::class)->getAspect('security')->setReceivedRequestToken(
+                new RequestToken(
+                    'core/user-auth/fe',
+                    null,
+                    ['pid' => \Tx_T3rest_Utility_Config::getAuthUserStoragePid()]
+                )
+            );
         }
 
         return $handler->handle($this->addFeUserPid($request));
