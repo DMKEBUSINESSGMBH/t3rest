@@ -12,3 +12,4 @@ parameters:
             message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Security\\\\RequestToken not found\\.$#"
             count: 1
             path: Classes/Middleware/AuthResolver.php
+            reportUnmatched: false
