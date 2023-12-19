@@ -89,7 +89,7 @@ class AuthResolverTest extends UnitTestCase
     public function testProcessIfAuthDataInServerVariable()
     {
         $_SERVER['PHP_AUTH_USER'] = 'foo';
-        $_SERVER['PHP_AUTH_PW'] = 'bar';
+        $_SERVER['PHP_AUTH_PW'] = 'pass:word';
         $authMiddleware = new AuthResolver();
         $fp = fopen('php://memory', 'w+');
         $body = new Stream($fp);
@@ -108,11 +108,11 @@ class AuthResolverTest extends UnitTestCase
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
         $this->assertSame(
-            '{"body":{"user":"foo","pass":"bar","logintype":"login","pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}',
+            '{"body":{"user":"foo","pass":"pass:word","logintype":"login","pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}',
             $response->getBody()->getContents()
         );
         $this->assertSame('foo', $_POST['user']);
-        $this->assertSame('bar', $_POST['pass']);
+        $this->assertSame('pass:word', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
 
         if (TYPO3::isTYPO121OrHigher()) {
@@ -171,7 +171,10 @@ class AuthResolverTest extends UnitTestCase
         };
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
-        $this->assertSame('{"body":{"pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}', $response->getBody()->getContents());
+        $this->assertSame(
+            '{"body":{"user":"foo","pass":"pass:word","logintype":"login","pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}',
+            $response->getBody()->getContents()
+        );
         $this->assertSame('foo', $_POST['user']);
         $this->assertSame('pass:word', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
