@@ -28,7 +28,7 @@
  */
 class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
 {
-    private $configurations = null;
+    private $configurations;
 
     /**
      * Gets the name of the database table.
