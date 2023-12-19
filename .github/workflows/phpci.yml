@@ -36,7 +36,7 @@ jobs:
                     extensions: "${{ env.PHP_EXTENSIONS }}"
             -
                 name: "Validate composer.json and composer.lock"
-                run: "composer validate.xlf"
+                run: "composer validate"
             -
                 name: "Determine composer cache directory"
                 id: "determine-composer-cache-directory"
@@ -86,7 +86,7 @@ jobs:
                     extensions: "${{ env.PHP_EXTENSIONS }}"
             -
                 name: "Validate composer.json and composer.lock"
-                run: "composer validate.xlf"
+                run: "composer validate"
             -
                 name: "Determine composer cache directory"
                 id: "determine-composer-cache-directory"
@@ -138,7 +138,7 @@ jobs:
                     extensions: "${{ env.PHP_EXTENSIONS }}"
             -
                 name: "Validate composer.json and composer.lock"
-                run: "composer validate.xlf"
+                run: "composer validate"
             -
                 name: "Determine composer cache directory"
                 id: "determine-composer-cache-directory"
