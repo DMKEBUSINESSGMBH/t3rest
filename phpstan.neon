@@ -7,3 +7,8 @@ parameters:
         - %currentWorkingDirectory%/Classes
         - %currentWorkingDirectory%/ext_localconf.php
         - %currentWorkingDirectory%/ext_emconf.php
+    ignoreErrors:
+        -
+            message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Security\\\\RequestToken not found\\.$#"
+            count: 1
+            path: Classes/Middleware/AuthResolver.php
