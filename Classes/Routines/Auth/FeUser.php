@@ -145,7 +145,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
     protected function getFrontendController()
     {

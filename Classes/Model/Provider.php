@@ -43,7 +43,7 @@ class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
     /**
      * the ts config for from the provider.
      *
-     * @return \Sys25\RnBase\Configuration\Processor
+     * @return Sys25\RnBase\Configuration\Processor
      */
     public function getConfigurations()
     {
