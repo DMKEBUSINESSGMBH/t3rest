@@ -105,7 +105,7 @@ final class Tx_T3rest_Utility_Factory
      * If the current request has a site language, this means that the SiteResolver has detected a
      * page with a site configuration and a selected language, so let's choose that one.
      *
-     * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage|null
+     * @return TYPO3\CMS\Core\Site\Entity\SiteLanguage|null
      */
     public static function getCurrentSiteLanguage()
     {

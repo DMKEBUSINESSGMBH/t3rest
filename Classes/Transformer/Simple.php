@@ -32,7 +32,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      *  transforms the item.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return Tx_T3rest_Model_Supplier
@@ -51,7 +51,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * prepares the item to transform.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
@@ -65,7 +65,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * wraps the record using stdwrap.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
@@ -116,7 +116,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates the links.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
@@ -152,11 +152,11 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates an link object.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      * @param array $parameters
      *
-     * @return \Sys25\RnBase\Utility\Link
+     * @return Sys25\RnBase\Utility\Link
      */
     protected function initLink(
         Sys25\RnBase\Domain\Model\DataInterface $item,
@@ -176,7 +176,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates the supplier.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return Tx_T3rest_Model_Supplier

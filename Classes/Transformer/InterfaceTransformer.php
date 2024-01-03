@@ -32,7 +32,7 @@ interface Tx_T3rest_Transformer_InterfaceTransformer
     /**
      * transforms the data into a supplier.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return Tx_T3rest_Model_Supplier
