@@ -70,8 +70,8 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
         }
 
         // @todo make configurable
-        header(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500);
-        \Sys25\RnBase\Utility\Logger::fatal(
+        header(TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500);
+        Sys25\RnBase\Utility\Logger::fatal(
             'An error occurred during a t3rest request',
             't3rest',
             ['error' => $err]

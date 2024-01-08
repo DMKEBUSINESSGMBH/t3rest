@@ -121,19 +121,19 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
         Tx_T3rest_Router_InterfaceRouter $router
     ) {
         /* @var $exceptions Tx_T3rest_Routines_Exception */
-        $exceptions = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Exception');
+        $exceptions = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Exception');
         $exceptions->prepareRouter($router);
 
         /* @var $error Tx_T3rest_Routines_PhpError */
-        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_PhpError');
+        $error = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_PhpError');
         $error->prepareRouter($router);
 
         /* @var $timeTrack Tx_T3rest_Routines_Log_TimeTrack */
-        $timeTrack = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
+        $timeTrack = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Log_TimeTrack');
         $timeTrack->prepareRouter($router);
 
         /* @var $memTrack Tx_T3rest_Routines_Log_MemTrack */
-        $memTrack = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
+        $memTrack = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Log_MemTrack');
         $memTrack->prepareRouter($router);
     }
 }

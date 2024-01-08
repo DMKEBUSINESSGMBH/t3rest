@@ -26,7 +26,7 @@
  *
  * @author Rene Nitzsche
  */
-class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
+class Tx_T3rest_Model_Provider extends Sys25\RnBase\Domain\Model\BaseModel
 {
     private $configurations;
 
@@ -48,9 +48,9 @@ class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
     public function getConfigurations()
     {
         if (null === $this->configurations) {
-            $configArray = \Sys25\RnBase\Utility\TypoScript::parseTsConfig($this->getProperty('config'));
+            $configArray = Sys25\RnBase\Utility\TypoScript::parseTsConfig($this->getProperty('config'));
             /* @var $configurations \Sys25\RnBase\Configuration\Processor */
-            $this->configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
+            $this->configurations = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Configuration\Processor::class);
             $this->configurations->init($configArray, false, 't3rest', 't3rest');
         }
 
@@ -75,7 +75,7 @@ class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
     public function getProviderInstance()
     {
         if (!class_exists($this->getProviderClassName())) {
-            \Sys25\RnBase\Utility\Logger::warn(
+            Sys25\RnBase\Utility\Logger::warn(
                 sprintf(
                     'Providerclass "%3$s" for Provider "%2$s (%1$s)" could not be loaded',
                     $this->getUid(),
@@ -88,7 +88,7 @@ class Tx_T3rest_Model_Provider extends \Sys25\RnBase\Domain\Model\BaseModel
             return null;
         }
 
-        $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getProviderClassName());
+        $instance = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getProviderClassName());
         if ($instance instanceof Tx_T3rest_Model_ProviderHolder) {
             $instance->setProvider($this);
         }

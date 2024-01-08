@@ -42,7 +42,7 @@ class Tx_T3rest_Controller_Json extends Tx_T3rest_Controller_AbstractController
         parent::prepareRoutines($router);
 
         /* @var $throughJson Tx_T3rest_Routines_Through_Json */
-        $throughJson = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Through_Json');
+        $throughJson = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Through_Json');
         $throughJson->prepareRouter($router);
     }
 }

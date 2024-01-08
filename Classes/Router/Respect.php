@@ -27,7 +27,7 @@
  *
  * @author Michael Wagner
  */
-class Tx_T3rest_Router_Respect extends \Respect\Rest\Router implements Tx_T3rest_Router_InterfaceRouter
+class Tx_T3rest_Router_Respect extends Respect\Rest\Router implements Tx_T3rest_Router_InterfaceRouter
 {
     /**
      * disable the auto dispatching!

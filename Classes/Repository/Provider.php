@@ -27,7 +27,7 @@
  *
  * @author Michael Wagner
  */
-class Tx_T3rest_Repository_Provider extends \Sys25\RnBase\Domain\Repository\AbstractRepository
+class Tx_T3rest_Repository_Provider extends Sys25\RnBase\Domain\Repository\AbstractRepository
 {
     /**
      * Liefert den Namen der Suchklasse.
@@ -36,7 +36,7 @@ class Tx_T3rest_Repository_Provider extends \Sys25\RnBase\Domain\Repository\Abst
      */
     protected function getSearchClass()
     {
-        return \Sys25\RnBase\Search\SearchGeneric::class;
+        return Sys25\RnBase\Search\SearchGeneric::class;
     }
 
     /**
@@ -62,7 +62,7 @@ class Tx_T3rest_Repository_Provider extends \Sys25\RnBase\Domain\Repository\Abst
         if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
             $options['searchdef'] = [];
         }
-        $options['searchdef'] = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
+        $options['searchdef'] = Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
             // default sercher config
             $this->getSearchdef(),
             // searcher config overrides
