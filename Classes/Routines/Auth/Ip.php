@@ -74,7 +74,7 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
                 $this->prepareRoute($r);
             }
         } // register post routine for Respect/Rest
-        elseif ($route instanceof \Respect\Rest\Routes\AbstractRoute) {
+        elseif ($route instanceof Respect\Rest\Routes\AbstractRoute) {
             $route->by([$this, 'checkRemoteIp']);
         }
     }
@@ -86,15 +86,15 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
      */
     public function checkRemoteIp()
     {
-        $hasAccess = \Sys25\RnBase\Utility\Network::cmpIP(
-            \Sys25\RnBase\Utility\Misc::getIndpEnv('REMOTE_ADDR'),
+        $hasAccess = Sys25\RnBase\Utility\Network::cmpIP(
+            Sys25\RnBase\Utility\Misc::getIndpEnv('REMOTE_ADDR'),
             join(',', $this->allowedIps)
         );
 
         if (!$hasAccess) {
             echo 'IP not allowed';
-            \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
-                \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
+            TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
+                TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
             );
         }
 

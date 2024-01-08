@@ -126,7 +126,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
         $confId = 'item.links.'
     ) {
         // prepare the tsfe for link creation (config,sys_page and tmpl are required)
-        \Sys25\RnBase\Utility\Misc::prepareTSFE();
+        Sys25\RnBase\Utility\Misc::prepareTSFE();
 
         $linkIds = $this->getConfigurations()->getKeyNames($confId);
         foreach ($linkIds as $link) {
@@ -201,7 +201,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
      */
     protected function getIgnoreFields($confId = 'item.record.')
     {
-        return \Sys25\RnBase\Utility\Strings::trimExplode(
+        return Sys25\RnBase\Utility\Strings::trimExplode(
             ',',
             $this->getConfig($confId.'ignoreFields'),
             true

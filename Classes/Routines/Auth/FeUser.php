@@ -89,7 +89,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
                 $this->prepareRoute($r);
             }
         } // register post routine for Respect/Rest
-        elseif ($route instanceof \Respect\Rest\Routes\AbstractRoute) {
+        elseif ($route instanceof Respect\Rest\Routes\AbstractRoute) {
             $route->by([$this, 'byLoginRespect']);
         }
     }
@@ -120,8 +120,8 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
         if (Tx_T3rest_Utility_Config::isBasicAuthHeaderEnabled()) {
             header('WWW-Authenticate: Basic realm="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'"');
         }
-        \TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
-            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
+        TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode(
+            TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401
         );
 
         return false;

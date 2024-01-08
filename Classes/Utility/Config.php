@@ -40,7 +40,7 @@ final class Tx_T3rest_Utility_Config
     {
         static $config = [];
         if (!isset($config[$key])) {
-            $config[$key] = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
+            $config[$key] = Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
                 't3rest',
                 $key
             );
@@ -124,9 +124,9 @@ final class Tx_T3rest_Utility_Config
         return sprintf(
             '%s@%s',
             self::getAuthUserStoragePid(),
-            \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
+            TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
                 self::getAuthUserStoragePid(),
-                \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
+                TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
             )
         );
     }
