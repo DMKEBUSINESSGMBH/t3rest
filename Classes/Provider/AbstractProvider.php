@@ -44,7 +44,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
      */
     protected $ipAuthentication;
 
-    protected ?\Tx_T3rest_Routines_Auth_FeUser $auth = null;
+    protected ?Tx_T3rest_Routines_Auth_FeUser $auth = null;
 
     /**
      * a transformer instance.
