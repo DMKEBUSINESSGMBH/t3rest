@@ -77,7 +77,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
     /**
      * add the before and after callbacks.
      *
-     * @param array|\Respect\Rest\Routes\AbstractRoute $route
+     * @param array|Respect\Rest\Routes\AbstractRoute $route
      *
      * @return void
      */

@@ -43,7 +43,7 @@ interface Tx_T3rest_Routines_InterfaceRoute
     /**
      * add the before and after callbacks.
      *
-     * @param mixed|\Respect\Rest\Routes\AbstractRoute $route
+     * @param mixed|Respect\Rest\Routes\AbstractRoute $route
      *
      * @return void
      */
