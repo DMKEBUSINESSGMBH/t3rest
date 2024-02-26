@@ -21,6 +21,11 @@ use TYPO3\CMS\Core\Http\ServerRequest;
  */
 class AuthResolverTest extends UnitTestCase
 {
+    /**
+     * @var string
+     */
+    private $encryptionKeyBackup;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,6 +37,14 @@ class AuthResolverTest extends UnitTestCase
             'restAuthUserStoragePid' => '4',
             'restEnableHook' => '1',
         ];
+        $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] ?? '';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testKey';
+    }
+
+    protected function tearDown(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->encryptionKeyBackup;
+        parent::tearDown();
     }
 
     /**
@@ -58,7 +71,7 @@ class AuthResolverTest extends UnitTestCase
         };
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
-        $this->assertSame('{"body":{"pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}', $response->getBody()->getContents());
+        $this->assertSame('{"body":{"pid":"4@9ab8a78ad3f12111bc5d9a13206c9b87081bef78"}}', $response->getBody()->getContents());
         $this->assertSame('foo', $_POST['user']);
         $this->assertSame('pass:word', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
@@ -113,7 +126,7 @@ class AuthResolverTest extends UnitTestCase
         };
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
-        $this->assertSame('{"body":{"pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}', $response->getBody()->getContents());
+        $this->assertSame('{"body":{"pid":"4@9ab8a78ad3f12111bc5d9a13206c9b87081bef78"}}', $response->getBody()->getContents());
         $this->assertSame('foo', $_POST['user']);
         $this->assertSame('pass:word', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
