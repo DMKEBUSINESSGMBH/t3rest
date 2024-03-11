@@ -27,6 +27,8 @@ class AuthResolverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
+    protected ?string $encryptionKeyBackup;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,6 +45,15 @@ class AuthResolverTest extends UnitTestCase
             GeneralUtility::makeInstance(Context::class)
                 ->setAspect('security', GeneralUtility::makeInstance(SecurityAspect::class));
         }
+
+        $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] ?? [];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'test';
+    }
+
+    protected function tearDown(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->encryptionKeyBackup;
+        parent::tearDown();
     }
 
     /**
