@@ -83,7 +83,7 @@ class AuthResolverTest extends UnitTestCase
         };
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
-        $this->assertSame('{"body":{"pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}', $response->getBody()->getContents());
+        $this->assertSame('{"body":{"pid":"4@8edd87426159019aec9712ec50afcd8aa1aa0661"}}', $response->getBody()->getContents());
         $this->assertSame('foo', $_POST['user']);
         $this->assertSame('pass:word', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
@@ -122,7 +122,7 @@ class AuthResolverTest extends UnitTestCase
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
         $this->assertSame(
-            '{"body":{"user":"foo","pass":"pass:word","logintype":"login","pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}',
+            '{"body":{"user":"foo","pass":"pass:word","logintype":"login","pid":"4@8edd87426159019aec9712ec50afcd8aa1aa0661"}}',
             $response->getBody()->getContents()
         );
         $this->assertSame('foo', $_POST['user']);
@@ -186,7 +186,7 @@ class AuthResolverTest extends UnitTestCase
         $response = $authMiddleware->process($request, $requestHandler);
         $this->assertTrue($response instanceof ResponseInterface);
         $this->assertSame(
-            '{"body":{"user":"foo","pass":"pass:word","logintype":"login","pid":"4@74dbee593db1fe3bd77ba6cc190c0cefe4a078bf"}}',
+            '{"body":{"user":"foo","pass":"pass:word","logintype":"login","pid":"4@8edd87426159019aec9712ec50afcd8aa1aa0661"}}',
             $response->getBody()->getContents()
         );
         $this->assertSame('foo', $_POST['user']);
