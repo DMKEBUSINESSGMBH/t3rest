@@ -59,7 +59,7 @@ class AuthResolverTest extends UnitTestCase
         $body->rewind();
 
         $request = new ServerRequest('/t3rest/login', 'POST', $body);
-        $requestHandler = new class() implements RequestHandlerInterface {
+        $requestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new JsonResponse(
@@ -85,7 +85,7 @@ class AuthResolverTest extends UnitTestCase
     public function testNoProcessIfUriDoesNotMatch()
     {
         $request = new ServerRequest('/not/a/rest/api/endpoint', 'GET');
-        $requestHandler = new class() implements RequestHandlerInterface {
+        $requestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new NullResponse();
@@ -114,7 +114,7 @@ class AuthResolverTest extends UnitTestCase
         $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] = 'basic '.base64_encode('foo:pass:word');
 
         $request = new ServerRequest('/t3rest/login', 'POST');
-        $requestHandler = new class() implements RequestHandlerInterface {
+        $requestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new JsonResponse(
