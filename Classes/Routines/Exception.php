@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,19 +29,17 @@
  * exception routine.
  *
  * @author Michael Wagner
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Routines_Exception implements Tx_T3rest_Routines_InterfaceRouter
 {
     /**
      * add the before and after callbacks.
-     *
-     * @param Tx_T3rest_Router_InterfaceRouter $router
-     *
-     * @return void
      */
     public function prepareRouter(
-        Tx_T3rest_Router_InterfaceRouter $router
-    ) {
+        Tx_T3rest_Router_InterfaceRouter $router,
+    ): void {
         // register post routine for Respect/Rest
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->exceptionRoute(
@@ -49,20 +49,15 @@ class Tx_T3rest_Routines_Exception implements Tx_T3rest_Routines_InterfaceRouter
         }
     }
 
-    /**
-     * @param Exception $e
-     *
-     * @return string
-     */
-    public function handle(Exception $e)
+    public function handle(Throwable $exception): string
     {
         // @todo make configurable
         header(TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500);
 
         return sprintf(
             'Sorry, error "%1$s" happened: "%2$s"',
-            $e->getCode(),
-            $e->getMessage()
+            $exception->getCode(),
+            $exception->getMessage()
         );
     }
 }

@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 namespace DMK\T3rest\Tests\Unit\Middleware;
 
 use DMK\T3rest\Middleware\AuthResolver;
@@ -7,7 +32,6 @@ use GuzzleHttp\Psr7\Stream;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -44,10 +68,8 @@ class AuthResolverTest extends UnitTestCase
             'restEnableHook' => '1',
         ];
 
-        if (TYPO3::isTYPO121OrHigher()) {
-            GeneralUtility::makeInstance(Context::class)
-                ->setAspect('security', GeneralUtility::makeInstance(SecurityAspect::class));
-        }
+        GeneralUtility::makeInstance(Context::class)
+            ->setAspect('security', GeneralUtility::makeInstance(SecurityAspect::class));
 
         $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] ?? '';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'test';
@@ -62,7 +84,7 @@ class AuthResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         $authMiddleware = new AuthResolver();
         $fp = fopen('php://memory', 'w+');
@@ -88,11 +110,9 @@ class AuthResolverTest extends UnitTestCase
         $this->assertSame('pass:word', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
 
-        if (TYPO3::isTYPO121OrHigher()) {
-            $token = GeneralUtility::makeInstance(Context::class)->getAspect('security')->getReceivedRequestToken();
-            self::assertSame('core/user-auth/fe', $token->scope);
-            self::assertSame(['pid' => 4], $token->params);
-        }
+        $token = GeneralUtility::makeInstance(Context::class)->getAspect('security')->getReceivedRequestToken();
+        self::assertSame('core/user-auth/fe', $token->scope);
+        self::assertSame(['pid' => 4], $token->params);
 
         fclose($fp);
     }
@@ -100,7 +120,7 @@ class AuthResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function testProcessIfAuthDataInServerVariable()
+    public function testProcessIfAuthDataInServerVariable(): void
     {
         $_SERVER['PHP_AUTH_USER'] = 'foo';
         $_SERVER['PHP_AUTH_PW'] = 'pass:word';
@@ -129,11 +149,9 @@ class AuthResolverTest extends UnitTestCase
         $this->assertSame('pass:word', $_POST['pass']);
         $this->assertSame('login', $_POST['logintype']);
 
-        if (TYPO3::isTYPO121OrHigher()) {
-            $token = GeneralUtility::makeInstance(Context::class)->getAspect('security')->getReceivedRequestToken();
-            self::assertSame('core/user-auth/fe', $token->scope);
-            self::assertSame(['pid' => 4], $token->params);
-        }
+        $token = GeneralUtility::makeInstance(Context::class)->getAspect('security')->getReceivedRequestToken();
+        self::assertSame('core/user-auth/fe', $token->scope);
+        self::assertSame(['pid' => 4], $token->params);
 
         fclose($fp);
     }
@@ -141,7 +159,7 @@ class AuthResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function testNoProcessIfUriDoesNotMatch()
+    public function testNoProcessIfUriDoesNotMatch(): void
     {
         $request = new ServerRequest('/not/a/rest/api/endpoint', 'GET');
         $requestHandler = new class implements RequestHandlerInterface {
@@ -167,7 +185,7 @@ class AuthResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function testProcessIfRedirect()
+    public function testProcessIfRedirect(): void
     {
         $authMiddleware = new AuthResolver();
         $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] = 'basic '.base64_encode('foo:pass:word');

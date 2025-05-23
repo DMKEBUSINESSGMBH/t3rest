@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,21 +26,19 @@
  */
 
 /**
- * abstract provider.
+ * Class Tx_T3rest_Provider_AbstractProvider.
  *
- * @author Michael Wagner
+ * @author  Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_ProviderHolder implements Tx_T3rest_Provider_InterfaceProvider
 {
-    /**
-     * @var Tx_T3rest_Transformer_InterfaceTransformer
-     */
-    private $transformer;
+    private ?Tx_T3rest_Transformer_InterfaceTransformer $transformer = null;
 
-    /**
-     * @var string
-     */
-    private $rawRequestBody;
+    private string|bool|null $rawRequestBody = null;
 
     /**
      * @var Tx_T3rest_Routines_Auth_Ip
@@ -54,7 +54,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
      */
     protected function getTransformer()
     {
-        if (null === $this->transformer) {
+        if (!$this->transformer instanceof Tx_T3rest_Transformer_InterfaceTransformer) {
             $this->transformer = Tx_T3rest_Utility_Factory::getTransformer(
                 $this->getTransformerClass()
             );
@@ -85,7 +85,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
      */
     protected function getAuthFeUserRoutine()
     {
-        if (null === $this->auth) {
+        if (!$this->auth instanceof Tx_T3rest_Routines_Auth_FeUser) {
             $this->auth = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'Tx_T3rest_Routines_Auth_FeUser',
                 $this->getProvider()->getFeGroup()

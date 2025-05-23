@@ -9,7 +9,12 @@ parameters:
         - %currentWorkingDirectory%/ext_emconf.php
     ignoreErrors:
         -
-            message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Security\\\\RequestToken not found\\.$#"
+            message: "#^There is no aspect \"security\" configured so we can't figure out the exact type to return when calling TYPO3\\\\CMS\\\\Core\\\\Context\\\\Context\\:\\:getAspect$#"
             count: 1
             path: Classes/Middleware/AuthResolver.php
+            reportUnmatched: false
+        -
+            message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Crypto\\\\HashService not found\\.$#"
+            count: 1
+            path: Classes/Utility/Config.php
             reportUnmatched: false

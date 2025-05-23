@@ -2,11 +2,35 @@
 
 declare(strict_types=1);
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 namespace DMK\T3rest\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,14 +50,17 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
      * Processes an incoming server request in order to produce a response.
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
+     *
+     * @SuppressWarnings("PHPMD.Superglobals")
+     * @SuppressWarnings("PHPMD.ElseExpression")
      */
-    public function processRestRequest(
+    protected function processRestRequest(
         ServerRequestInterface $request,
-        \Psr\Http\Server\RequestHandlerInterface $handler
+        \Psr\Http\Server\RequestHandlerInterface $handler,
     ): \Psr\Http\Message\ResponseInterface {
         // auth nach redirect herstellen
         if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
+            [$_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']] =
                 explode(':', base64_decode(substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)), 2);
         }
 
@@ -58,42 +85,32 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
             $_POST['logintype'] = $requestBody['logintype'] ?? '';
         }
 
-        if (TYPO3::isTYPO121OrHigher()) {
-            GeneralUtility::makeInstance(Context::class)->getAspect('security')->setReceivedRequestToken(
-                new RequestToken(
-                    'core/user-auth/fe',
-                    null,
-                    ['pid' => \Tx_T3rest_Utility_Config::getAuthUserStoragePid()]
-                )
-            );
-        }
+        GeneralUtility::makeInstance(Context::class)->getAspect('security')->setReceivedRequestToken(
+            new RequestToken(
+                'core/user-auth/fe',
+                null,
+                ['pid' => \Tx_T3rest_Utility_Config::getAuthUserStoragePid()]
+            )
+        );
 
         return $handler->handle($this->addFeUserPid($request));
     }
 
     /**
      * Check if API URI is first occurrence in request URI path.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return bool
      */
-    protected function isApiCall(ServerRequestInterface $request)
+    protected function isApiCall(ServerRequestInterface $request): bool
     {
         $requestUri = ltrim($request->getUri()->getPath(), '/');
         $apiSegment = ltrim(\Tx_T3rest_Utility_Config::getRestApiUriPath(), '/');
 
-        return 0 === strpos($requestUri, $apiSegment);
+        return str_starts_with($requestUri, $apiSegment);
     }
 
     /**
      * Add the storage pid for fe users configured in the extension configuration.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return ServerRequestInterface
      */
-    protected function addFeUserPid(ServerRequestInterface $request)
+    protected function addFeUserPid(ServerRequestInterface $request): ServerRequestInterface
     {
         return $request->withParsedBody(
             array_merge($request->getParsedBody() ?: [], [

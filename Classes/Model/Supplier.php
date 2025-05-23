@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,6 +29,8 @@
  * supplier model.
  *
  * @author Michael Wagner
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Model_Supplier extends stdClass
 {
@@ -46,12 +50,10 @@ class Tx_T3rest_Model_Supplier extends stdClass
     /**
      * constructor.
      *
-     * @param array $ignoreKeys
-     *
      * @return void
      */
     public function __construct(
-        array $ignoreKeys = []
+        array $ignoreKeys = [],
     ) {
         $this->ignoreKeys = array_flip(array_merge($ignoreKeys, $this->ignoreKeys));
     }
@@ -59,12 +61,10 @@ class Tx_T3rest_Model_Supplier extends stdClass
     /**
      * add some values to supplier/stdClass.
      *
-     * @param mixed $key
-     * @param mixed $value
-     *
-     * @return Tx_T3rest_Model_Supplier
+     * @SuppressWarnings("PHPMD.ElseExpression")
+     * @SuppressWarnings("PHPMD.CyclomaticComplexity")
      */
-    public function add($key, $value = null)
+    public function add($key, $value = null): static
     {
         if (!is_scalar($key) && null === $value) {
             $value = $key;
@@ -77,6 +77,7 @@ class Tx_T3rest_Model_Supplier extends stdClass
             if (!isset($this->{$key})) {
                 $this->{$key} = null;
             }
+
             $node = &$this->{$key};
             if (!is_scalar($value) && !is_object($node)) {
                 $node = new self(array_keys($this->ignoreKeys));
@@ -102,6 +103,7 @@ class Tx_T3rest_Model_Supplier extends stdClass
                 $node->add($value->getProperty());
                 unset($vars['record']);
             }
+
             $node->add($vars);
         } else {
             $node = $value;

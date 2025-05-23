@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,21 +29,20 @@
  * simple item to supplier transformer.
  *
  * @author Michael Wagner
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implements Tx_T3rest_Transformer_InterfaceTransformer
 {
     /**
      *  transforms the item.
      *
-     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
-     *
-     * @return Tx_T3rest_Model_Supplier
      */
     public function transform(
         Sys25\RnBase\Domain\Model\DataInterface $item,
-        $confId = 'item.'
-    ) {
+        $confId = 'item.',
+    ): Tx_T3rest_Model_Supplier {
         $this->prepareItem($item, $confId);
         $this->wrapRecord($item, $confId.'record.');
         $this->prepareLinks($item, $confId.'links.');
@@ -52,34 +53,36 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * prepares the item to transform.
      *
-     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
+     *
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     protected function prepareItem(
         Sys25\RnBase\Domain\Model\DataInterface $item,
-        $confId = 'item.'
+        $confId = 'item.',
     ) {
     }
 
     /**
      * wraps the record using stdwrap.
      *
-     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
      *
      * @return void
+     *
+     * @SuppressWarnings("PHPMD.CyclomaticComplexity")
      */
     protected function wrapRecord(
         Sys25\RnBase\Domain\Model\DataInterface $item,
-        $confId = 'item.record.'
+        $confId = 'item.record.',
     ) {
         $cObj = $this->getConfigurations()->getCObj();
         $config = $this->getConfig($confId);
 
         // Add dynamic columns
-        if (is_array($config) && !empty($config)) {
+        if (is_array($config) && [] !== $config) {
             $keys = $this->getConfigurations()->getUniqueKeysNames($config);
             foreach ($keys as $key) {
                 if ('d' === $key[0]
@@ -117,14 +120,11 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates the links.
      *
-     * @param Sys25\RnBase\Domain\Model\DataInterface $item
-     * @param string $confId
-     *
      * @return void
      */
     protected function prepareLinks(
         Sys25\RnBase\Domain\Model\DataInterface $item,
-        $confId = 'item.links.'
+        string $confId = 'item.links.',
     ) {
         // prepare the tsfe for link creation (config,sys_page and tmpl are required)
         Sys25\RnBase\Utility\Misc::prepareTSFE();
@@ -139,6 +139,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
                     $params[$paramName] = $item->getProperty($colName);
                 }
             }
+
             $linkObj = $this->getConfigurations()->createLink(false);
             $linkObj->initByTS($this->getConfigurations(), $linkId, $params);
             // Immer absolute URLs setzen!
@@ -153,16 +154,16 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     /**
      * creates an link object.
      *
-     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      * @param string $confId
-     * @param array $parameters
      *
      * @return Sys25\RnBase\Utility\Link
+     *
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
     protected function initLink(
         Sys25\RnBase\Domain\Model\DataInterface $item,
         $confId = 'item.links.show.',
-        array $parameters = []
+        array $parameters = [],
     ) {
         $linkObj = $this->getConfigurations()->createLink();
         $linkObj->initByTS($this->getConfigurations(), $confId, $parameters);
@@ -176,31 +177,24 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
 
     /**
      * creates the supplier.
-     *
-     * @param Sys25\RnBase\Domain\Model\DataInterface $item
-     * @param string $confId
-     *
-     * @return Tx_T3rest_Model_Supplier
      */
     protected function buildSupplier(
         Sys25\RnBase\Domain\Model\DataInterface $item,
-        $confId = 'item.'
-    ) {
+        string $confId = 'item.',
+    ): Tx_T3rest_Model_Supplier {
         return Tx_T3rest_Utility_Factory::getSupplier(
             $this->getIgnoreFields($confId.'record.')
         )
-            ->add('_object', get_class($item))
+            ->add('_object', $item::class)
             ->add($item);
     }
 
     /**
      * get ignorefields from ts.
      *
-     * @param string $confId
-     *
      * @return Ambigous <multitype:, string, multitype:unknown >
      */
-    protected function getIgnoreFields($confId = 'item.record.')
+    protected function getIgnoreFields(string $confId = 'item.record.')
     {
         return Sys25\RnBase\Utility\Strings::trimExplode(
             ',',

@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -29,30 +31,21 @@
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, Tx_T3rest_Routines_InterfaceRoute
 {
-    /**
-     * @var array
-     */
-    protected $allowedIps;
-
-    /**
-     * @param array $allowedIps
-     */
-    public function __construct(array $allowedIps)
+    public function __construct(protected array $allowedIps)
     {
-        $this->allowedIps = $allowedIps;
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @see Tx_T3rest_Routines_InterfaceRouter::prepareRouter()
      */
     public function prepareRouter(
-        Tx_T3rest_Router_InterfaceRouter $router
-    ) {
+        Tx_T3rest_Router_InterfaceRouter $router,
+    ): void {
         // register post routine for Respect/Rest
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
@@ -63,11 +56,9 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @see Tx_T3rest_Routines_InterfaceRoute::prepareRoute()
      */
-    public function prepareRoute($route)
+    public function prepareRoute($route): void
     {
         // iterate over multiple routes
         if (is_array($route)) {
@@ -76,20 +67,18 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
             }
         } // register post routine for Respect/Rest
         elseif ($route instanceof Respect\Rest\Routes\AbstractRoute) {
-            $route->by([$this, 'checkRemoteIp']);
+            $route->by();
         }
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @see Tx_T3rest_Routines_Auth_InterfaceAuth::checkAccess()
      */
     public function checkRemoteIp()
     {
         $hasAccess = Sys25\RnBase\Utility\Network::cmpIP(
             Sys25\RnBase\Utility\Misc::getIndpEnv('REMOTE_ADDR'),
-            join(',', $this->allowedIps)
+            implode(',', $this->allowedIps)
         );
 
         if (!$hasAccess) {

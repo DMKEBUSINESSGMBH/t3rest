@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -29,6 +31,8 @@
  * and its the return value will be transformed to json.
  *
  * @author Michael Wagner
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRouter
 {
@@ -38,27 +42,21 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
      * add a time tracking.
      *
      * @param string $key
-     * @param int $microtime
-     *
-     * @return Tx_T3rest_Routines_Log_TimeTrack
+     * @param int    $microtime
      */
-    public function add($key, $microtime = null)
+    public function add($key, $microtime = null): static
     {
-        $this->times[$key] = null !== $microtime ? $microtime : microtime(true);
+        $this->times[$key] = $microtime ?? microtime(true);
 
         return $this;
     }
 
     /**
      * add the before and after callbacks.
-     *
-     * @param Tx_T3rest_Router_InterfaceRouter $router
-     *
-     * @return void
      */
     public function prepareRouter(
-        Tx_T3rest_Router_InterfaceRouter $router
-    ) {
+        Tx_T3rest_Router_InterfaceRouter $router,
+    ): void {
         $through = $this;
 
         $this->add('start')->add('init');
@@ -71,9 +69,7 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
             );
             $router->always(
                 'Through',
-                function () use ($through) {
-                    return [$through, 'throughRespect'];
-                }
+                fn (): array => [$through, 'throughRespect']
             );
         }
     }
@@ -82,11 +78,9 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
      * was called after provider returns his value.
      * this method can be extended by child classes.
      *
-     * @param mixed $data
-     *
-     * @return void
+     * @SuppressWarnings("PHPMD.UnusedFormalParameter")
      */
-    public function byRespect($data)
+    public function byRespect($data): void
     {
         $this->add('by');
     }
@@ -94,8 +88,6 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
     /**
      * was called after provider returns his value.
      * this method can be extended by child classes.
-     *
-     * @param mixed $data
      *
      * @return string
      */

@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,20 +26,20 @@
  */
 
 /**
- * extension configs.
+ * Class Tx_T3rest_Utility_Config.
  *
- * @author Michael Wagner
+ * @author  Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 final class Tx_T3rest_Utility_Config
 {
     /**
      * reads the extension config.
-     *
-     * @param string $key
-     *
-     * @return mixed
      */
-    private static function getExtConf($key)
+    private static function getExtConf(string $key)
     {
         static $config = [];
         if (!isset($config[$key])) {
@@ -52,10 +54,8 @@ final class Tx_T3rest_Utility_Config
 
     /**
      * is the new rest api hook enabled?
-     *
-     * @return bool
      */
-    public static function isRestHookEnabled()
+    public static function isRestHookEnabled(): bool
     {
         return (bool) self::getExtConf('restEnableHook');
     }
@@ -63,24 +63,19 @@ final class Tx_T3rest_Utility_Config
     /**
      * returns the rest api path segment with leading and trailing slash.
      * default is /api/.
-     *
-     * @return string
      */
-    public static function getRestApiUriPath()
+    public static function getRestApiUriPath(): string
     {
         $apiSegment = self::getExtConf('restApiUriPath') ?: 'api';
         $apiSegment = trim($apiSegment, '/');
-        $apiSegment = '/'.(empty($apiSegment) ? '' : $apiSegment.'/');
 
-        return $apiSegment;
+        return '/'.('' === $apiSegment || '0' === $apiSegment ? '' : $apiSegment.'/');
     }
 
     /**
      * Should the language from the site config be respected?
-     *
-     * @return bool
      */
-    private static function getRestApiRespectLanguage()
+    private static function getRestApiRespectLanguage(): bool
     {
         return (bool) self::getExtConf('restApiRespectLanguage') ?: false;
     }
@@ -88,16 +83,14 @@ final class Tx_T3rest_Utility_Config
     /**
      * For typo3 9 or later the language is not given by get parameter `L` anymore.
      * We has to add the language base url to the rest aoi uri!
-     *
-     * @return string
      */
-    public static function getRestApiUriPathForSiteLanguage()
+    public static function getRestApiUriPathForSiteLanguage(): string
     {
         $baseUri = self::getRestApiUriPath();
 
         if (self::getRestApiRespectLanguage()) {
             $language = Tx_T3rest_Utility_Factory::getCurrentSiteLanguage();
-            if (null !== $language) {
+            if ($language instanceof TYPO3\CMS\Core\Site\Entity\SiteLanguage) {
                 $baseUri = rtrim($language->getBase()->getPath(), '/').$baseUri;
             }
         }
@@ -107,29 +100,41 @@ final class Tx_T3rest_Utility_Config
 
     /**
      * returns the pid of the storage with the fe users.
-     *
-     * @return int
      */
-    public static function getAuthUserStoragePid()
+    public static function getAuthUserStoragePid(): int
     {
         return (int) self::getExtConf('restAuthUserStoragePid');
     }
 
     /**
      * returns the signed pid of the storage with the fe users.
-     *
-     * @return string
      */
-    public static function getSignedAuthUserStoragePid()
+    public static function getSignedAuthUserStoragePid(): string
     {
         return sprintf(
             '%s@%s',
             self::getAuthUserStoragePid(),
-            TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
+            self::getHmacForAuthUserStoragePid()
+        );
+    }
+
+    /**
+     * @SuppressWarnings("PHPMD.MissingImport")
+     */
+    private static function getHmacForAuthUserStoragePid(): string
+    {
+        if ((new TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() < 13) {
+            return TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
                 (string) self::getAuthUserStoragePid(),
                 TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
-            )
-        );
+            );
+        }
+
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Crypto\HashService::class)
+            ->hmac(
+                (string) self::getAuthUserStoragePid(),
+                TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
+            );
     }
 
     /**
@@ -154,10 +159,8 @@ final class Tx_T3rest_Utility_Config
 
     /**
      * returns if Basic Auth header should be send.
-     *
-     * @return bool
      */
-    public static function isBasicAuthHeaderEnabled()
+    public static function isBasicAuthHeaderEnabled(): bool
     {
         return (bool) self::getExtConf('isBasicAuthHeaderEnabled');
     }

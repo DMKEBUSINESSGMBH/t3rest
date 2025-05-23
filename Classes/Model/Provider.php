@@ -1,35 +1,40 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- *  (c) 2012 Rene Nitzsche
- *  Contact: rene@system25.de
- *  All rights reserved
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
- * This library is distributed in the hope that it will be useful,
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- ***************************************************************/
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * Frontcontroller for REST-API calls.
  *
  * @author Rene Nitzsche
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Model_Provider extends Sys25\RnBase\Domain\Model\BaseModel
 {
-    private $configurations;
+    private ?object $configurations = null;
 
     /**
      * Gets the name of the database table.
@@ -45,11 +50,13 @@ class Tx_T3rest_Model_Provider extends Sys25\RnBase\Domain\Model\BaseModel
      * the ts config for from the provider.
      *
      * @return Sys25\RnBase\Configuration\Processor
+     *
+     * @SuppressWarnings("PHPMD.MissingImport")
      */
-    public function getConfigurations()
+    public function getConfigurations(): object
     {
         if (null === $this->configurations) {
-            $configArray = Sys25\RnBase\Utility\TypoScript::parseTsConfig($this->getProperty('config'));
+            $configArray = (new Sys25\RnBase\Utility\TypoScript())->parseTsConfig($this->getProperty('config'));
             /* @var $configurations \Sys25\RnBase\Configuration\Processor */
             $this->configurations = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Configuration\Processor::class);
             $this->configurations->init($configArray, false, 't3rest', 't3rest');
@@ -60,20 +67,16 @@ class Tx_T3rest_Model_Provider extends Sys25\RnBase\Domain\Model\BaseModel
 
     /**
      * returns an instance of the provider.
-     *
-     * @return Tx_T3rest_Provider_InterfaceProvider
      */
-    public function getProviderClassName()
+    public function getProviderClassName(): string
     {
         return $this->getProperty('classname');
     }
 
     /**
      * returns an instance of the provider.
-     *
-     * @return Tx_T3rest_Provider_InterfaceProvider
      */
-    public function getProviderInstance()
+    public function getProviderInstance(): ?Tx_T3rest_Provider_InterfaceProvider
     {
         if (!class_exists($this->getProviderClassName())) {
             Sys25\RnBase\Utility\Logger::warn(

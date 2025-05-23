@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,15 +29,17 @@
  * base controller.
  *
  * @author Michael Wagner
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_InterfaceController
 {
     /**
      * execute the request.
      *
-     * @return void
+     * @SuppressWarnings("PHPMD.ExitExpression")
      */
-    public function execute()
+    public function execute(): void
     {
         $router = $this->getRouter();
         $this->prepareRouter($router);
@@ -45,6 +49,7 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
         if ($out) {
             echo $out;
         }
+
         // else ?
 
         // prevent typo3 rendering
@@ -53,10 +58,8 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
 
     /**
      * get the router.
-     *
-     * @return Tx_T3rest_Router_InterfaceRouter
      */
-    protected function getRouter()
+    protected function getRouter(): Tx_T3rest_Router_InterfaceRouter
     {
         return Tx_T3rest_Utility_Factory::getRespectRestRouter();
     }
@@ -77,14 +80,10 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
 
     /**
      * prepare the router.
-     *
-     * @param Tx_T3rest_Router_InterfaceRouter $router
-     *
-     * @return void
      */
     private function prepareRouter(
-        Tx_T3rest_Router_InterfaceRouter $router
-    ) {
+        Tx_T3rest_Router_InterfaceRouter $router,
+    ): void {
         $this->prepareRouterByProviders($router);
         $this->prepareRoutines($router);
     }
@@ -92,12 +91,10 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
     /**
      * prepare the router by providers.
      *
-     * @param Tx_T3rest_Router_InterfaceRouter $router
-     *
      * @return void
      */
     protected function prepareRouterByProviders(
-        Tx_T3rest_Router_InterfaceRouter $router
+        Tx_T3rest_Router_InterfaceRouter $router,
     ) {
         /* @var $provider Tx_T3rest_Model_Provider */
         foreach ($this->getProviders() as $provider) {
@@ -105,6 +102,7 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
             if (!$providerInstance instanceof Tx_T3rest_Provider_InterfaceProvider) {
                 continue;
             }
+
             $providerInstance->prepareRouter($router);
         }
     }
@@ -114,12 +112,10 @@ class Tx_T3rest_Controller_AbstractController implements Tx_T3rest_Controller_In
      * for excample it can be used to register a throu routine
      * for data transformation to json.
      *
-     * @param Tx_T3rest_Router_InterfaceRouter $router
-     *
      * @return void
      */
     protected function prepareRoutines(
-        Tx_T3rest_Router_InterfaceRouter $router
+        Tx_T3rest_Router_InterfaceRouter $router,
     ) {
         /* @var $exceptions Tx_T3rest_Routines_Exception */
         $exceptions = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_T3rest_Routines_Exception');

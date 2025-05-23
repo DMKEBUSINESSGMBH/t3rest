@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "t3rest" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,20 +32,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * this routine authenticates an fe user
  * by session cookie or basioc auth.
  *
- * @TODO: migrate to context aspects!
- * GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user')
- *
  * @author Michael Wagner
+ *
+ * @SuppressWarnings("PHPMD.CamelCaseClassName")
  */
 class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRouter, Tx_T3rest_Routines_InterfaceRoute, Tx_T3rest_Routines_Auth_InterfaceAuth
 {
-    /**
-     * the required fe groups to access a route.
-     *
-     * @var string
-     */
-    private $feGroups = 0;
-
     /**
      * constructor.
      *
@@ -51,21 +45,20 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
      *
      * @return void
      */
-    public function __construct($feGroups = 0)
-    {
-        $this->feGroups = $feGroups;
+    public function __construct(
+        /**
+         * the required fe groups to access a route.
+         */
+        private $feGroups = 0,
+    ) {
     }
 
     /**
      * add the before and after callbacks.
-     *
-     * @param Tx_T3rest_Router_InterfaceRouter $router
-     *
-     * @return void
      */
     public function prepareRouter(
-        Tx_T3rest_Router_InterfaceRouter $router
-    ) {
+        Tx_T3rest_Router_InterfaceRouter $router,
+    ): void {
         // register post routine for Respect/Rest
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
@@ -79,10 +72,8 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
      * add the before and after callbacks.
      *
      * @param array|Respect\Rest\Routes\AbstractRoute $route
-     *
-     * @return void
      */
-    public function prepareRoute($route)
+    public function prepareRoute($route): void
     {
         // iterate over multiple routes
         if (is_array($route)) {
@@ -91,16 +82,14 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
             }
         } // register post routine for Respect/Rest
         elseif ($route instanceof Respect\Rest\Routes\AbstractRoute) {
-            $route->by([$this, 'byLoginRespect']);
+            $route->by();
         }
     }
 
     /**
      * was called before a provider is called and initializes the user.
-     *
-     * @return bool
      */
-    public function byInitUserRespect()
+    public function byInitUserRespect(): bool
     {
         return true;
     }
@@ -108,9 +97,9 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
     /**
      * was called before a provider is called and checks the access.
      *
-     * @return string
+     * @SuppressWarnings("PHPMD.Superglobals")
      */
-    public function byLoginRespect()
+    public function byLoginRespect(): bool
     {
         // all right, grant access!
         if ($this->checkAccess()) {
@@ -121,6 +110,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
         if (Tx_T3rest_Utility_Config::isBasicAuthHeaderEnabled()) {
             header('WWW-Authenticate: Basic realm="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'"');
         }
+
         header(TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_401);
 
         return false;
@@ -137,18 +127,10 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
         if ($this->feGroups) {
             $userAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
             $pageGroupList = explode(',', $this->feGroups ?: 0);
-            $hasAccess = count(array_intersect($userAspect->getGroupIds(), $pageGroupList)) > 0;
+            $hasAccess = [] !== array_intersect($userAspect->getGroupIds(), $pageGroupList);
         }
 
         return $hasAccess;
-    }
-
-    /**
-     * @return TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 
     public function initUser(): void
