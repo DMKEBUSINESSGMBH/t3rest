@@ -127,7 +127,9 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
         string $confId = 'item.links.',
     ) {
         // prepare the tsfe for link creation (config,sys_page and tmpl are required)
-        Sys25\RnBase\Utility\Misc::prepareTSFE();
+        if (!Sys25\RnBase\Utility\TYPO3::isTYPO130OrHigher()) {
+            Sys25\RnBase\Utility\Misc::prepareTSFE();
+        }
 
         $linkIds = $this->getConfigurations()->getKeyNames($confId);
         foreach ($linkIds as $link) {
@@ -198,7 +200,7 @@ class Tx_T3rest_Transformer_Simple extends Tx_T3rest_Model_ProviderHolder implem
     {
         return Sys25\RnBase\Utility\Strings::trimExplode(
             ',',
-            $this->getConfig($confId.'ignoreFields'),
+            (string) $this->getConfig($confId.'ignoreFields'),
             true
         );
     }

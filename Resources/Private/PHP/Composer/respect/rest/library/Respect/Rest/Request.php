@@ -15,7 +15,6 @@ use Respect\Rest\Routines\Routinable;
 use Respect\Rest\Routines\ProxyableBy;
 use Respect\Rest\Routines\ProxyableThrough;
 use Respect\Rest\Routines\ParamSynced;
-use Sys25\RnBase\Utility\Debug;
 
 /** A routed HTTP Request */
 class Request

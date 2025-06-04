@@ -36,20 +36,16 @@ class Tx_T3rest_Repository_Provider extends Sys25\RnBase\Domain\Repository\Abstr
 {
     /**
      * Liefert den Namen der Suchklasse.
-     *
-     * @return string
      */
-    protected function getSearchClass()
+    protected function getSearchClass(): string
     {
         return Sys25\RnBase\Search\SearchGeneric::class;
     }
 
     /**
      * Liefert die Model Klasse.
-     *
-     * @return string
      */
-    protected function getWrapperClass()
+    protected function getWrapperClass(): string
     {
         return 'Tx_T3rest_Model_Provider';
     }

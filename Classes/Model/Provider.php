@@ -41,7 +41,7 @@ class Tx_T3rest_Model_Provider extends Sys25\RnBase\Domain\Model\BaseModel
      *
      * @return string Tabellenname
      */
-    public function getTableName()
+    public function getTableName(): string
     {
         return 'tx_t3rest_providers';
     }
@@ -56,7 +56,7 @@ class Tx_T3rest_Model_Provider extends Sys25\RnBase\Domain\Model\BaseModel
     public function getConfigurations(): object
     {
         if (null === $this->configurations) {
-            $configArray = (new Sys25\RnBase\Utility\TypoScript())->parseTsConfig($this->getProperty('config'));
+            $configArray = (new Sys25\RnBase\Utility\TypoScript())->parseTsConfig($this->getProperty('config'), 't3rest');
             /* @var $configurations \Sys25\RnBase\Configuration\Processor */
             $this->configurations = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Configuration\Processor::class);
             $this->configurations->init($configArray, false, 't3rest', 't3rest');

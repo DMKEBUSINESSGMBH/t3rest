@@ -26,7 +26,7 @@ use Respect\Rest\Routines\Unique;
  * @method \Respect\Rest\Routes\AbstractRoute acceptLanguage()
  * @method \Respect\Rest\Routes\AbstractRoute accept()
  * @method \Respect\Rest\Routes\AbstractRoute authBasic()
- * @method \Respect\Rest\Routes\AbstractRoute by()
+ * @method \Respect\Rest\Routes\AbstractRoute by($callback)
  * @method \Respect\Rest\Routes\AbstractRoute contentType()
  * @method \Respect\Rest\Routes\AbstractRoute ignorableFileExtension()
  * @method \Respect\Rest\Routes\AbstractRoute lastModified()

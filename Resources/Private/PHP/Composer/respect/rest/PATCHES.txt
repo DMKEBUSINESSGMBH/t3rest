@@ -5,3 +5,7 @@ patch for https://github.com/Respect/Rest/issues/144
 Source: patches/issue-144.patch
 
 
+Add method signature information for rector
+Source: patches/add-information-for-rector.patch
+
+

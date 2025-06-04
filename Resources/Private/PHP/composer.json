@@ -1,6 +1,12 @@
 {
     "config": {
-        "vendor-dir": "Composer"
+        "vendor-dir": "Composer",
+        "allow-plugins": {
+            "cweagans/composer-patches": true
+        },
+        "preferred-install": {
+            "*": "dist"
+        }
     },
     "require": {
         "respect/rest": "^0.6.0",
@@ -9,8 +15,10 @@
     "extra": {
         "patches": {
             "respect/rest": {
-                "patch for https://github.com/Respect/Rest/issues/144": "patches/issue-144.patch"
+                "patch for https://github.com/Respect/Rest/issues/144": "patches/issue-144.patch",
+                "Add method signature information for rector": "patches/add-information-for-rector.patch"
             }
-        }
+        },
+        "composer-exit-on-patch-failure": true
     }
 }

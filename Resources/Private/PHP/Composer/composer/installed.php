@@ -1,42 +1,41 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => '10.4.x-dev',
-    'version' => '10.4.9999999.9999999-dev',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => '13.4.x-dev',
+        'version' => '13.4.9999999.9999999-dev',
+        'reference' => '0b58407f491ead8b62d6a6bf4263f67d41a91b8a',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
     ),
-    'reference' => '1ef16542c6ee55ee174ec3ed8faa4e018a8f4c19',
-    'name' => '__root__',
-  ),
-  'versions' => 
-  array (
-    '__root__' => 
-    array (
-      'pretty_version' => '10.4.x-dev',
-      'version' => '10.4.9999999.9999999-dev',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '1ef16542c6ee55ee174ec3ed8faa4e018a8f4c19',
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => '13.4.x-dev',
+            'version' => '13.4.9999999.9999999-dev',
+            'reference' => '0b58407f491ead8b62d6a6bf4263f67d41a91b8a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'cweagans/composer-patches' => array(
+            'pretty_version' => '1.7.3',
+            'version' => '1.7.3.0',
+            'reference' => 'e190d4466fe2b103a55467dfa83fc2fecfcaf2db',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../cweagans/composer-patches',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'respect/rest' => array(
+            'pretty_version' => '0.6.1',
+            'version' => '0.6.1.0',
+            'reference' => '72cde63b78143b706011ed2e54c581705f107b71',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../respect/rest',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
     ),
-    'cweagans/composer-patches' => 
-    array (
-      'pretty_version' => '1.7.2',
-      'version' => '1.7.2.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'e9969cfc0796e6dea9b4e52f77f18e1065212871',
-    ),
-    'respect/rest' => 
-    array (
-      'pretty_version' => '0.6.1',
-      'version' => '0.6.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '72cde63b78143b706011ed2e54c581705f107b71',
-    ),
-  ),
 );

@@ -82,7 +82,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
             }
         } // register post routine for Respect/Rest
         elseif ($route instanceof Respect\Rest\Routes\AbstractRoute) {
-            $route->by();
+            $route->by([$this, 'byLoginRespect']);
         }
     }
 
