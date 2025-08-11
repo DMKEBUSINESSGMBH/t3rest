@@ -44,7 +44,7 @@ class Tx_T3rest_Routines_Exception implements Tx_T3rest_Routines_InterfaceRouter
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->exceptionRoute(
                 'Exception',
-                [$this, 'handle']
+                $this->handle(...)
             );
         }
     }

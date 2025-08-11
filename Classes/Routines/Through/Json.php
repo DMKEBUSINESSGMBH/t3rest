@@ -48,7 +48,7 @@ class Tx_T3rest_Routines_Through_Json implements Tx_T3rest_Routines_InterfaceRou
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
                 'Through',
-                fn (): array => [$through, 'throughRespect']
+                fn (): array => $through->throughRespect(...)
             );
         }
     }

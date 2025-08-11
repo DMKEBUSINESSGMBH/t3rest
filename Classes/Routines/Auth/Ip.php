@@ -50,7 +50,7 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
                 'By',
-                [$this, 'checkRemoteIp']
+                $this->checkRemoteIp(...)
             );
         }
     }
@@ -67,7 +67,7 @@ class Tx_T3rest_Routines_Auth_Ip implements Tx_T3rest_Routines_InterfaceRouter, 
             }
         } // register post routine for Respect/Rest
         elseif ($route instanceof Respect\Rest\Routes\AbstractRoute) {
-            $route->by([$this, 'checkRemoteIp']);
+            $route->by($this->checkRemoteIp(...));
         }
     }
 

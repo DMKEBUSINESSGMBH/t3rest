@@ -38,7 +38,7 @@ class HelloWorldProvider extends \Tx_T3rest_Provider_AbstractProvider
 {
     public function prepareRouter(\Tx_T3rest_Router_InterfaceRouter $router): void
     {
-        $route = $router->addRoute($router::METHOD_GET, '/hello-world', [$this, 'sayHello']);
+        $route = $router->addRoute($router::METHOD_GET, '/hello-world', $this->sayHello(...));
         $this->getAuthIpRoutine()->prepareRoute($route);
         $this->getAuthFeUserRoutine()->prepareRoute($route);
     }

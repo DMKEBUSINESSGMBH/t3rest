@@ -63,7 +63,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
                 'By',
-                [$this, 'byInitUserRespect']
+                $this->byInitUserRespect(...)
             );
         }
     }
@@ -82,7 +82,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
             }
         } // register post routine for Respect/Rest
         elseif ($route instanceof Respect\Rest\Routes\AbstractRoute) {
-            $route->by([$this, 'byLoginRespect']);
+            $route->by($this->byLoginRespect(...));
         }
     }
 

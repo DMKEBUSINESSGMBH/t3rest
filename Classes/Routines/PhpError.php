@@ -43,7 +43,7 @@ class Tx_T3rest_Routines_PhpError implements Tx_T3rest_Routines_InterfaceRouter
         // register post routine for Respect/Rest
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->errorRoute(
-                [$this, 'handle']
+                $this->handle(...)
             );
         }
     }

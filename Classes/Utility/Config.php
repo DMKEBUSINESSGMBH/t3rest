@@ -67,7 +67,7 @@ final class Tx_T3rest_Utility_Config
     public static function getRestApiUriPath(): string
     {
         $apiSegment = self::getExtConf('restApiUriPath') ?: 'api';
-        $apiSegment = trim($apiSegment, '/');
+        $apiSegment = trim((string) $apiSegment, '/');
 
         return '/'.('' === $apiSegment || '0' === $apiSegment ? '' : $apiSegment.'/');
     }

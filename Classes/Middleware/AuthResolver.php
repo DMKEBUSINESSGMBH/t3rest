@@ -61,7 +61,7 @@ class AuthResolver extends AbstractMiddleware implements MiddlewareInterface
         // auth nach redirect herstellen
         if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
             [$_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']] =
-                explode(':', base64_decode(substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)), 2);
+                explode(':', base64_decode(substr((string) $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)), 2);
         }
 
         // there are user and pwd, so we have to reauth by this data
