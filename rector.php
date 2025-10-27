@@ -89,5 +89,8 @@ return static function (RectorConfig $rectorConfig): void {
         ],
 
         __DIR__.'/Resources/Private/PHP/**/*.php',
+
+        // deprecated
+        Rector\Transform\Rector\Assign\PropertyFetchToMethodCallRector::class,
     ]);
 };

@@ -41,11 +41,11 @@ $EM_CONF['t3rest'] = [
     'author' => 'Rene Nitzsche, Michael Wagner, Hannes Bochmann, Mario Seidel',
     'author_email' => 'dev@dmk-ebusiness.de',
     'author_company' => 'DMK E-BUSINESS GmbH',
-    'version' => '12.0.0',
-    'state' => 'beta',
+    'version' => '13.0.0',
+    'state' => 'stable',
     'constraints' => [
         'depends' => [
-            'rn_base' => '1.17.0-',
+            'rn_base' => '1.20.0-',
             'typo3' => '12.4.0-13.4.99',
         ],
         'conflicts' => [
