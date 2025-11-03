@@ -107,7 +107,7 @@ final class Tx_T3rest_Utility_Factory
     public static function getCurrentSiteLanguage(): ?TYPO3\CMS\Core\Site\Entity\SiteLanguage
     {
         if ($GLOBALS['TYPO3_REQUEST'] instanceof Psr\Http\Message\ServerRequestInterface) {
-            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
         }
 
         return null;
