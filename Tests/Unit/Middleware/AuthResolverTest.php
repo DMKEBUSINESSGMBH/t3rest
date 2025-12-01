@@ -94,7 +94,7 @@ class AuthResolverTest extends UnitTestCase
 
         $request = new ServerRequest('/t3rest/login', 'POST', $body);
         $requestHandler = new class implements RequestHandlerInterface {
-            public function handle(ServerRequestInterface $request): ResponseInterface
+            public function handle(ServerRequestInterface $request): JsonResponse
             {
                 return new JsonResponse(
                     [
@@ -130,7 +130,7 @@ class AuthResolverTest extends UnitTestCase
 
         $request = new ServerRequest('/t3rest/login', 'POST', $body);
         $requestHandler = new class implements RequestHandlerInterface {
-            public function handle(ServerRequestInterface $request): ResponseInterface
+            public function handle(ServerRequestInterface $request): JsonResponse
             {
                 return new JsonResponse(
                     [
@@ -163,7 +163,7 @@ class AuthResolverTest extends UnitTestCase
     {
         $request = new ServerRequest('/not/a/rest/api/endpoint', 'GET');
         $requestHandler = new class implements RequestHandlerInterface {
-            public function handle(ServerRequestInterface $request): ResponseInterface
+            public function handle(ServerRequestInterface $request): NullResponse
             {
                 return new NullResponse();
             }
@@ -192,7 +192,7 @@ class AuthResolverTest extends UnitTestCase
 
         $request = new ServerRequest('/t3rest/login', 'POST');
         $requestHandler = new class implements RequestHandlerInterface {
-            public function handle(ServerRequestInterface $request): ResponseInterface
+            public function handle(ServerRequestInterface $request): JsonResponse
             {
                 return new JsonResponse(
                     [
