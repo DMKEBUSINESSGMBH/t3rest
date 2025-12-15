@@ -78,10 +78,6 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__.'/Configuration/*.php',
             __DIR__.'/Configuration/**/*.php',
         ],
-
-        // makes double-quoted strings, we don't want this at the moment.
-        Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector::class,
-
         Ssch\TYPO3Rector\TYPO313\v1\MigrateGeneralUtilityHmacToHashServiceHmacRector::class => [
             // Needed so the code for TYPO3 12.4 get's nit migrated
             // can be removed when support for TYPO3 12.4 is dropped
@@ -89,8 +85,5 @@ return static function (RectorConfig $rectorConfig): void {
         ],
 
         __DIR__.'/Resources/Private/PHP/**/*.php',
-
-        // deprecated
-        Rector\Transform\Rector\Assign\PropertyFetchToMethodCallRector::class,
     ]);
 };
