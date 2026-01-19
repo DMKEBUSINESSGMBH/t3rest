@@ -49,8 +49,6 @@ class Tx_T3rest_Model_Supplier extends stdClass
 
     /**
      * constructor.
-     *
-     * @return void
      */
     public function __construct(
         array $ignoreKeys = [],

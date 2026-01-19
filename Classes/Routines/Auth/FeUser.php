@@ -42,8 +42,6 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
      * constructor.
      *
      * @param string $feGroups
-     *
-     * @return void
      */
     public function __construct(
         /**
