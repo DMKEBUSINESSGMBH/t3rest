@@ -65,11 +65,13 @@ class Tx_T3rest_Routines_Log_TimeTrack implements Tx_T3rest_Routines_InterfaceRo
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
                 'By',
-                $this->byRespect(...)
+                [$this, 'byRespect']
             );
             $router->always(
                 'Through',
-                fn (): array => $through->throughRespect(...)
+                function () use ($through): array {
+                    return [$through, 'throughRespect'];
+                }
             );
         }
     }

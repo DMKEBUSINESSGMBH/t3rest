@@ -61,7 +61,7 @@ class Tx_T3rest_Routines_Auth_FeUser implements Tx_T3rest_Routines_InterfaceRout
         if ($router instanceof Tx_T3rest_Router_Respect) {
             $router->always(
                 'By',
-                $this->byInitUserRespect(...)
+                [$this, 'byInitUserRespect']
             );
         }
     }

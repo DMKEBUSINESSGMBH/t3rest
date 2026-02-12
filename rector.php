@@ -84,6 +84,22 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__.'/Classes/Utility/Config.php',
         ],
 
+        // Those callbacks should not be refactored because of the internal usage in REST
+        Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class => [
+            __DIR__.'/Classes/Routines/Auth/FeUser.php',
+            __DIR__.'/Classes/Routines/Auth/Ip.php',
+            __DIR__.'/Classes/Routines/Log/MemTrack.php',
+            __DIR__.'/Classes/Routines/Log/TimeTrack.php',
+            __DIR__.'/Classes/Routines/Through/Json.php',
+        ],
+        Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector::class => [
+            __DIR__.'/Classes/Routines/Auth/FeUser.php',
+            __DIR__.'/Classes/Routines/Auth/Ip.php',
+            __DIR__.'/Classes/Routines/Log/MemTrack.php',
+            __DIR__.'/Classes/Routines/Log/TimeTrack.php',
+            __DIR__.'/Classes/Routines/Through/Json.php',
+        ],
+
         __DIR__.'/Resources/Private/PHP/**/*.php',
     ]);
 };
