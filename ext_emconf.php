@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Copyright notice
  *
@@ -33,7 +35,6 @@
 // Only the data in the array - anything else is removed by next write.
 // "version" and "dependencies" must not be touched!
 //
-
 $EM_CONF['t3rest'] = [
     'title' => 'REST for TYPO3',
     'description' => 'Provides a REST interface for TYPO3.',
