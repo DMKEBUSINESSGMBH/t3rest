@@ -77,7 +77,7 @@ final class Tx_T3rest_Utility_Config
      */
     private static function getRestApiRespectLanguage(): bool
     {
-        return (bool) self::getExtConf('restApiRespectLanguage') ?: false;
+        return (bool) self::getExtConf('restApiRespectLanguage');
     }
 
     /**
