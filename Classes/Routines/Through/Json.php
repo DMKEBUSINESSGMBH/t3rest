@@ -61,7 +61,7 @@ class Tx_T3rest_Routines_Through_Json implements Tx_T3rest_Routines_InterfaceRou
      *
      * @return string
      */
-    public function throughRespect($data)
+    public function throughRespect($data): string|false
     {
         // find a better way to set the headers
         header('Content-type: application/json');
