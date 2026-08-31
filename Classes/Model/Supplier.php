@@ -72,9 +72,7 @@ class Tx_T3rest_Model_Supplier extends stdClass
                 return $this;
             }
 
-            if (!isset($this->{$key})) {
-                $this->{$key} = null;
-            }
+            $this->{$key} ??= null;
 
             $node = &$this->{$key};
             if (!is_scalar($value) && !is_object($node)) {

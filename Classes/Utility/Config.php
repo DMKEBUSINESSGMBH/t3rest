@@ -42,12 +42,10 @@ final class Tx_T3rest_Utility_Config
     private static function getExtConf(string $key)
     {
         static $config = [];
-        if (!isset($config[$key])) {
-            $config[$key] = Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
-                't3rest',
-                $key
-            );
-        }
+        $config[$key] ??= Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
+            't3rest',
+            $key
+        );
 
         return $config[$key];
     }

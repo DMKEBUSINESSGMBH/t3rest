@@ -119,9 +119,7 @@ abstract class Tx_T3rest_Provider_AbstractProvider extends Tx_T3rest_Model_Provi
      */
     protected function getRawRequestBody()
     {
-        if (null === $this->rawRequestBody) {
-            $this->rawRequestBody = file_get_contents('php://input');
-        }
+        $this->rawRequestBody ??= file_get_contents('php://input');
 
         return $this->rawRequestBody;
     }
